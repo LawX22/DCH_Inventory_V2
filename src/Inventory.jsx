@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Inventory.css';
+import Header from './Header';
+
 
 // Custom icon components
 const SearchIcon = () => (
@@ -51,21 +53,21 @@ function Inventory() {
       tsv: 1000.00,
       image: 'src/assets/bolt.png'
     },
-    {
-        id: 'FL0008192',
-        name: 'METRIC YELLOW BOLT',
-        category: 'BOLT',
-        brand: 'PLATED',
-        location: {
-          warehouse: 'Warehouse',
-          rack: 'Rack A'
-        },
-        price: 500.00,
-        retail: 560.00,
-        stock: 2,
-        tsv: 1000.00,
-        image: 'src/assets/bolt.png'
+     {
+      id: 'FL0008192',
+      name: 'METRIC YELLOW BOLT',
+      category: 'BOLT',
+      brand: 'PLATED',
+      location: {
+        warehouse: 'Warehouse',
+        rack: 'Rack A'
       },
+      price: 500.00,
+      retail: 560.00,
+      stock: 2,
+      tsv: 1000.00,
+      image: 'src/assets/bolt.png'
+    },
     
   ];
 
@@ -141,66 +143,7 @@ function Inventory() {
   return (
     <div className="inventory-container">
       {/* Header with navigation */}
-      <header className="header">
-        <div className="logo-container">
-          <img src="src/assets/Logo.png" alt="Company Logo" className="logo" />
-        </div>
-        <nav className="main-nav">
-          <div className="nav-item active">
-            <div className="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="7" x2="16" y2="7" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <span>Inventory</span>
-          </div>
-          <div className="nav-item">
-            <div className="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 5H3V21H17V17" stroke="currentColor" strokeWidth="2" />
-                <rect x="7" y="3" width="14" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
-                <path d="M12 10L17 10" stroke="currentColor" strokeWidth="2" />
-                <path d="M14.5 7.5L14.5 12.5" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <span>Stock in/out</span>
-          </div>
-          <div className="nav-item">
-            <div className="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="7" x2="16" y2="7" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="2" />
-                <line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <span>Stock History</span>
-          </div>
-          <div className="nav-item">
-            <div className="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2" />
-                <path d="M2 10H22" stroke="currentColor" strokeWidth="2" />
-                <path d="M7 15H17" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <span>Suppliers</span>
-          </div>
-          <div className="nav-item">
-            <div className="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6H21" stroke="currentColor" strokeWidth="2" />
-                <path d="M3 12H21" stroke="currentColor" strokeWidth="2" />
-                <path d="M3 18H21" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <span>Orders</span>
-          </div>
-        </nav>
-      </header>
+      <Header/>
 
       {/* Action panel */}
       <div className="action-panel">
