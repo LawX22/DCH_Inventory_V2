@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Inventory.css';
 import Header from './Header';
 
@@ -35,6 +35,24 @@ function Inventory() {
   const [warehouseOptions] = useState(['Warehouse', 'Warehouse A', 'Warehouse B']);
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('asc');
+
+  const [inventory, setInventory] = useState([]);
+
+
+  useEffect(() => {
+    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
+      .then((response) => response.json())
+      .then((data) => {
+        setInventory(data);
+        
+      })
+      .catch((error) => {
+        console.error("Error fetching inventory:", error);
+     
+      });
+  }, []);
+
+
 
   // Sample inventory data - let's add more items to demonstrate scrolling
   const inventoryItems = [
@@ -262,30 +280,30 @@ function Inventory() {
         
         {/* Scrollable table body */}
         <div className="table-body">
-          {filteredItems.map((item) => (
-            <div className="table-row" key={item.id}>
+          {inventory.map((item) => (
+            <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img src={item.image} alt={item.name} className="item-image" />
                 </div>
                 <div className="item-details">
-                  <div className="item-name">{item.name}</div>
+                  <div className="item-name">{item.itemDesc_1 +' '+item.itemDesc_2}</div>
                   <div className="item-category">{item.category}</div>
-                  <div className="item-id">{item.id}</div>
+                  <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
               <div className="brand-cell">{item.brand}</div>
               <div className="location-cell">
-                <div>{item.location.warehouse}</div>
-                <div>{item.location.rack}</div>
+                <div>{item.location}</div>
+                <div>{item.storage_area}</div>
               </div>
               <div className="price-cell">
-                <div>Price - ₱ {item.price.toFixed(2)}</div>
-                <div>Retail - ₱ {item.retail.toFixed(2)}</div>
+                <div>Price - ₱ {item.price}</div>
+                <div>Retail - ₱ {item.retail_price}</div>
               </div>
               <div className="inventory-cell">
-                <div>Stock - {item.stock}</div>
-                <div>TSV - ₱ {item.tsv.toFixed(2)}</div>
+                <div>Stock - {item.units}</div>
+                <div>TSV - ₱ {item.totalstockValue}</div>
               </div>
               <div className="actions-cell">
                 <button className="action-button view-button" onClick={() => handleViewItem(item)}>
