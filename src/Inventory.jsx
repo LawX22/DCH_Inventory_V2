@@ -29,8 +29,12 @@ const TrashIcon = () => (
 function Inventory() {
   const [selectedWarehouse, setSelectedWarehouse] = useState('Warehouse');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [warehouseOptions] = useState(['Warehouse', 'Warehouse A', 'Warehouse B']);
+  const [sortField, setSortField] = useState('');
+  const [sortDirection, setSortDirection] = useState('asc');
 
-  // Sample inventory data - let's add a few more items for realism
+  // Sample inventory data - let's add more items to demonstrate scrolling
   const inventoryItems = [
     {
       id: 'FL0008192',
@@ -45,61 +49,101 @@ function Inventory() {
       retail: 560.00,
       stock: 2,
       tsv: 1000.00,
-      image: '/bolt.png' // Replace with actual path to your image
+      image: 'src/assets/bolt.png'
     },
     {
-      id: 'FL0009335',
-      name: 'STAINLESS STEEL SCREW',
-      category: 'SCREW',
-      brand: 'PLATED',
-      location: {
-        warehouse: 'Warehouse',
-        rack: 'Rack B'
+        id: 'FL0008192',
+        name: 'METRIC YELLOW BOLT',
+        category: 'BOLT',
+        brand: 'PLATED',
+        location: {
+          warehouse: 'Warehouse',
+          rack: 'Rack A'
+        },
+        price: 500.00,
+        retail: 560.00,
+        stock: 2,
+        tsv: 1000.00,
+        image: 'src/assets/bolt.png'
       },
-      price: 120.00,
-      retail: 180.00,
-      stock: 15,
-      tsv: 2700.00,
-      image: '/screw.png'
-    },
-    {
-      id: 'FL0010472',
-      name: 'CHROME NUT',
-      category: 'NUT',
-      brand: 'METAL',
-      location: {
-        warehouse: 'Warehouse',
-        rack: 'Rack C'
-      },
-      price: 85.00,
-      retail: 125.00,
-      stock: 30,
-      tsv: 3750.00,
-      image: '/nut.png'
-    },
-    {
-      id: 'FL0011587',
-      name: 'ZINC WASHER',
-      category: 'WASHER',
-      brand: 'METAL',
-      location: {
-        warehouse: 'Warehouse',
-        rack: 'Rack A'
-      },
-      price: 30.00,
-      retail: 45.00,
-      stock: 50,
-      tsv: 2250.00,
-      image: '/washer.png'
-    }
+    
   ];
+
+  // Handle sorting
+  const handleSort = (field) => {
+    if (sortField === field) {
+      // Toggle direction if same field is clicked
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new field and default to ascending
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Filter and sort items
+  let filteredItems = inventoryItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.brand.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (sortField) {
+    filteredItems = [...filteredItems].sort((a, b) => {
+      let aValue, bValue;
+      
+      switch (sortField) {
+        case 'item':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'brand':
+          aValue = a.brand.toLowerCase();
+          bValue = b.brand.toLowerCase();
+          break;
+        case 'location':
+          aValue = a.location.warehouse.toLowerCase() + a.location.rack.toLowerCase();
+          bValue = b.location.warehouse.toLowerCase() + b.location.rack.toLowerCase();
+          break;
+        case 'price':
+          aValue = a.price;
+          bValue = b.price;
+          break;
+        case 'inventory':
+          aValue = a.stock;
+          bValue = b.stock;
+          break;
+        default:
+          return 0;
+      }
+      
+      // Compare based on direction
+      if (sortDirection === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+  }
+
+  // Basic handlers for the view and delete buttons
+  const handleViewItem = (item) => {
+    console.log('Viewing item:', item);
+  };
+
+  const handleDeleteItem = (item) => {
+    if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
+      console.log('Deleting item:', item);
+    }
+  };
 
   return (
     <div className="inventory-container">
       {/* Header with navigation */}
       <header className="header">
         <div className="logo-container">
-          <img src="/logo.png" alt="Company Logo" className="logo" />
+          <img src="src/assets/Logo.png" alt="Company Logo" className="logo" />
         </div>
         <nav className="main-nav">
           <div className="nav-item active">
@@ -169,12 +213,31 @@ function Inventory() {
         </button>
 
         <div className="warehouse-dropdown">
-          <button className="dropdown-button">
+          <button 
+            className="dropdown-button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
             {selectedWarehouse}
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="dropdown-icon">
               <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" />
             </svg>
           </button>
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              {warehouseOptions.map(option => (
+                <div 
+                  key={option} 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setSelectedWarehouse(option);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="search-container">
@@ -194,72 +257,109 @@ function Inventory() {
         <button className="activity-button">Activity</button>
       </div>
 
-      {/* Inventory table */}
+      {/* Inventory table with fixed header and scrollable body */}
       <div className="inventory-table">
         <div className="table-header">
-          <div className="header-cell with-arrow">
+          <div 
+            className={`header-cell with-arrow ${sortField === 'item' ? 'sorted' : ''}`}
+            onClick={() => handleSort('item')}
+          >
             <span>Item</span>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="arrow-icon">
+            <svg 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`arrow-icon ${sortField === 'item' && sortDirection === 'desc' ? 'flipped' : ''}`}
+            >
               <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
-          <div className="header-cell with-arrow">
+          <div 
+            className={`header-cell with-arrow ${sortField === 'brand' ? 'sorted' : ''}`}
+            onClick={() => handleSort('brand')}
+          >
             <span>Brand</span>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="arrow-icon">
+            <svg 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`arrow-icon ${sortField === 'brand' && sortDirection === 'desc' ? 'flipped' : ''}`}
+            >
               <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
-          <div className="header-cell with-arrow">
+          <div 
+            className={`header-cell with-arrow ${sortField === 'location' ? 'sorted' : ''}`}
+            onClick={() => handleSort('location')}
+          >
             <span>Location</span>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="arrow-icon">
+            <svg 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`arrow-icon ${sortField === 'location' && sortDirection === 'desc' ? 'flipped' : ''}`}
+            >
               <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
-          <div className="header-cell">Price</div>
-          <div className="header-cell">Inventory</div>
+          <div 
+            className={`header-cell ${sortField === 'price' ? 'sorted' : ''}`}
+            onClick={() => handleSort('price')}
+          >
+            Price
+          </div>
+          <div 
+            className={`header-cell ${sortField === 'inventory' ? 'sorted' : ''}`}
+            onClick={() => handleSort('inventory')}
+          >
+            Inventory
+          </div>
           <div className="header-cell">Actions</div>
         </div>
-
-        {inventoryItems.map((item) => (
-          <div className="table-row" key={item.id}>
-            <div className="item-cell">
-              <div className="item-image-container">
-                <img src={item.image} alt={item.name} className="item-image" />
+        
+        {/* Scrollable table body */}
+        <div className="table-body">
+          {filteredItems.map((item) => (
+            <div className="table-row" key={item.id}>
+              <div className="item-cell">
+                <div className="item-image-container">
+                  <img src={item.image} alt={item.name} className="item-image" />
+                </div>
+                <div className="item-details">
+                  <div className="item-name">{item.name}</div>
+                  <div className="item-category">{item.category}</div>
+                  <div className="item-id">{item.id}</div>
+                </div>
               </div>
-              <div className="item-details">
-                <div className="item-name">{item.name}</div>
-                <div className="item-category">{item.category}</div>
-                <div className="item-id">{item.id}</div>
+              <div className="brand-cell">{item.brand}</div>
+              <div className="location-cell">
+                <div>{item.location.warehouse}</div>
+                <div>{item.location.rack}</div>
+              </div>
+              <div className="price-cell">
+                <div>Price - ₱ {item.price.toFixed(2)}</div>
+                <div>Retail - ₱ {item.retail.toFixed(2)}</div>
+              </div>
+              <div className="inventory-cell">
+                <div>Stock - {item.stock}</div>
+                <div>TSV - ₱ {item.tsv.toFixed(2)}</div>
+              </div>
+              <div className="actions-cell">
+                <button className="action-button view-button" onClick={() => handleViewItem(item)}>
+                  <span className="action-icon"><EyeIcon /></span>
+                  <span>View</span>
+                </button>
+                <button className="action-button delete-button" onClick={() => handleDeleteItem(item)}>
+                  <span className="action-icon"><TrashIcon /></span>
+                  <span>Delete</span>
+                </button>
               </div>
             </div>
-            <div className="brand-cell">{item.brand}</div>
-            <div className="location-cell">
-              <div>{item.location.warehouse}</div>
-              <div>{item.location.rack}</div>
-            </div>
-            <div className="price-cell">
-              <div>Price - ₱ {item.price.toFixed(2)}</div>
-              <div>Retail - ₱ {item.retail.toFixed(2)}</div>
-            </div>
-            <div className="inventory-cell">
-              <div>Stock - {item.stock}</div>
-              <div>TSV - ₱ {item.tsv.toFixed(2)}</div>
-            </div>
-            <div className="actions-cell">
-              <button className="action-button view-button">
-                <span className="action-icon"><EyeIcon /></span>
-                <span>View</span>
-              </button>
-              <button className="action-button delete-button">
-                <span className="action-icon"><TrashIcon /></span>
-                <span>Delete</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-export default Inventory;   
+export default Inventory;
