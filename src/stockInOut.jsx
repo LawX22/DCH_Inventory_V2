@@ -28,7 +28,7 @@ const TrashIcon = () => (
   </svg>
 );
 
-function Inventory() {
+function StockInOut() {
   const [selectedWarehouse, setSelectedWarehouse] = useState('Warehouse');
   const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -165,13 +165,13 @@ function Inventory() {
 
       {/* Action panel */}
       <div className="action-panel">
-        <button className="add-button">
+        {/* <button className="add-button">
           <span>Add New Item</span>
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="add-icon">
             <path d="M12 5V19" stroke="currentColor" strokeWidth="2" />
             <path d="M5 12H19" stroke="currentColor" strokeWidth="2" />
           </svg>
-        </button>
+        </button> */}
 
         <div className="warehouse-dropdown">
           <button 
@@ -275,7 +275,7 @@ function Inventory() {
           >
             Inventory
           </div>
-          <div className="header-cell">Actionss</div>
+          <div className="header-cell">Actions</div>
         </div>
         
         {/* Scrollable table body */}
@@ -323,4 +323,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default StockInOut;
