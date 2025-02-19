@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   AiOutlineSearch,
   AiOutlineEye,
-  AiOutlinePlus,
   AiOutlineDown,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
@@ -10,8 +9,6 @@ import Header from "./Header";
 
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortField] = useState("");
-  const [sortDirection] = useState("asc");
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
@@ -117,27 +114,29 @@ function StockHistory() {
                 </div>
               </div>
 
-              <div className="brand-cell">{item.transaction_date}</div>
-              <div className="location-cell">
+              <div className="date-cell">
+                {item.transaction_date}
+                </div>
+              <div className="brand-cell">
                 <div>{item.brand}</div>
               </div>
-              <div className="price-cell">
+              <div className="location-cell">
                 <div>{item.location}</div>
               </div>
-              <div className="inventory-cell">
+              <div className="activity-cell">
                 <div>{item.transaction_type}</div>
               </div>
 
-              <div className="inventory-cell">
+              <div className="amount-cell">
                 <div>{item.units_added}</div>
               </div>
 
-              <div className="inventory-cell">
+              <div className="units-cell">
                 <div>Current - {item.current_stock}</div>
                 <div>Previous - {item.previous_units}</div>
               </div>
 
-              <div className="inventory-cell">
+              <div className="Requistion-cell">
                 <div>Stock - {item.requisition_number}</div>
               </div>
 
@@ -149,6 +148,7 @@ function StockHistory() {
                   <span>Fix</span>
                 </button>
               </div>
+              
             </div>
           ))}
         </div>

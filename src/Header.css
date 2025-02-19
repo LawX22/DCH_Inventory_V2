@@ -1,5 +1,4 @@
 /* Header */
-/* Header with Glass Effect */
 .header {
     background: url('/src/assets/Logo.png') no-repeat center top;
     background-size: cover;
@@ -70,6 +69,11 @@
     position: relative;
     transition: border-bottom 0.3s ease;
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}  
 
 /* Underline effect for active and hover states */
 .nav-item::after {

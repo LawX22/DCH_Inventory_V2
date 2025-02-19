@@ -93,7 +93,7 @@ function Inventory() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={item.image}
+                    src={"/src/assets/"+item.image}
                     alt={item.name}
                     className="item-image"
                   />
