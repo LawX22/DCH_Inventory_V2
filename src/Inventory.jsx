@@ -57,7 +57,9 @@ function Inventory() {
         {/* Activity Button */}
         <button className="activity-button">
           <FiActivity size={18} />
-          <span>Activity</span>
+          <span><a href="/activity" target="_blank" rel="noopener noreferrer">
+  Activity
+</a></span>
         </button>
       </div>
 
