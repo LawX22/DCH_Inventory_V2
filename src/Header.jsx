@@ -23,11 +23,12 @@ function Header() {
         </div>
         <div className="nav-item">
           <FaExchangeAlt className="nav-icon" />
-          <span> <span><a href="/StockInOut">StockInOut</a></span></span>
+          <span> <span><a href="/StockInOut">Stock In/Out</a></span></span>
         </div>
         <div className="nav-item">
           <FaHistory className="nav-icon" />
-          <span>Stock History</span>
+          <span> <span><a href="/stockHistory">Stock History</a></span></span>
+
         </div>
         <div className="nav-item">
           <FaTruck className="nav-icon" />

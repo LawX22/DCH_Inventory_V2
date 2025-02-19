@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Inventory from "./Inventory";
 import StockInOut from "./stockInOut";
+import StockHistory from "./stockHistory";
+
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         
         {/* Other routes */}
         <Route path="/stockInOut" element={<StockInOut />} />
+
+        <Route path="/stockHistory" element={<StockHistory />} />
       </Routes>
     </Router>
   );
