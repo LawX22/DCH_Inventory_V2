@@ -225,6 +225,7 @@ body{
 }
 
 .item-cell {
+  width: 10px;
   display: flex;
   align-items: center;
   padding: 15px;

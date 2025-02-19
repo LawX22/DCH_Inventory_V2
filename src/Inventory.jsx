@@ -11,8 +11,6 @@ import Header from "./Header";
 
 function Inventory() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortField] = useState("");
-  const [sortDirection] = useState("asc");
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {

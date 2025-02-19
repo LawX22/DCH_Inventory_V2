@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   AiOutlineSearch,
   AiOutlineEye,
-  AiOutlineDelete,
   AiOutlinePlus,
   AiOutlineDown,
 } from "react-icons/ai";
@@ -10,10 +9,9 @@ import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
 function StockHistory() {
-  const [selectedWarehouse, setSelectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortField] = useState("");
+  const [sortDirection] = useState("asc");
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
@@ -23,39 +21,15 @@ function StockHistory() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, []);
 
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const handleViewItem = (item) => {
-    console.log("Viewing item:", item);
-  };
-
-  const handleDeleteItem = (item) => {
-    if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
-      console.log("Deleting item:", item);
-    }
-  };
-
   return (
     <div className="inventory-container">
       <Header />
 
       {/* Action Panel */}
       <div className="action-panel">
-        <button className="add-button">
-          <AiOutlinePlus size={18} />
-          <span>Add New Item</span>
-        </button>
-
         <div className="warehouse-dropdown">
           <button className="dropdown-button">
-            {selectedWarehouse} <AiOutlineDown />
+            <span>Warehouse</span> <AiOutlineDown />
           </button>
         </div>
 
@@ -86,124 +60,47 @@ function StockHistory() {
       {/* Inventory Table */}
       <div className="inventory-table">
         <div className="table-header">
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("item")}
-          >
-            <span>Item</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "item" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Item</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("brand")}
-          >
-            <span>Date</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "brand" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Date</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("location")}
-          >
-            <span>Brand</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "location" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Brand</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("price")}
-          >
-            <span>Location</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "price" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Location</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("inventory")}
-          >
-            <span>Activity</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Activity</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
-
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("inventory")}
-          >
-            <span>Amount</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Amount</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("inventory")}
-          >
-            <span>Units</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Units</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
-
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("inventory")}
-          >
-            <span>Requistion #</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell with-arrow">
+            <span>Requistion #</span>
+             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
-
-          <div className="header-cell">Actionss</div>
+          <div className="header-cell">Actions</div>
         </div>
 
         <div className="table-body">
           {inventory.map((item) => (
-
-
             <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
@@ -214,32 +111,25 @@ function StockHistory() {
                   />
                 </div>
                 <div className="item-details">
-                  <div className="item-name">
-                    {item.stock_name}
-                  </div>
+                  <div className="item-name">{item.stock_name}</div>
                   <div className="item-category">{item.category}</div>
                   <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
-              
+
               <div className="brand-cell">{item.transaction_date}</div>
               <div className="location-cell">
                 <div>{item.brand}</div>
-            
               </div>
               <div className="price-cell">
                 <div>{item.location}</div>
-               
               </div>
               <div className="inventory-cell">
                 <div>{item.transaction_type}</div>
-              
               </div>
-
 
               <div className="inventory-cell">
                 <div>{item.units_added}</div>
-                
               </div>
 
               <div className="inventory-cell">
@@ -249,7 +139,6 @@ function StockHistory() {
 
               <div className="inventory-cell">
                 <div>Stock - {item.requisition_number}</div>
-          
               </div>
 
               <div className="actions-cell">
@@ -259,7 +148,6 @@ function StockHistory() {
                   </span>
                   <span>Fix</span>
                 </button>
-                
               </div>
             </div>
           ))}
