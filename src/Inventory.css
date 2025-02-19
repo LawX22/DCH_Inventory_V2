@@ -20,75 +20,70 @@ body{
   max-width: 100%;
   background-color: #f5f7f9;
 }
-
 /* Action panel */
 .action-panel {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding: 15px 20px;
   background-color: #e7ecf0;
   border-radius: 10px;
   margin: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #b8d6eb9a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   width: calc(100% - 40px);
+  gap: 10px;
 }
 
-.add-button {
+/* Common button styles */
+.action-panel button {
   display: flex;
   align-items: center;
-  background-color: #bdeac1;
+  justify-content: center;
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 12px 15px;
   font-weight: 500;
-  color: #25632b;
   cursor: pointer;
-  min-width: 120px;
+  gap: 8px;
 }
 
-.add-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
+/* Add Button - Maximized */
+.add-button {
+  flex: 1;
+  background-color: #bdeac1;
+  color: #25632b;
+  min-width: 200px;
 }
 
+/* Warehouse dropdown - Same size as Add button */
 .warehouse-dropdown {
-  margin-left: 15px;
+  flex: 1;
+  display: flex;
 }
 
 .dropdown-button {
-  display: flex;
-  align-items: center;
+  flex: 1;
   background-color: #b8d6eb;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  min-width: 120px;
+  color: #25632b;
+  min-width: 200px;
 }
 
-.dropdown-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
-}
-
+/* Search Bar */
 .search-container {
   display: flex;
   align-items: center;
   background-color: white;
   border-radius: 5px;
-  padding: 8px 15px;
-  margin-left: 15px;
-  flex: 1;
+  padding: 12px 15px;
+  flex: 2;
   max-width: 600px;
+  width: 100%;
 }
 
 .search-icon {
   color: #888;
-  margin-right: 8px;
-  display: flex;
-  align-items: center;
 }
 
 .search-input {
@@ -99,14 +94,11 @@ body{
   width: 100%;
 }
 
+/* Export & Activity buttons - Same Size */
 .export-button,
 .activity-button {
-  margin-left: 15px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  min-width: 100px;
+  flex: 1;
+  min-width: 150px;
 }
 
 .export-button {
@@ -119,12 +111,35 @@ body{
   color: #7a6034;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .action-panel {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-panel > * {
+    width: 100%;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
+
+  .add-button,
+  .dropdown-button,
+  .export-button,
+  .activity-button {
+    width: 100%;
+  }
+}
+
 /* Inventory table */
 .inventory-table {
   margin: 0 20px 20px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   width: calc(100% - 40px);
   flex: 1;
   display: flex;
@@ -137,9 +152,9 @@ body{
   font-weight: 500;
   width: 100%;
   background-color: white;
-  position: sticky; /* Ensures the header stays fixed */
-  top: 0; /* Keep the header at the top */
-  z-index: 1; /* Make sure the header stays on top of the table body */
+  position: sticky; 
+  top: 0; 
+  z-index: 1; 
 }
 
 /* Add this for scrolling the table body */

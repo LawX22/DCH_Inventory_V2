@@ -308,11 +308,11 @@ function StockInOut() {
               <div className="actions-cell">
                 <button className="action-button view-button" onClick={() => handleViewItem(item)}>
                   <span className="action-icon"><EyeIcon /></span>
-                  <span>View</span>
+                  <span>Stock In</span>
                 </button>
                 <button className="action-button delete-button" onClick={() => handleDeleteItem(item)}>
                   <span className="action-icon"><TrashIcon /></span>
-                  <span>Delete</span>
+                  <span>Stock Out</span>
                 </button>
               </div>
             </div>
