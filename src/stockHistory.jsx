@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiOutlineSearch,
-  AiOutlineEye,
-  AiOutlineDown,
-} from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
@@ -59,38 +55,38 @@ function StockHistory() {
         <div className="table-header">
           <div className="header-cell with-arrow">
             <span>Item</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Date</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Brand</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Location</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Activity</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
           <div className="header-cell with-arrow">
             <span>Amount</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
           <div className="header-cell with-arrow">
             <span>Units</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
           <div className="header-cell with-arrow">
             <span>Requistion #</span>
-             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
 
           <div className="header-cell">Actions</div>
@@ -102,7 +98,7 @@ function StockHistory() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={item.image}
+                    src={"/src/assets/" + item.image}
                     alt={item.name}
                     className="item-image"
                   />
@@ -115,8 +111,13 @@ function StockHistory() {
               </div>
 
               <div className="date-cell">
-                {item.transaction_date}
-                </div>
+                {new Date(item.transaction_date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+
               <div className="brand-cell">
                 <div>{item.brand}</div>
               </div>
@@ -148,7 +149,6 @@ function StockHistory() {
                   <span>Fix</span>
                 </button>
               </div>
-              
             </div>
           ))}
         </div>

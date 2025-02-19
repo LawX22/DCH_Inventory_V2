@@ -261,7 +261,6 @@ body {
   text-overflow: ellipsis; 
 }
 
-
 /* Other Table Cells */
 .brand-cell,
 .date-cell,
@@ -273,12 +272,15 @@ body {
 .units-cell,
 .activity-cell,
 .actions-cell {
+  font-size: 15px;
+  font-weight: 400;
   padding: 15px;
   flex: 1;
 }
 
 .amount-cell,
-.Requistion-cell {
+.Requistion-cell,
+.actions-cell {
   text-align: center;
 }
 
