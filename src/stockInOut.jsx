@@ -9,7 +9,7 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
-function Inventory() {
+function StockInOut() {
   const [selectedWarehouse, setSelectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState("");
@@ -48,10 +48,10 @@ function Inventory() {
 
       {/* Action Panel */}
       <div className="action-panel">
-        <button className="add-button">
+        {/* <button className="add-button">
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
-        </button>
+        </button> */}
 
         <div className="warehouse-dropdown">
           <button className="dropdown-button">
@@ -208,4 +208,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default StockInOut;

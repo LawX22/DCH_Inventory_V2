@@ -9,7 +9,7 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
-function Inventory() {
+function StockHistory() {
   const [selectedWarehouse, setSelectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState("");
@@ -17,7 +17,7 @@ function Inventory() {
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
+    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php")
       .then((response) => response.json())
       .then((data) => setInventory(data))
       .catch((error) => console.error("Error fetching inventory:", error));
@@ -103,7 +103,7 @@ function Inventory() {
             className="header-cell with-arrow"
             onClick={() => handleSort("brand")}
           >
-            <span>Brand</span>{" "}
+            <span>Date</span>{" "}
             <AiOutlineDown
               className={
                 sortField === "brand" && sortDirection === "desc"
@@ -116,7 +116,7 @@ function Inventory() {
             className="header-cell with-arrow"
             onClick={() => handleSort("location")}
           >
-            <span>Location</span>{" "}
+            <span>Brand</span>{" "}
             <AiOutlineDown
               className={
                 sortField === "location" && sortDirection === "desc"
@@ -129,7 +129,7 @@ function Inventory() {
             className="header-cell with-arrow"
             onClick={() => handleSort("price")}
           >
-            <span>Price</span>{" "}
+            <span>Location</span>{" "}
             <AiOutlineDown
               className={
                 sortField === "price" && sortDirection === "desc"
@@ -142,7 +142,7 @@ function Inventory() {
             className="header-cell with-arrow"
             onClick={() => handleSort("inventory")}
           >
-            <span>Inventory</span>{" "}
+            <span>Activity</span>{" "}
             <AiOutlineDown
               className={
                 sortField === "inventory" && sortDirection === "desc"
@@ -151,11 +151,59 @@ function Inventory() {
               }
             />
           </div>
+
+
+          <div
+            className="header-cell with-arrow"
+            onClick={() => handleSort("inventory")}
+          >
+            <span>Amount</span>{" "}
+            <AiOutlineDown
+              className={
+                sortField === "inventory" && sortDirection === "desc"
+                  ? "flipped"
+                  : ""
+              }
+            />
+          </div>
+
+          <div
+            className="header-cell with-arrow"
+            onClick={() => handleSort("inventory")}
+          >
+            <span>Units</span>{" "}
+            <AiOutlineDown
+              className={
+                sortField === "inventory" && sortDirection === "desc"
+                  ? "flipped"
+                  : ""
+              }
+            />
+          </div>
+
+
+          <div
+            className="header-cell with-arrow"
+            onClick={() => handleSort("inventory")}
+          >
+            <span>Requistion #</span>{" "}
+            <AiOutlineDown
+              className={
+                sortField === "inventory" && sortDirection === "desc"
+                  ? "flipped"
+                  : ""
+              }
+            />
+          </div>
+
+
           <div className="header-cell">Actionss</div>
         </div>
 
         <div className="table-body">
           {inventory.map((item) => (
+
+
             <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
@@ -167,38 +215,51 @@ function Inventory() {
                 </div>
                 <div className="item-details">
                   <div className="item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
+                    {item.stock_name}
                   </div>
                   <div className="item-category">{item.category}</div>
                   <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
-              <div className="brand-cell">{item.brand}</div>
+              
+              <div className="brand-cell">{item.transaction_date}</div>
               <div className="location-cell">
-                <div>{item.location}</div>
-                <div>{item.storage_area}</div>
+                <div>{item.brand}</div>
+            
               </div>
               <div className="price-cell">
-                <div>Price - ₱ {item.price}</div>
-                <div>Retail - ₱ {item.retail_price}</div>
+                <div>{item.location}</div>
+               
               </div>
               <div className="inventory-cell">
-                <div>Stock - {item.units}</div>
-                <div>TSV - ₱ {item.totalstockValue}</div>
+                <div>{item.transaction_type}</div>
+              
               </div>
+
+
+              <div className="inventory-cell">
+                <div>{item.units_added}</div>
+                
+              </div>
+
+              <div className="inventory-cell">
+                <div>Current - {item.current_stock}</div>
+                <div>Previous - {item.previous_units}</div>
+              </div>
+
+              <div className="inventory-cell">
+                <div>Stock - {item.requisition_number}</div>
+          
+              </div>
+
               <div className="actions-cell">
                 <button className="action-button view-button">
                   <span className="action-icon">
                     <AiOutlineEye size={18} />
                   </span>
-                  <span>View</span>
+                  <span>Fix</span>
                 </button>
-                <button className="action-button delete-button">
-                  <span className="action-icon">
-                    <AiOutlineDelete size={18} />
-                  </span>
-                  <span>Delete</span>
-                </button>
+                
               </div>
             </div>
           ))}
@@ -208,4 +269,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default StockHistory;
