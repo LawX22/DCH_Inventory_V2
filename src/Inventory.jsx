@@ -9,44 +9,30 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
-function Inventory() {
-  const [selectedWarehouse, setSelectedWarehouse] = useState("Warehouse");
+function StockInOut() {
+  const [selectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortField] = useState("");
+
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
       .then((response) => response.json())
-      .then((data) => setInventory(data))
-      .catch((error) => console.error("Error fetching inventory:", error));
+      .then((data) => {
+        setInventory(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching inventory:", error);
+      });
   }, []);
-
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const handleViewItem = (item) => {
-    console.log("Viewing item:", item);
-  };
-
-  const handleDeleteItem = (item) => {
-    if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
-      console.log("Deleting item:", item);
-    }
-  };
 
   return (
     <div className="inventory-container">
+      {/* Header with navigation */}
       <Header />
 
-      {/* Action Panel */}
+      {/* Action panel */}
       <div className="action-panel">
         <button className="add-button">
           <AiOutlinePlus size={18} />
@@ -83,99 +69,101 @@ function Inventory() {
         </button>
       </div>
 
-      {/* Inventory Table */}
+      {/* Inventory table */}
       <div className="inventory-table">
         <div className="table-header">
           <div
-            className="header-cell with-arrow"
+            className={`header-cell with-arrow ${
+              sortField === "item" ? "sorted" : ""
+            }`}
             onClick={() => handleSort("item")}
           >
-            <span>Item</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "item" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+            <span>
+              Item <AiOutlineDown size={12} style={{ margin: "0 0 0 12" }}/>{" "}
+            </span>
           </div>
           <div
-            className="header-cell with-arrow"
+            className={`header-cell with-arrow ${
+              sortField === "brand" ? "sorted" : ""
+            }`}
             onClick={() => handleSort("brand")}
           >
-            <span>Brand</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "brand" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+            <span>
+              Brand <AiOutlineDown size={12} style={{ margin: "0 0 0 12" }}/>{" "}
+            </span>
           </div>
           <div
-            className="header-cell with-arrow"
+            className={`header-cell with-arrow ${
+              sortField === "location" ? "sorted" : ""
+            }`}
             onClick={() => handleSort("location")}
           >
-            <span>Location</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "location" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+            <span>
+              Location <AiOutlineDown size={12} style={{ margin: "0 0 0 12" }}/>
+            </span>
           </div>
           <div
-            className="header-cell with-arrow"
+            className={`header-cell ${sortField === "price" ? "sorted" : ""}`}
             onClick={() => handleSort("price")}
           >
-            <span>Price</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "price" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+            Price
           </div>
           <div
-            className="header-cell with-arrow"
+            className={`header-cell ${
+              sortField === "inventory" ? "sorted" : ""
+            }`}
             onClick={() => handleSort("inventory")}
           >
-            <span>Inventory</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+            Inventory
           </div>
           <div className="header-cell">Actions</div>
         </div>
 
+        {/* Scrollable table body */}
         <div className="table-body">
           {inventory.map((item) => (
-            <div className="table-row" key={item.id}>
-              <div className="table-cell">{item.name}</div>
-              <div className="table-cell">{item.brand}</div>
-              <div className="table-cell">
-                {item.location?.warehouse} - {item.location?.rack}
+            <div className="table-row" key={item.inventory_id}>
+              <div className="item-cell">
+                <div className="item-image-container">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="item-image"
+                  />
+                </div>
+                <div className="item-details">
+                  <div className="item-name">
+                    {item.itemDesc_1 + " " + item.itemDesc_2}
+                  </div>
+                  <div className="item-category">{item.category}</div>
+                  <div className="item-id">{item.itemCode}</div>
+                </div>
               </div>
-              <div className="table-cell">${item.price.toFixed(2)}</div>
-              <div className="table-cell">{item.stock}</div>
-              <div className="table-cell actions">
-                <button
-                  onClick={() => handleViewItem(item)}
-                  className="view-button"
-                >
-                  <AiOutlineEye size={18} />
+              <div className="brand-cell">{item.brand}</div>
+              <div className="location-cell">
+                <div>{item.location}</div>
+                <div>{item.storage_area}</div>
+              </div>
+              <div className="price-cell">
+                <div>Price - ₱ {item.price}</div>
+                <div>Retail - ₱ {item.retail_price}</div>
+              </div>
+              <div className="inventory-cell">
+                <div>Stock - {item.units}</div>
+                <div>TSV - ₱ {item.totalstockValue}</div>
+              </div>
+              <div className="actions-cell">
+                <button className="action-button view-button">
+                  <span className="action-icon">
+                    <AiOutlineEye size={18} />
+                  </span>
+                  <span>View</span>
                 </button>
-                <button
-                  onClick={() => handleDeleteItem(item)}
-                  className="delete-button"
-                >
-                  <AiOutlineDelete size={18} />
+                <button className="action-button delete-button">
+                  <span className="action-icon">
+                    <AiOutlineDelete size={18} />
+                  </span>
+                  <span>Delete</span>
                 </button>
               </div>
             </div>
@@ -186,4 +174,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default StockInOut;
