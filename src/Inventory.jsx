@@ -9,7 +9,7 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
-function StockInOut() {
+function Inventory() {
   const [selectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField] = useState("");
@@ -174,4 +174,4 @@ function StockInOut() {
   );
 }
 
-export default StockInOut;
+export default Inventory;
