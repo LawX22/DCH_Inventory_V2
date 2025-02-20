@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FaBars, FaTimes, FaBoxes, FaExchangeAlt, FaHistory, FaTruck, FaClipboardList } from 'react-icons/fa';
-import './Inventory.css';
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
