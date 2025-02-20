@@ -1,15 +1,8 @@
-import React, { useState } from "react";
+
+import React, { useState } from 'react';
+import { FaBars, FaTimes, FaBoxes, FaExchangeAlt, FaHistory, FaTruck, FaClipboardList, FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-import {
-  FaBars,
-  FaTimes,
-  FaBoxes,
-  FaExchangeAlt,
-  FaHistory,
-  FaTruck,
-  FaClipboardList,
-  FaSignOutAlt,
-} from "react-icons/fa";
+
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);

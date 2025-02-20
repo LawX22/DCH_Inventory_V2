@@ -23,9 +23,10 @@ const LogIn = () => {
         // Redirect based on userType
         if (response.data.userType === "Admin") {
           navigate("/Inventory"); 
+          // console.log('login');
    
         } else if (response.data.userType === "Staff") {
-        
+          // console.log('login');
           navigate("/Inventory");
         }
       } else {

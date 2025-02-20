@@ -7,7 +7,7 @@ import {
   AiOutlineDown,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "../Header";
+import Header from "./Header";
 
 
 function Inventory() {

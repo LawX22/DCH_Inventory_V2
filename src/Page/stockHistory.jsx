@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "../Header";
+import Header from "./Header";
 
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");

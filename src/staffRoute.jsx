@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import LogIn from "./jsx/LogIn";
-import Inventory from "./jsx/Inventory";
-import StockInOut from "./jsx/stockInOut";
-import StockHistory from "./jsx/stockHistory";
-import ActivityReport from "./jsx/activity";
+
+import LogIn from "./Auth/LogIn";
+import Inventory from "./Page/Inventory";
+import StockInOut from "./Page/stockInOut";
+import StockHistory from "./Page/stockHistory";
+import ActivityReport from "./Page/activity";
 
 function StaffRoute() {
   return (
