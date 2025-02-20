@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 
 include 'db_connection.php';  // Include database connection
 
-$sql = "SELECT * FROM activity_report ORDER BY report_id DESC LIMIT 1";  
+$sql = "SELECT * FROM activity_report ORDER BY report_id DESC LIMIT 100";  
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

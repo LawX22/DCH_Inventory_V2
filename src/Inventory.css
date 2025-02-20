@@ -164,8 +164,9 @@ body {
 
 /* Scrollable Table Body */
 .table-body {
-  max-height: 400px; /* Adjust based on your design */
-  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: calc(100vh - 280px); 
+  min-height: 200px; 
+  overflow-y: auto; 
   flex: 1;
 }
 
@@ -327,4 +328,44 @@ body {
 .inventory-table:after {
   content: "";
   flex: 1;
+}
+
+/* Custom Scrollbar */
+.table-body::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #e7ecf0; /* Track color */
+  border-radius: 5px;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #b8d6eb; /* Thumb color */
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #7a9fb8; /* Darker shade when hovered */
+}
+
+/* Scrollbar for all elements with overflow */
+*::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px; 
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #b8d6eb;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #7a9fb8;
 }
