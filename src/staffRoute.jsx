@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import LogIn from "./Auth/LogIn";
+import ProtectedRoute from "./Auth/ProtectedRoute";
 import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";
 import StockHistory from "./Page/stockHistory";
 import ActivityReport from "./Page/activity";
+
 
 function StaffRoute() {
   return (
@@ -15,10 +17,10 @@ function StaffRoute() {
         <Route path="/login" element={<LogIn />} />
 
         {/* Other routes */}
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/stockInOut" element={<StockInOut />} />
-        <Route path="/stockHistory" element={<StockHistory />} />
-        <Route path="/activity" element={<ActivityReport />} />
+        <Route path="/inventory" element={ <ProtectedRoute><Inventory /></ProtectedRoute>} />
+        <Route path="/stockInOut" element={<ProtectedRoute><StockInOut /></ProtectedRoute>} />
+        <Route path="/stockHistory" element={<ProtectedRoute><StockHistory /></ProtectedRoute>} />
+        <Route path="/activity" element={<ProtectedRoute><ActivityReport /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
