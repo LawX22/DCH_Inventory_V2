@@ -1,0 +1,82 @@
+/* Main container for login page */
+.login-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Left side - Login form */
+  .login-form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #4A90E2, #1C3A5D);
+    color: white;
+    padding: 20px;
+  }
+  
+  .welcome-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  .parts-image {
+    margin-top: 20px;
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  .login-fields {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .label {
+    font-size: 1rem;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: #1C3A5D;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Right side - Branding image */
+  .login-banner {
+    width: 50%;
+    background-image: url("/src/assets/Logo.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dch-logo {
+    width: 250px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+  }
+  

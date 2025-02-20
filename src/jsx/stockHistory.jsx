@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiOutlineSearch,
-  AiOutlineEye,
-  AiOutlineDelete,
-  AiOutlineDown,
-} from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "./Header";
+import Header from "../Header";
 
-function StockInOut() {
+function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
+    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php")
       .then((response) => response.json())
       .then((data) => setInventory(data))
       .catch((error) => console.error("Error fetching inventory:", error));
@@ -63,6 +58,10 @@ function StockInOut() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
+            <span>Date</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+          </div>
+          <div className="header-cell with-arrow">
             <span>Brand</span>
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
@@ -71,13 +70,25 @@ function StockInOut() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-            <span>Price</span>
+            <span>Activity</span>
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
+
           <div className="header-cell with-arrow">
-            <span>Inventory</span>
+            <span>Amount</span>
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
+
+          <div className="header-cell with-arrow">
+            <span>Units</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+          </div>
+
+          <div className="header-cell with-arrow">
+            <span>Requistion #</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+          </div>
+
           <div className="header-cell">Actions</div>
         </div>
 
@@ -87,44 +98,55 @@ function StockInOut() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={"/src/assets/"+item.image}
+                    src={"/src/assets/" + item.image}
                     alt={item.name}
                     className="item-image"
                   />
                 </div>
                 <div className="item-details">
-                  <div className="item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
-                  </div>
+                  <div className="item-name">{item.stock_name}</div>
                   <div className="item-category">{item.category}</div>
                   <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
-              <div className="brand-cell">{item.brand}</div>
+
+              <div className="date-cell">
+                {new Date(item.transaction_date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+
+              <div className="brand-cell">
+                <div>{item.brand}</div>
+              </div>
               <div className="location-cell">
                 <div>{item.location}</div>
-                <div>{item.storage_area}</div>
               </div>
-              <div className="price-cell">
-                <div>Price - ₱ {item.price}</div>
-                <div>Retail - ₱ {item.retail_price}</div>
+              <div className="activity-cell">
+                <div>{item.transaction_type}</div>
               </div>
-              <div className="inventory-cell">
-                <div>Stock - {item.units}</div>
-                <div>TSV - ₱ {item.totalstockValue}</div>
+
+              <div className="amount-cell">
+                <div>{item.units_added}</div>
               </div>
+
+              <div className="units-cell">
+                <div>Current - {item.current_stock}</div>
+                <div>Previous - {item.previous_units}</div>
+              </div>
+
+              <div className="Requistion-cell">
+                <div>Stock - {item.requisition_number}</div>
+              </div>
+
               <div className="actions-cell">
                 <button className="action-button view-button">
                   <span className="action-icon">
                     <AiOutlineEye size={18} />
                   </span>
-                  <span>View</span>
-                </button>
-                <button className="action-button delete-button">
-                  <span className="action-icon">
-                    <AiOutlineDelete size={18} />
-                  </span>
-                  <span>Delete</span>
+                  <span>Fix</span>
                 </button>
               </div>
             </div>
@@ -135,4 +157,4 @@ function StockInOut() {
   );
 }
 
-export default StockInOut;
+export default StockHistory;

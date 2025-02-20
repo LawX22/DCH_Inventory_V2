@@ -1,29 +1,26 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import LogIn from "./jsx/LogIn";
+import Inventory from "./jsx/Inventory";
+import StockInOut from "./jsx/stockInOut";
+import StockHistory from "./jsx/stockHistory";
+import ActivityReport from "./jsx/activity";
 
-import Inventory from "./Inventory";
-import StockInOut from "./stockInOut";
-import StockHistory from "./stockHistory";
-import ActivityReport from "./activity";
-
-
-
-function App() {
+function StaffRoute() {
   return (
     <Router>
       <Routes>
         {/* Default route to login page */}
-        <Route path="/Inventory" element={<Inventory />} />
-        
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LogIn />} />
+
         {/* Other routes */}
+        <Route path="/inventory" element={<Inventory />} />
         <Route path="/stockInOut" element={<StockInOut />} />
-
         <Route path="/stockHistory" element={<StockHistory />} />
-
         <Route path="/activity" element={<ActivityReport />} />
-
       </Routes>
     </Router>
   );
 }
 
-export default App;
+export default StaffRoute;
