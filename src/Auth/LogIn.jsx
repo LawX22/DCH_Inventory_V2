@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const LogIn = () => {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const navigate = useNavigate();
@@ -9,15 +9,35 @@ const LogIn = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Temporary authentication (replace with actual authentication logic)
-    if (credentials.username === "admin" && credentials.password === "password") {
-      navigate("/inventory"); // Redirect to Inventory after login
-    } else {
-      alert("Invalid username or password");
+    try {
+      const response = await axios.post("http://localhost/DCH_Inventory_V2/src/backend/login.php", credentials);
+      
+      if (response.data.success) {
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("userType", response.data.userType);
+
+        // Redirect based on userType
+        if (response.data.userType === "Admin") {
+          navigate("/Inventory"); 
+          // console.log('login');
+   
+        } else if (response.data.userType === "Staff") {
+          // console.log('login');
+          navigate("/Inventory");
+        }
+      } else {
+        alert("Invalid username or password");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
+
 
   return (
     <div className="login-container">

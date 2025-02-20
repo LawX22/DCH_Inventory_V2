@@ -9,6 +9,7 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 
+
 function Inventory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
