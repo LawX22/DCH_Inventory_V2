@@ -8,30 +8,28 @@ function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
-  const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "All"
-  );
+      const [selectedLocation, setSelectedLocation] = useState(
+        localStorage.getItem("selectedLocation") || "All"
+      );
 
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
   }, [selectedLocation]);
 
-  useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
-        {
-          params: { location: selectedLocation },
-        }
-      )
-      .then((response) => setInventory(response.data))
+    useEffect(() => {
+      axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php", {
+        params: { location: selectedLocation, search: searchQuery },
+      })
+      .then((response) => {
+        console.log(response.data); // Inspect what the API returns
+        setInventory(response.data.inventory || response.data);
+      })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation]);
+    }, [selectedLocation, searchQuery]);
 
   return (
     <div className="inventory-container">
       <Header />
-
       {/* Action Panel */}
       <div className="action-panel">
       <div className="warehouse-dropdown">

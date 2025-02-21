@@ -10,7 +10,7 @@ import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 
-import InventoryModal from "./InventoryModal";
+import InventoryModal from "../modals/InventoryModal";
 
 function Inventory() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -165,7 +165,7 @@ function Inventory() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={`/src/assets/${item.image}`}
+                    src={`/src/backend/${item.image}`}
                     alt={item.name}
                     className="item-image"
                   />

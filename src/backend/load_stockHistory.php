@@ -1,34 +1,66 @@
 <?php
-header("Access-Control-Allow-Origin: *");  // Allow any origin (change this in production)
+header("Access-Control-Allow-Origin: *");  
 header("Content-Type: application/json");
 
-include 'db_connection.php';  // Include database connection
+include 'db_connection.php';
 
-// Get selected location from the request
-$selectedLocation = isset($_GET['location']) ? $conn->real_escape_string($_GET['location']) : '';
+$location = isset($_GET['location']) ? $_GET['location'] : '';
+$searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Modify SQL query based on the selected location
-if ($selectedLocation === "All" || empty($selectedLocation)) {
-    $sql = "SELECT * FROM stock_history ORDER BY stock_history_id DESC LIMIT 100";  // Fetch all records
-} elseif ($selectedLocation === "Warehouse") {
-    $sql = "SELECT * FROM stock_history WHERE location IS NULL OR location != 'Store' ORDER BY stock_history_id DESC LIMIT 100";  
-    // Fetch records where location is NOT 'Store' (handles NULL cases too)
-} else {
-    $sql = "SELECT * FROM stock_history WHERE location = '$selectedLocation' ORDER BY stock_history_id DESC LIMIT 100"; 
-    // Fetch only the selected location
-}
+$sql = "SELECT * FROM stock_history WHERE 1=1";
 
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+// Filter by location if selected
+if ($location !== '' && $location !== 'All') {
+    if ($location === 'Warehouse') {
+        $sql .= " AND location = 'AREA A'";
+    } else {
+        $sql .= " AND location = ?";
     }
-    echo json_encode($data);
-} else {
-    echo json_encode([]);
 }
+
+// Apply search filter
+if ($searchQuery !== '') {
+    $sql .= " AND (item_code LIKE ? OR brand LIKE ? OR stock_name LIKE ?)";
+}
+
+// Add LIMIT at the end
+$sql .= " LIMIT 100";
+
+$stmt = $conn->prepare($sql);
+
+// Bind parameters dynamically
+$params = [];
+$types = '';
+
+// Handle location parameter
+if ($location !== '' && $location !== 'All' && $location !== 'Warehouse') {
+    $params[] = $location;
+    $types .= 's';
+}
+
+// Handle search query
+if ($searchQuery !== '') {
+    $likeQuery = "%$searchQuery%";
+    for ($i = 0; $i < 3; $i++) {  // Fix: Changed 4 to 3
+        $params[] = $likeQuery;
+        $types .= 's';
+    }
+}
+
+// Debugging - Check Query and Parameters
+// error_log("SQL: " . $sql);
+// error_log("Params: " . json_encode($params));
+
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+$inventory = $result->fetch_all(MYSQLI_ASSOC);
+
+// Return JSON response
+echo json_encode($inventory);
 
 $conn->close();
 ?>

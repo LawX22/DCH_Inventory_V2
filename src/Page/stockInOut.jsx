@@ -14,12 +14,12 @@ function StockInOut() {
   const [inventory, setInventory] = useState([]);
 
   const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "All"
-  );
+      localStorage.getItem("selectedLocation") || "All"
+    );
 
-  useEffect(() => {
-    localStorage.setItem("selectedLocation", selectedLocation);
-  }, [selectedLocation]);
+     useEffect(() => {
+        localStorage.setItem("selectedLocation", selectedLocation);
+      }, [selectedLocation]);
 
   useEffect(() => {
     axios
