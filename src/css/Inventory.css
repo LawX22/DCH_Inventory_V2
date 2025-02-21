@@ -52,11 +52,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Hover Effects - Matching Button Colors */
-.action-panel button:hover {
-  /* No transform (popup effect removed) */
-}
-
 /* Add Button */
 .add-button {
   flex: 1;
@@ -69,21 +64,36 @@ body {
   background-color: #a3d7a7; /* Darker green on hover */
 }
 
-/* Warehouse Dropdown */
+
 .warehouse-dropdown {
   flex: 1;
   display: flex;
-}
-
-.dropdown-button {
-  flex: 1;
+  align-items: center;
+  justify-content: center;
   background-color: #b8d6eb;
-  color: #25632b;
+  border-radius: 5px;
   min-width: 200px;
 }
 
-.dropdown-button:hover {
-  background-color: #a2c6de; /* Slightly darker blue */
+.dropdown-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+  color: #25632b;
+  appearance: none; /* Hides default browser dropdown arrow */
+}
+
+.dropdown-select:focus {
+  outline: none;
+}
+
+.warehouse-dropdown:hover {
+  background-color: #a2c6de;
 }
 
 /* Search Bar */

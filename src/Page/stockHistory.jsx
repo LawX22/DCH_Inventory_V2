@@ -34,18 +34,17 @@ function StockHistory() {
 
       {/* Action Panel */}
       <div className="action-panel">
-        <div className="warehouse-dropdown">
-          <button className="dropdown-button">
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="Warehouse">Warehouse</option>
-              <option value="store">Store</option>
-            </select>
-            {/* <AiOutlineDown /> */}
-          </button>
+      <div className="warehouse-dropdown">
+          <select
+            className="dropdown-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Store">Store</option>
+          </select>
+          <AiOutlineDown />
         </div>
 
         <div className="search-container">
