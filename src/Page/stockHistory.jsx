@@ -10,7 +10,7 @@ function StockHistory() {
   const [inventory, setInventory] = useState([]);
 
       const [selectedLocation, setSelectedLocation] = useState(
-        localStorage.getItem("selectedLocation") || "all"
+        localStorage.getItem("selectedLocation") || "All"
       );
 
   useEffect(() => {

@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineSearch, AiOutlineEye, AiOutlineDelete, AiOutlinePlus, AiOutlineDown,} from "react-icons/ai";
+import {
+  AiOutlineSearch,
+  AiOutlineEye,
+  AiOutlineDelete,
+  AiOutlinePlus,
+  AiOutlineDown,
+} from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 
+import InventoryModal from "./InventoryModal";
 
 function Inventory() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +31,7 @@ function Inventory() {
   });
 
   const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "all"
+    localStorage.getItem("selectedLocation") || "All"
   );
   const [data, setData] = useState([]);
 
@@ -57,7 +64,6 @@ function Inventory() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
     console.log(formData);
     setIsModalOpen(false);
   };
@@ -76,7 +82,6 @@ function Inventory() {
     <div className="inventory-container">
       <Header />
 
-      {/* Action Panel */}
       <div className="action-panel">
         <button className="add-button" onClick={() => setIsModalOpen(true)}>
           <AiOutlinePlus size={18} />
@@ -125,202 +130,29 @@ function Inventory() {
         </button>
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <h2 className="modal-title">ADD NEW ITEM</h2>
+      <InventoryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-            <form onSubmit={handleSubmit} className="modal-form">
-              {/* Left side - Image Upload */}
-              <div className="image-upload-container">
-                {formData.image ? (
-                  <img
-                    src={URL.createObjectURL(formData.image)}
-                    alt="Preview"
-                    className="image-preview"
-                  />
-                ) : (
-                  <div className="upload-placeholder">
-                    <div className="upload-text">Click to upload image</div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          image: e.target.files[0],
-                        }))
-                      }
-                      className="file-input"
-                      id="imageUpload"
-                    />
-                    <label htmlFor="imageUpload" className="upload-button">
-                      Browse
-                    </label>
-                  </div>
-                )}
-              </div>
-
-              {/* Right side - Form Fields */}
-              <div className="form-fields-container">
-                <div className="form-group full-width">
-                  <label className="form-label">ITEM CODE</label>
-                  <input
-                    type="text"
-                    name="itemCode"
-                    value={formData.itemCode}
-                    onChange={handleInputChange}
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">ITEM BRAND</label>
-                  <select
-                    name="itemBrand"
-                    value={formData.itemBrand}
-                    onChange={handleInputChange}
-                    className="form-select"
-                  >
-                    <option value="">Select Brand</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">ITEM CATEGORY</label>
-                  <select
-                    name="itemCategory"
-                    value={formData.itemCategory}
-                    onChange={handleInputChange}
-                    className="form-select"
-                  >
-                    <option value="">Select Category</option>
-                  </select>
-                </div>
-
-                <div className="form-group full-width">
-                  <label className="form-label">DESCRIPTION 1</label>
-                  <input
-                    type="text"
-                    name="description1"
-                    value={formData.description1}
-                    onChange={handleInputChange}
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-group full-width">
-                  <label className="form-label">DESCRIPTION 2</label>
-                  <input
-                    type="text"
-                    name="description2"
-                    value={formData.description2}
-                    onChange={handleInputChange}
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="price-units-container">
-                  <div className="form-group">
-                    <label className="form-label">ITEM UNITS</label>
-                    <input
-                      type="number"
-                      name="units"
-                      value={formData.units}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">FIXED PRICE</label>
-                    <input
-                      type="number"
-                      name="fixedPrice"
-                      value={formData.fixedPrice}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">RETAIL PRICE</label>
-                    <input
-                      type="number"
-                      name="retailPrice"
-                      value={formData.retailPrice}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">LOCATION</label>
-                  <select
-                    name="location"
-                    value={formData.location}
-                    onChange={handleInputChange}
-                    className="form-select"
-                  >
-                    <option value="">Select Location</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">STORAGE AREA</label>
-                  <select
-                    name="storageArea"
-                    value={formData.storageArea}
-                    onChange={handleInputChange}
-                    className="form-select"
-                  >
-                    <option value="">Select Storage Area</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-
-            <div className="modal-actions">
-              <button type="submit" className="save-button">
-                SAVE
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="cancel-button"
-              >
-                CANCEL
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Inventory Table */}
       <div className="inventory-table">
-        {/* Rest of your existing table code... */}
         <div className="table-header">
           <div className="header-cell with-arrow">
             <span>Item</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} />
           </div>
           <div className="header-cell with-arrow">
             <span>Brand</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} />
           </div>
           <div className="header-cell with-arrow">
             <span>Location</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} />
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} />
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} />
           </div>
           <div className="header-cell">Actions</div>
         </div>
@@ -331,7 +163,7 @@ function Inventory() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={"/src/assets/" + item.image}
+                    src={`/src/assets/${item.image}`}
                     alt={item.name}
                     className="item-image"
                   />
@@ -359,15 +191,11 @@ function Inventory() {
               </div>
               <div className="actions-cell">
                 <button className="action-button view-button">
-                  <span className="action-icon">
-                    <AiOutlineEye size={18} />
-                  </span>
+                  <AiOutlineEye size={18} />
                   <span>View</span>
                 </button>
                 <button className="action-button delete-button">
-                  <span className="action-icon">
-                    <AiOutlineDelete size={18} />
-                  </span>
+                  <AiOutlineDelete size={18} />
                   <span>Delete</span>
                 </button>
               </div>

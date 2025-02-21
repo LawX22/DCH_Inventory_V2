@@ -16,7 +16,7 @@ function StockInOut() {
 
 
     const [selectedLocation, setSelectedLocation] = useState(
-      localStorage.getItem("selectedLocation") || "all"
+      localStorage.getItem("selectedLocation") || "All"
     );
 
      useEffect(() => {
