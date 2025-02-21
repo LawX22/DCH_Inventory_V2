@@ -57,7 +57,7 @@ body {
   flex: 1;
   background-color: #bdeac1;
   color: #25632b;
-  min-width: 200px;
+  min-width: 90px;
 }
 
 .add-button:hover {
@@ -73,6 +73,7 @@ body {
   background-color: #b8d6eb;
   border-radius: 5px;
   min-width: 200px;
+  position: relative;
 }
 
 .dropdown-select {
@@ -80,16 +81,32 @@ body {
   padding: 12px;
   border: none;
   background-color: transparent;
-  font-size: 14px;
-  text-align: center;
   font-weight: 500;
   cursor: pointer;
   color: #25632b;
-  appearance: none; /* Hides default browser dropdown arrow */
+  appearance: none; /* Removes default browser styling */
+  text-align: center; /* Centers text */
+  font-size: 14px;
+}
+
+/* Custom arrow */
+.warehouse-dropdown::after {
+  content: "▼";
+  font-size: 14px;
+  color: #25632b;
+  position: absolute;
+  right: 15px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .dropdown-select:focus {
   outline: none;
+}
+
+.dropdown-select option {
+  font-size: 14px; 
 }
 
 .warehouse-dropdown:hover {
@@ -121,10 +138,10 @@ body {
 }
 
 /* Export & Activity Buttons */
-.export-button,
+.export-button button,
 .activity-button {
   flex: 1;
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .export-button {

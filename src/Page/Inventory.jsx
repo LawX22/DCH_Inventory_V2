@@ -89,6 +89,7 @@ function Inventory() {
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
         </button>
+        
         <div className="warehouse-dropdown">
           <select
             className="dropdown-select"
@@ -99,7 +100,6 @@ function Inventory() {
             <option value="Warehouse">Warehouse</option>
             <option value="Store">Store</option>
           </select>
-          <AiOutlineDown />
         </div>
 
         <div className="search-container">
@@ -138,23 +138,23 @@ function Inventory() {
         <div className="table-header">
           <div className="header-cell with-arrow">
             <span>Item</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Brand</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Location</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell">Actions</div>
         </div>

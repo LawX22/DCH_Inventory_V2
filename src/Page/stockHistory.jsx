@@ -42,7 +42,6 @@ function StockHistory() {
             <option value="Warehouse">Warehouse</option>
             <option value="Store">Store</option>
           </select>
-          <AiOutlineDown />
         </div>
 
         <div className="search-container">
