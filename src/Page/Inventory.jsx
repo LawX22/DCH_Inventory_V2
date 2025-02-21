@@ -8,6 +8,8 @@ import {
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
+import axios from "axios";
+
 import InventoryModal from "./InventoryModal";
 
 function Inventory() {
@@ -28,12 +30,29 @@ function Inventory() {
     image: null,
   });
 
+  const [selectedLocation, setSelectedLocation] = useState(
+    localStorage.getItem("selectedLocation") || "All"
+  );
+  const [data, setData] = useState([]);
+
+  // Update localStorage when the location changes
   useEffect(() => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
-      .then((response) => response.json())
-      .then((data) => setInventory(data))
-      .catch((error) => console.error("Error fetching inventory:", error));
-  }, []);
+    localStorage.setItem("selectedLocation", selectedLocation);
+  }, [selectedLocation]);
+
+  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
+
+  useEffect(() => {
+    axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      params: { location: selectedLocation, search: searchQuery },
+    })
+    .then((response) => {
+      console.log(response.data); // Inspect what the API returns
+      setInventory(response.data.inventory || response.data);
+    })
+    .catch((error) => console.error("Error fetching inventory:", error));
+  }, [selectedLocation, searchQuery]); // Re-run when searchQuery changes
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +68,16 @@ function Inventory() {
     setIsModalOpen(false);
   };
 
+
+  const filteredInventory = inventory.filter((item) => 
+    (item.itemCode && item.itemCode.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (item.itemBrand && item.itemBrand.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (item.itemDesc_1 && item.itemDesc_1.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (item.itemDesc_2 && item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+  
+  
+
   return (
     <div className="inventory-container">
       <Header />
@@ -61,9 +90,19 @@ function Inventory() {
 
         <div className="warehouse-dropdown">
           <button className="dropdown-button">
-            <span>Warehouse</span> <AiOutlineDown />
+          <select
+        value={selectedLocation}
+        onChange={(e) => setSelectedLocation(e.target.value)}
+      >
+        <option value="All">All</option>
+        <option value="Warehouse">Warehouse</option>
+        <option value="store">Store</option>
+      </select> 
+      {/* <AiOutlineDown /> */}
           </button>
         </div>
+
+      
 
         <div className="search-container">
           <AiOutlineSearch size={18} className="search-icon" />
@@ -119,7 +158,7 @@ function Inventory() {
         </div>
 
         <div className="table-body">
-          {inventory.map((item) => (
+          {filteredInventory.map((item) => (
             <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">

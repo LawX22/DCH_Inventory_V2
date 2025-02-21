@@ -7,17 +7,32 @@ import {
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
+import axios from "axios";  
+
 
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php")
-      .then((response) => response.json())
-      .then((data) => setInventory(data))
+
+    const [selectedLocation, setSelectedLocation] = useState(
+      localStorage.getItem("selectedLocation") || "All"
+    );
+
+     useEffect(() => {
+        localStorage.setItem("selectedLocation", selectedLocation);
+      }, [selectedLocation]);
+
+    useEffect(() => {
+      axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+        params: { location: selectedLocation, search: searchQuery },
+      })
+      .then((response) => {
+        console.log(response.data); // Inspect what the API returns
+        setInventory(response.data.inventory || response.data);
+      })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, []);
+    }, [selectedLocation, searchQuery]);
 
   return (
     <div className="inventory-container">
@@ -25,9 +40,17 @@ function StockInOut() {
 
       {/* Action Panel */}
       <div className="action-panel">
-        <div className="warehouse-dropdown">
+      <div className="warehouse-dropdown">
           <button className="dropdown-button">
-            <span>Warehouse</span> <AiOutlineDown />
+          <select
+        value={selectedLocation}
+        onChange={(e) => setSelectedLocation(e.target.value)}
+      >
+        <option value="All">All</option>
+        <option value="Warehouse">Warehouse</option>
+        <option value="store">Store</option>
+      </select> 
+      {/* <AiOutlineDown /> */}
           </button>
         </div>
 
