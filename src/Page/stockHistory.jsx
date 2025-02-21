@@ -4,27 +4,29 @@ import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 
-
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
-      const [selectedLocation, setSelectedLocation] = useState(
-        localStorage.getItem("selectedLocation") || "All"
-      );
+  const [selectedLocation, setSelectedLocation] = useState(
+    localStorage.getItem("selectedLocation") || "All"
+  );
 
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
   }, [selectedLocation]);
 
-useEffect(() => {
-  axios
-  .get("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php", {
-    params: { location: selectedLocation },
-  })
-  .then((response) => setInventory(response.data))
-  .catch((error) => console.error("Error fetching inventory:", error));
-}, [selectedLocation]);
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+        {
+          params: { location: selectedLocation },
+        }
+      )
+      .then((response) => setInventory(response.data))
+      .catch((error) => console.error("Error fetching inventory:", error));
+  }, [selectedLocation]);
 
   return (
     <div className="inventory-container">
@@ -32,17 +34,17 @@ useEffect(() => {
 
       {/* Action Panel */}
       <div className="action-panel">
-      <div className="warehouse-dropdown">
+        <div className="warehouse-dropdown">
           <button className="dropdown-button">
-          <select
-        value={selectedLocation}
-        onChange={(e) => setSelectedLocation(e.target.value)}
-      >
-        <option value="All">All</option>
-        <option value="Warehouse">Warehouse</option>
-        <option value="store">Store</option>
-      </select> 
-      {/* <AiOutlineDown /> */}
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="store">Store</option>
+            </select>
+            {/* <AiOutlineDown /> */}
           </button>
         </div>
 
@@ -64,13 +66,14 @@ useEffect(() => {
         </button>
 
         {/* Activity Button */}
-        <button className="activity-button">
+        <button
+          className="activity-button"
+          onClick={() =>
+            window.open("/activity", "_blank", "noopener,noreferrer")
+          }
+        >
           <FiActivity size={18} />
-          <span>
-            <a href="/activity" target="_blank" rel="noopener noreferrer">
-              Activity
-            </a>
-          </span>
+          <span>Activity</span>
         </button>
       </div>
 

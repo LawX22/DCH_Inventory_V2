@@ -120,13 +120,14 @@ function Inventory() {
           <span>Export</span>
         </button>
 
-        <button className="activity-button">
+        <button
+          className="activity-button"
+          onClick={() =>
+            window.open("/activity", "_blank", "noopener,noreferrer")
+          }
+        >
           <FiActivity size={18} />
-          <span>
-            <a href="/activity" target="_blank" rel="noopener noreferrer">
-              Activity
-            </a>
-          </span>
+          <span>Activity</span>
         </button>
       </div>
 
