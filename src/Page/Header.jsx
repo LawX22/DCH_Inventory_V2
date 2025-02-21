@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
-import { FaBars, FaTimes, FaBoxes, FaExchangeAlt, FaHistory, FaTruck, FaClipboardList, FaSignOutAlt } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
-
+import React, { useState } from "react";
+import {
+  FaBars,
+  FaTimes,
+  FaBoxes,
+  FaExchangeAlt,
+  FaHistory,
+  FaTruck,
+  FaClipboardList,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate(); // React Router Navigation Hook
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the current URL path
 
   // Logout Function
+  // Logout Function with Confirmation
   const handleLogout = () => {
-    localStorage.clear(); // Clears all stored data
-    navigate("/"); // Redirect to login page (Update path if needed)
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      localStorage.clear();
+      navigate("/");
+    }
   };
+
+  // Function to check if a nav item is active
+  const isActive = (path) => (location.pathname === path ? "active" : "");
 
   return (
     <header className="header">
@@ -25,29 +41,29 @@ function Header() {
       </div>
 
       <nav className={`main-nav ${menuOpen ? "open" : ""}`}>
-        <div className="nav-item active">
+        <div className={`nav-item ${isActive("/Inventory")}`}>
           <FaBoxes className="nav-icon" />
           <span>
             <a href="/Inventory">Inventory</a>
           </span>
         </div>
-        <div className="nav-item">
+        <div className={`nav-item ${isActive("/StockInOut")}`}>
           <FaExchangeAlt className="nav-icon" />
           <span>
             <a href="/StockInOut">Stock In/Out</a>
           </span>
         </div>
-        <div className="nav-item">
+        <div className={`nav-item ${isActive("/stockHistory")}`}>
           <FaHistory className="nav-icon" />
           <span>
             <a href="/stockHistory">Stock History</a>
           </span>
         </div>
-        <div className="nav-item">
+        <div className={`nav-item ${isActive("/Suppliers")}`}>
           <FaTruck className="nav-icon" />
           <span>Suppliers</span>
         </div>
-        <div className="nav-item">
+        <div className={`nav-item ${isActive("/Orders")}`}>
           <FaClipboardList className="nav-icon" />
           <span>Orders</span>
         </div>
