@@ -13,8 +13,6 @@ import axios from "axios";
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
-
-
     const [selectedLocation, setSelectedLocation] = useState(
       localStorage.getItem("selectedLocation") || "All"
     );
