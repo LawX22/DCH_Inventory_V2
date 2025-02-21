@@ -1,61 +1,48 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiOutlineSearch,
-  AiOutlineEye,
-  AiOutlineDelete,
-  AiOutlinePlus,
-  AiOutlineDown,
-} from "react-icons/ai";
-import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "./Header";
+import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
+import { IoArrowBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 function ActivityReport() {
-  const [selectedWarehouse, setSelectedWarehouse] = useState("Warehouse");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
   const [inventory, setInventory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php")
+    fetch(
+      "http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php"
+    )
       .then((response) => response.json())
       .then((data) => setInventory(data))
       .catch((error) => console.error("Error fetching inventory:", error));
   }, []);
 
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const handleViewItem = (item) => {
-    console.log("Viewing item:", item);
-  };
-
-  const handleDeleteItem = (item) => {
-    if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
-      console.log("Deleting item:", item);
-    }
-  };
-
   return (
-    <div className="inventory-container">
-      <Header />
+    <div className="activity-container">
+      {/* Header Section - Matches Inventory */}
+      <header className="header-1">
+        {/* Back Button on the Left */}
+        <div
+          className="close-btn"
+          onClick={() => {
+            navigate("/inventory"); // Navigate to Inventory
+            setTimeout(() => window.close() );
+          }}
+        >
+          <IoArrowBack size={20} /> Close
+        </div>
+
+        {/* Logo in the Center */}
+        <div className="logo-container-1 ">
+          <img src="/src/assets/DCH.png" alt="DCH" className="DCH-1" />
+        </div>
+      </header>
 
       {/* Action Panel */}
       <div className="action-panel">
-        {/* <button className="add-button">
-          <AiOutlinePlus size={18} />
-          <span>Add New Item</span>
-        </button> */}
-
         <div className="warehouse-dropdown">
           <button className="dropdown-button">
-            {selectedWarehouse} <AiOutlineDown />
+            <span>Warehouse</span> <AiOutlineDown />
           </button>
         </div>
 
@@ -69,132 +56,47 @@ function ActivityReport() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-
-        {/* Export Button */}
-        {/* <button className="export-button">
-          <FiDownload size={18} />
-          <span>Export</span>
-        </button> */}
-
-        {/* Activity Button */}
-        {/* <button className="activity-button">
-          <FiActivity size={18} />
-          <span>Activity</span>
-        </button> */}
       </div>
 
       {/* Inventory Table */}
-      <div className="inventory-table">
-        <div className="table-header">
-          {/* <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("item")}
-          >
-            <span>Item</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "item" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
-          </div> */}
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("brand")}
-          >
-            <span>Date</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "brand" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+      <div className="inventory-table-1">
+        <div className="table-header-1">
+          <div className="header-cell-1 with-arrow">
+            <span>Activity</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("location")}
-          >
-            <span>User</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "location" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell-1 with-arrow">
+            <span>Activity Type</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("price")}
-          >
-            <span>Activity Type</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "price" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
+          <div className="header-cell-1 with-arrow">
+            <span>Date</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
-          <div
-            className="header-cell with-arrow"
-            onClick={() => handleSort("inventory")}
-          >
-            <span>Activity</span>{" "}
-            <AiOutlineDown
-              className={
-                sortField === "inventory" && sortDirection === "desc"
-                  ? "flipped"
-                  : ""
-              }
-            />
-          </div>
-          <div className="header-cell">Actions</div>
+          <div className="header-cell-1">Actions</div>
         </div>
 
-        <div className="table-body">
+        <div className="table-body-1">
           {inventory.map((item) => (
-            <div className="table-row" key={item.inventory_id}>
-              {/* <div className="item-cell">
-                <div className="item-image-container">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="item-image"
-                  />
-                </div>
-
-                <div className="item-details">
-                  <div className="item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
-                  </div>
-                  <div className="item-category">{item.category}</div>
-                  <div className="item-id">{item.itemCode}</div>
-                </div>
-              </div> */}
-              <div className="brand-cell">{item.activity_performed}</div>
-              <div className="location-cell">
-                <div>{item.encoder}</div>
-               
-              </div>
-              <div className="price-cell">
+            <div className="table-row-1" key={item.inventory_id}>
+              <div className="activity-cell-1">{item.activity_performed}</div>
+              <div className="type-cell-1">
                 <div>{item.activity_type}</div>
-             
               </div>
-              <div className="inventory-cell">
-                <div>{item.date_performed}</div>
-   
+              <div className="date-cell-1">
+                {new Date(item.date_performed).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </div>
-              <div className="actions-cell">
-                <button className="action-button view-button">
-                  <span className="action-icon">
+              <div className="actions-cell-1">
+                <button className="action-button-1 view-button-1">
+                  <span className="action-icon-1">
                     <AiOutlineEye size={18} />
                   </span>
                   <span>Revert</span>
                 </button>
-                
               </div>
             </div>
           ))}

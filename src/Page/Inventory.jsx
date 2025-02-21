@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiOutlineSearch,
-  AiOutlineEye,
-  AiOutlineDelete,
-  AiOutlinePlus,
-  AiOutlineDown,
-} from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineEye, AiOutlineDelete, AiOutlinePlus, AiOutlineDown,} from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
@@ -38,6 +32,8 @@ function Inventory() {
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
   }, [selectedLocation]);
+
+  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
   useEffect(() => {
     axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
