@@ -49,6 +49,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   gap: 8px;
+  transition: background-color 0.3s ease;
 }
 
 /* Add Button */
@@ -59,17 +60,40 @@ body {
   min-width: 200px;
 }
 
-/* Warehouse Dropdown */
+.add-button:hover {
+  background-color: #a3d7a7; /* Darker green on hover */
+}
+
+
 .warehouse-dropdown {
   flex: 1;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b8d6eb;
+  border-radius: 5px;
+  min-width: 200px;
 }
 
-.dropdown-button {
-  flex: 1;
-  background-color: #b8d6eb;
+.dropdown-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
   color: #25632b;
-  min-width: 200px;
+  appearance: none; /* Hides default browser dropdown arrow */
+}
+
+.dropdown-select:focus {
+  outline: none;
+}
+
+.warehouse-dropdown:hover {
+  background-color: #a2c6de;
 }
 
 /* Search Bar */
@@ -108,9 +132,17 @@ body {
   color: #7a3434;
 }
 
+.export-button:hover {
+  background-color: #f5a7a7; /* Slightly darker red */
+}
+
 .activity-button {
   background-color: #ffefc2;
   color: #7a6034;
+}
+
+.activity-button:hover {
+  background-color: #f3db9e; /* Slightly darker yellow */
 }
 
 /* Responsive Design */
