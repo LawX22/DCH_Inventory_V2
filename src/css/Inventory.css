@@ -49,6 +49,12 @@ body {
   font-weight: 500;
   cursor: pointer;
   gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover Effects - Matching Button Colors */
+.action-panel button:hover {
+  /* No transform (popup effect removed) */
 }
 
 /* Add Button */
@@ -57,6 +63,10 @@ body {
   background-color: #bdeac1;
   color: #25632b;
   min-width: 200px;
+}
+
+.add-button:hover {
+  background-color: #a3d7a7; /* Darker green on hover */
 }
 
 /* Warehouse Dropdown */
@@ -70,6 +80,10 @@ body {
   background-color: #b8d6eb;
   color: #25632b;
   min-width: 200px;
+}
+
+.dropdown-button:hover {
+  background-color: #a2c6de; /* Slightly darker blue */
 }
 
 /* Search Bar */
@@ -108,9 +122,17 @@ body {
   color: #7a3434;
 }
 
+.export-button:hover {
+  background-color: #f5a7a7; /* Slightly darker red */
+}
+
 .activity-button {
   background-color: #ffefc2;
   color: #7a6034;
+}
+
+.activity-button:hover {
+  background-color: #f3db9e; /* Slightly darker yellow */
 }
 
 /* Responsive Design */
