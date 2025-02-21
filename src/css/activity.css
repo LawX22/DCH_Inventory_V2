@@ -111,10 +111,10 @@
 /* Table Header */
 .table-header-1 {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr; /* Match row layout */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr; /* Updated to add 'User' */
   border-bottom: 1px solid #eee;
   font-weight: 500;
-  width: 100%; /* Ensure it spans the entire width */
+  width: 100%;
   background-color: #b8d6eb;
   position: sticky;
   top: 0;
@@ -134,10 +134,10 @@
 /* Table Row */
 .table-row-1 {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr; /* Must match header */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr; /* Updated to match header */
   border-bottom: 1px solid #f5f5f5;
   align-items: center;
-  width: 100%; /* Ensures full width */
+  width: 100%;
 }
 
 .table-row-1:hover {
@@ -163,6 +163,7 @@
 .activity-cell-1,
 .date-cell-1,
 .type-cell-1,
+.user-cell-1, /* New User column */
 .actions-cell-1 {
   font-size: 15px;
   font-weight: 400;

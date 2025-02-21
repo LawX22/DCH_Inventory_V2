@@ -43,16 +43,16 @@ function Inventory() {
   //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
   useEffect(() => {
-    axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-      params: { location: selectedLocation, search: searchQuery },
-    })
-    .then((response) => {
-      console.log(response.data); // Inspect what the API returns
-      setInventory(response.data.inventory || response.data);
-    })
-    .catch((error) => console.error("Error fetching inventory:", error));
+    axios
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+        params: { location: selectedLocation, search: searchQuery },
+      })
+      .then((response) => {
+        console.log(response.data); // Inspect what the API returns
+        setInventory(response.data.inventory || response.data);
+      })
+      .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery]); // Re-run when searchQuery changes
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,15 +68,17 @@ function Inventory() {
     setIsModalOpen(false);
   };
 
-
-  const filteredInventory = inventory.filter((item) => 
-    (item.itemCode && item.itemCode.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (item.itemBrand && item.itemBrand.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (item.itemDesc_1 && item.itemDesc_1.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (item.itemDesc_2 && item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredInventory = inventory.filter(
+    (item) =>
+      (item.itemCode &&
+        item.itemCode.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemBrand &&
+        item.itemBrand.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemDesc_1 &&
+        item.itemDesc_1.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemDesc_2 &&
+        item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  
-  
 
   return (
     <div className="inventory-container">
@@ -90,19 +92,17 @@ function Inventory() {
 
         <div className="warehouse-dropdown">
           <button className="dropdown-button">
-          <select
-        value={selectedLocation}
-        onChange={(e) => setSelectedLocation(e.target.value)}
-      >
-        <option value="All">All</option>
-        <option value="Warehouse">Warehouse</option>
-        <option value="store">Store</option>
-      </select> 
-      {/* <AiOutlineDown /> */}
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="store">Store</option>
+            </select>
+            {/* <AiOutlineDown /> */}
           </button>
         </div>
-
-      
 
         <div className="search-container">
           <AiOutlineSearch size={18} className="search-icon" />
@@ -130,7 +130,10 @@ function Inventory() {
         </button>
       </div>
 
-      <InventoryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <InventoryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       <div className="inventory-table">
         <div className="table-header">

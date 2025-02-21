@@ -26,14 +26,14 @@ function ActivityReport() {
           className="close-btn"
           onClick={() => {
             navigate("/inventory"); // Navigate to Inventory
-            setTimeout(() => window.close() );
+            setTimeout(() => window.close());
           }}
         >
           <IoArrowBack size={20} /> Close
         </div>
 
         {/* Logo in the Center */}
-        <div className="logo-container-1 ">
+        <div className="logo-container-1">
           <img src="/src/assets/DCH.png" alt="DCH" className="DCH-1" />
         </div>
       </header>
@@ -70,6 +70,10 @@ function ActivityReport() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell-1 with-arrow">
+            <span>User</span>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+          </div>
+          <div className="header-cell-1 with-arrow">
             <span>Date</span>
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
@@ -80,9 +84,8 @@ function ActivityReport() {
           {inventory.map((item) => (
             <div className="table-row-1" key={item.inventory_id}>
               <div className="activity-cell-1">{item.activity_performed}</div>
-              <div className="type-cell-1">
-                <div>{item.activity_type}</div>
-              </div>
+              <div className="type-cell-1">{item.activity_type}</div>
+              <div className="user-cell-1">{item.encoder}</div>
               <div className="date-cell-1">
                 {new Date(item.date_performed).toLocaleDateString("en-US", {
                   year: "numeric",
