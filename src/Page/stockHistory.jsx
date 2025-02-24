@@ -8,6 +8,7 @@ function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
+
       const [selectedLocation, setSelectedLocation] = useState(
         localStorage.getItem("selectedLocation") || "All"
       );
@@ -26,6 +27,19 @@ function StockHistory() {
       })
       .catch((error) => console.error("Error fetching inventory:", error));
     }, [selectedLocation, searchQuery]);
+
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+        {
+          params: { location: selectedLocation },
+        }
+      )
+      .then((response) => setInventory(response.data))
+      .catch((error) => console.error("Error fetching inventory:", error));
+  }, [selectedLocation]);
+
 
   return (
     <div className="inventory-container">

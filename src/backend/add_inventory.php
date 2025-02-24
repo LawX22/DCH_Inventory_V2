@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
     }
     // Insert into database
-    $sql = "INSERT INTO inventory_merge (itemCode, brand, category, itemDesc_1, itemDesc_2, units, price, retail_price, location, storage_area, image) 
-            VALUES ('$itemCode', '$itemBrand', '$itemCategory', '$description1', '$description2', '$units', '$fixedPrice', '$retailPrice', '$location', '$storageArea', '$imagePath')";
+    $sql = "INSERT INTO inventory_merge (itemCode, brand, category, itemDesc_1, itemDesc_2, units, price, retail_price, location, storage_area, image, isDelete) 
+            VALUES ('$itemCode', '$itemBrand', '$itemCategory', '$description1', '$description2', '$units', '$fixedPrice', '$retailPrice', '$location', '$storageArea', '$imagePath', 0)";
 if ($conn->query($sql) === TRUE) {
     $inventoryId = $conn->insert_id; // Get the last inserted ID
     $activity_performed = 'Added item '.$description1;
