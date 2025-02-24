@@ -6,7 +6,7 @@ include 'db_connection.php'; // Ensure you have your DB connection here
 $location = isset($_GET['location']) ? $_GET['location'] : '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 
-$sql = "SELECT * FROM inventory_merge WHERE 1=1"; // Ensures filters can be appended properly
+$sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0"; // Ensures filters can be appended properly
 
 // Filter by location if selected
 if ($location !== '' && $location !== 'All') {

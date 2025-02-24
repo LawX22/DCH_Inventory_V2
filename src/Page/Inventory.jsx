@@ -11,9 +11,15 @@ import Header from "./Header";
 import axios from "axios";
 
 import InventoryModal from "../modals/InventoryModal";
+import EditModal from "../modals/edit_InventoryModal";
+
 
 function Inventory() {
+  const [editModalOpen, seteditModalOpen] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
+  const user = localStorage.getItem("username");
+
   const [inventory, setInventory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,7 +39,11 @@ function Inventory() {
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
   );
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || "Unknown"
+  );
   const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
 
   // Update localStorage when the location changes
   useEffect(() => {
@@ -52,7 +62,7 @@ function Inventory() {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +71,38 @@ function Inventory() {
       [name]: value,
     }));
   };
+
+  function openEditFunc(data){
+    setSelectedData(data)
+    seteditModalOpen(true);
+  }
+
+  async function deleteFunc(id, username) {
+    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
+    
+    if (!isConfirmed) return; // Stop if the user cancels
+  
+    try {
+      await axios.post(
+        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        new URLSearchParams({ 
+          id: id,
+          username: username  // Add username here
+        })
+      );
+  
+      console.log("Deleted successfully");
+      window.location.reload();
+  
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  }
+  
+  
+  
+  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,19 +131,17 @@ function Inventory() {
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
         </button>
-
+        
         <div className="warehouse-dropdown">
-          <button className="dropdown-button">
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="Warehouse">Warehouse</option>
-              <option value="store">Store</option>
-            </select>
-            {/* <AiOutlineDown /> */}
-          </button>
+          <select
+            className="dropdown-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Store">Store</option>
+          </select>
         </div>
 
         <div className="search-container">
@@ -136,34 +176,41 @@ function Inventory() {
         onClose={() => setIsModalOpen(false)}
       />
 
+      <EditModal
+        isOpen={editModalOpen}
+        onClose={() => seteditModalOpen(false)}
+        data={selectedData}
+        
+      />
+
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell with-arrow">
             <span>Item</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Brand</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Location</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} />
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
           </div>
           <div className="header-cell">Actions</div>
         </div>
 
         <div className="table-body">
-          {filteredInventory.map((item) => (
-            <div className="table-row" key={item.inventory_id}>
+          {filteredInventory.map((item, key) => (
+            <div className="table-row" key={item.inventory_Id}>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
@@ -194,14 +241,15 @@ function Inventory() {
                 <div>TSV - ₱ {item.totalstockValue}</div>
               </div>
               <div className="actions-cell">
-                <button className="action-button view-button">
+                <button className="action-button view-button" onClick={() => openEditFunc(item)}>
                   <AiOutlineEye size={18} />
-                  <span>View</span>
+                  <span>Edit</span>
                 </button>
-                <button className="action-button delete-button">
+                <button className="action-button delete-button" onClick={() => deleteFunc(item.inventory_Id,user)}>
                   <AiOutlineDelete size={18} />
                   <span>Delete</span>
                 </button>
+
               </div>
             </div>
           ))}

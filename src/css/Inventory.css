@@ -52,38 +52,65 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Hover Effects - Matching Button Colors */
-.action-panel button:hover {
-  /* No transform (popup effect removed) */
-}
-
 /* Add Button */
 .add-button {
   flex: 1;
   background-color: #bdeac1;
   color: #25632b;
-  min-width: 200px;
+  min-width: 90px;
 }
 
 .add-button:hover {
   background-color: #a3d7a7; /* Darker green on hover */
 }
 
-/* Warehouse Dropdown */
+
 .warehouse-dropdown {
   flex: 1;
   display: flex;
-}
-
-.dropdown-button {
-  flex: 1;
+  align-items: center;
+  justify-content: center;
   background-color: #b8d6eb;
-  color: #25632b;
+  border-radius: 5px;
   min-width: 200px;
+  position: relative;
 }
 
-.dropdown-button:hover {
-  background-color: #a2c6de; /* Slightly darker blue */
+.dropdown-select {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  color: #25632b;
+  appearance: none; /* Removes default browser styling */
+  text-align: center; /* Centers text */
+  font-size: 14px;
+}
+
+/* Custom arrow */
+.warehouse-dropdown::after {
+  content: "▼";
+  font-size: 14px;
+  color: #25632b;
+  position: absolute;
+  right: 15px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.dropdown-select:focus {
+  outline: none;
+}
+
+.dropdown-select option {
+  font-size: 14px; 
+}
+
+.warehouse-dropdown:hover {
+  background-color: #a2c6de;
 }
 
 /* Search Bar */
@@ -111,10 +138,10 @@ body {
 }
 
 /* Export & Activity Buttons */
-.export-button,
+.export-button button,
 .activity-button {
   flex: 1;
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .export-button {

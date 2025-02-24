@@ -9,16 +9,13 @@ function StockHistory() {
   const [inventory, setInventory] = useState([]);
 
 
-
-  const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "All"
-  );
-
+      const [selectedLocation, setSelectedLocation] = useState(
+        localStorage.getItem("selectedLocation") || "All"
+      );
 
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
   }, [selectedLocation]);
-
 
     useEffect(() => {
       axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php", {
@@ -49,18 +46,16 @@ function StockHistory() {
       <Header />
       {/* Action Panel */}
       <div className="action-panel">
-        <div className="warehouse-dropdown">
-          <button className="dropdown-button">
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="Warehouse">Warehouse</option>
-              <option value="store">Store</option>
-            </select>
-            {/* <AiOutlineDown /> */}
-          </button>
+      <div className="warehouse-dropdown">
+          <select
+            className="dropdown-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Store">Store</option>
+          </select>
         </div>
 
         <div className="search-container">

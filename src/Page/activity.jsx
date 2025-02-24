@@ -40,10 +40,13 @@ function ActivityReport() {
 
       {/* Action Panel */}
       <div className="action-panel">
-        <div className="warehouse-dropdown">
-          <button className="dropdown-button">
-            <span>Warehouse</span> <AiOutlineDown />
-          </button>
+
+        <div className="warehouse-dropdown-1">
+          <select className="dropdown-select-1">
+            <option value="All">All</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Store">Store</option>
+          </select>
         </div>
 
         <div className="search-container">

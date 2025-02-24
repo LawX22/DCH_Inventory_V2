@@ -8,22 +8,29 @@ import {
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
+import StockInModal from "../modals/stockIn_modal";
+import StockOutModal from "../modals/stockOut_modal";
+
+import { FaBullseye } from "react-icons/fa6";
+
 
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
 
-    const [selectedLocation, setSelectedLocation] = useState(
+  const [stockInModalOpen, setStockInModalOpen] = useState(false);
+  const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
+
+
+
+  const [selectedLocation, setSelectedLocation] = useState(
       localStorage.getItem("selectedLocation") || "All"
     );
 
-
-
-
-  useEffect(() => {
-    localStorage.setItem("selectedLocation", selectedLocation);
-  }, [selectedLocation]);
-
+     useEffect(() => {
+        localStorage.setItem("selectedLocation", selectedLocation);
+      }, [selectedLocation]);
 
   useEffect(() => {
     axios
@@ -37,6 +44,18 @@ function StockInOut() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery]);
 
+
+  function openStockinFunc(data){
+    setSelectedData(data)
+    setStockInModalOpen(true);
+  }
+
+  function openStockoutFunc(data){
+    setSelectedData(data)
+    setStockOutModalOpen(true);
+  }
+
+
   return (
     <div className="inventory-container">
       <Header />
@@ -44,17 +63,15 @@ function StockInOut() {
       {/* Action Panel */}
       <div className="action-panel">
         <div className="warehouse-dropdown">
-          <button className="dropdown-button">
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="Warehouse">Warehouse</option>
-              <option value="store">Store</option>
-            </select>
-            {/* <AiOutlineDown /> */}
-          </button>
+          <select
+            className="dropdown-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Store">Store</option>
+          </select>
         </div>
 
         <div className="search-container">
@@ -85,6 +102,22 @@ function StockInOut() {
           <span>Activity</span>
         </button>
       </div>
+
+
+      <StockInModal
+        isOpen={stockInModalOpen}
+        onClose={() => setStockInModalOpen(false)}
+        data={selectedData}
+        
+      />
+
+      <StockOutModal
+        isOpen={stockOutModalOpen}
+        onClose={() => setStockOutModalOpen(false)}
+        data={selectedData}
+        
+      />
+      
 
       {/* Inventory Table */}
       <div className="inventory-table">
@@ -145,17 +178,18 @@ function StockInOut() {
                 <div>TSV - ₱ {item.totalstockValue}</div>
               </div>
               <div className="actions-cell">
-                <button className="action-button view-button">
+              <button className="action-button view-button" onClick={() => openStockinFunc(item)}>
+
                   <span className="action-icon">
                     <AiOutlineEye size={18} />
                   </span>
-                  <span>View</span>
+                  <span>Stock In</span>
                 </button>
-                <button className="action-button delete-button">
+                <button className="action-button delete-button" onClick={() => openStockoutFunc(item)}>
                   <span className="action-icon">
                     <AiOutlineDelete size={18} />
                   </span>
-                  <span>Delete</span>
+                  <span>Stock out</span>
                 </button>
               </div>
             </div>
