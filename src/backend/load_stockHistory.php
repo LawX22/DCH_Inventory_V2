@@ -24,7 +24,7 @@ if ($searchQuery !== '') {
 }
 
 // Add LIMIT at the end
-$sql .= " LIMIT 100";
+$sql .= " ORDER BY stock_history_id DESC LIMIT 100";
 
 $stmt = $conn->prepare($sql);
 

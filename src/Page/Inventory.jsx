@@ -92,7 +92,6 @@ function Inventory() {
       );
   
       console.log("Deleted successfully");
-      window.location.reload();
   
     } catch (error) {
       console.error("Error deleting item:", error);
