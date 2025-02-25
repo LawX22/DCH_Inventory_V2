@@ -21,7 +21,6 @@ body {
   width: 100%;
   max-width: 100%;
 }
-
 /* Action Panel */
 .action-panel {
   display: flex;
@@ -38,8 +37,9 @@ body {
   gap: 10px;
 }
 
-/* Buttons & Dropdowns */
-.action-panel button {
+/* Buttons & Dropdown */
+.action-panel button,
+.warehouse-dropdown {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,67 +50,57 @@ body {
   cursor: pointer;
   gap: 8px;
   transition: background-color 0.3s ease;
+  flex: 1; /* Ensures uniform size */
+  min-width: 120px;
+  max-width: 160px;
 }
 
 /* Add Button */
 .add-button {
-  flex: 1;
   background-color: #bdeac1;
   color: #25632b;
-  min-width: 90px;
 }
 
 .add-button:hover {
-  background-color: #a3d7a7; /* Darker green on hover */
+  background-color: #a3d7a7;
 }
 
-
+/* Warehouse Dropdown */
 .warehouse-dropdown {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: #b8d6eb;
   border-radius: 5px;
-  min-width: 200px;
   position: relative;
+  max-width: 160px;   
 }
 
 .dropdown-select {
   width: 100%;
-  padding: 12px;
   border: none;
   background-color: transparent;
   font-weight: 500;
   cursor: pointer;
   color: #25632b;
-  appearance: none; /* Removes default browser styling */
-  text-align: center; /* Centers text */
+  appearance: none;
+  text-align: center;
   font-size: 14px;
 }
 
-/* Custom arrow */
+/* Remove outline when clicked */
+.dropdown-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Custom Dropdown Arrow */
 .warehouse-dropdown::after {
   content: "▼";
   font-size: 14px;
   color: #25632b;
   position: absolute;
-  right: 15px; /* Adjust as needed */
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-}
-
-.dropdown-select:focus {
-  outline: none;
-}
-
-.dropdown-select option {
-  font-size: 14px; 
-}
-
-.warehouse-dropdown:hover {
-  background-color: #a2c6de;
 }
 
 /* Search Bar */
@@ -120,7 +110,7 @@ body {
   background-color: white;
   border-radius: 5px;
   padding: 12px 15px;
-  flex: 2;
+  flex-grow: 2; /* Makes search bar take up more space */
   max-width: 600px;
   width: 100%;
 }
@@ -138,19 +128,13 @@ body {
 }
 
 /* Export & Activity Buttons */
-.export-button button,
-.activity-button {
-  flex: 1;
-  min-width: 100px;
-}
-
 .export-button {
   background-color: #ffc2c2;
   color: #7a3434;
 }
 
 .export-button:hover {
-  background-color: #f5a7a7; /* Slightly darker red */
+  background-color: #f5a7a7;
 }
 
 .activity-button {
@@ -159,7 +143,7 @@ body {
 }
 
 .activity-button:hover {
-  background-color: #f3db9e; /* Slightly darker yellow */
+  background-color: #f3db9e;
 }
 
 /* Responsive Design */
@@ -178,12 +162,13 @@ body {
   }
 
   .add-button,
-  .dropdown-button,
+  .warehouse-dropdown,
   .export-button,
   .activity-button {
     width: 100%;
   }
 }
+
 
 /* Inventory Table */
 .inventory-table {

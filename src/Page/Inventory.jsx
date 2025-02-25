@@ -13,7 +13,6 @@ import axios from "axios";
 import InventoryModal from "../modals/InventoryModal";
 import EditModal from "../modals/edit_InventoryModal";
 
-
 function Inventory() {
   const [editModalOpen, seteditModalOpen] = useState(false);
 
@@ -72,37 +71,33 @@ function Inventory() {
     }));
   };
 
-  function openEditFunc(data){
-    setSelectedData(data)
+  function openEditFunc(data) {
+    setSelectedData(data);
     seteditModalOpen(true);
   }
 
   async function deleteFunc(id, username) {
-    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
-    
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
     if (!isConfirmed) return; // Stop if the user cancels
-  
+
     try {
       await axios.post(
         "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
-        new URLSearchParams({ 
+        new URLSearchParams({
           id: id,
-          username: username  // Add username here
+          username: username, // Add username here
         })
       );
-  
+
       console.log("Deleted successfully");
       window.location.reload();
-  
     } catch (error) {
       console.error("Error deleting item:", error);
     }
   }
-  
-  
-  
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -131,7 +126,7 @@ function Inventory() {
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
         </button>
-        
+
         <div className="warehouse-dropdown">
           <select
             className="dropdown-select"
@@ -180,30 +175,29 @@ function Inventory() {
         isOpen={editModalOpen}
         onClose={() => seteditModalOpen(false)}
         data={selectedData}
-        
       />
 
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell with-arrow">
             <span>Item</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Brand</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Location</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }}/>
+            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell">Actions</div>
         </div>
@@ -241,15 +235,20 @@ function Inventory() {
                 <div>TSV - ₱ {item.totalstockValue}</div>
               </div>
               <div className="actions-cell">
-                <button className="action-button view-button" onClick={() => openEditFunc(item)}>
+                <button
+                  className="action-button view-button"
+                  onClick={() => openEditFunc(item)}
+                >
                   <AiOutlineEye size={18} />
                   <span>Edit</span>
                 </button>
-                <button className="action-button delete-button" onClick={() => deleteFunc(item.inventory_Id,user)}>
+                <button
+                  className="action-button delete-button"
+                  onClick={() => deleteFunc(item.inventory_Id, user)}
+                >
                   <AiOutlineDelete size={18} />
                   <span>Delete</span>
                 </button>
-
               </div>
             </div>
           ))}
