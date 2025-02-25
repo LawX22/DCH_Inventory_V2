@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   AiOutlineSearch,
-  AiOutlineEye,
+  AiOutlineInbox,
+  AiOutlineExport,
   AiOutlineDelete,
   AiOutlineDown,
 } from "react-icons/ai";
@@ -183,7 +184,7 @@ function StockInOut() {
                   onClick={() => openStockinFunc(item)}
                 >
                   <span className="action-icon">
-                    <AiOutlineEye size={18} />
+                    <AiOutlineInbox size={18} />
                   </span>
                   <span>Stock In</span>
                 </button>
@@ -192,7 +193,7 @@ function StockInOut() {
                   onClick={() => openStockoutFunc(item)}
                 >
                   <span className="action-icon">
-                    <AiOutlineDelete size={18} />
+                    <AiOutlineExport size={18} />
                   </span>
                   <span>Stock out</span>
                 </button>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineUndo, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
@@ -187,9 +187,9 @@ function StockHistory() {
               <div className="actions-cell">
                 <button className="action-button view-button">
                   <span className="action-icon">
-                    <AiOutlineEye size={18} />
+                    <AiOutlineUndo size={18} />
                   </span>
-                  <span>Fix</span>
+                  <span>Undo</span>
                 </button>
               </div>
             </div>
