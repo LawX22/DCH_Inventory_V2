@@ -66,19 +66,19 @@ function ActivityReport() {
         <div className="table-header-1">
           <div className="header-cell-1 with-arrow">
             <span>Activity</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }} />
           </div>
           <div className="header-cell-1 with-arrow">
             <span>Activity Type</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1 with-arrow">
             <span>User</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1 with-arrow">
             <span>Date</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1">Actions</div>
         </div>
