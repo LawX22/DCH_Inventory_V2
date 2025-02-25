@@ -188,83 +188,93 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <h2 className="modal-title">Stock Out Item</h2>
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="image-upload-container">
-              {imagePreview ? (
-                <img src={`/src/backend/${imagePreview}`} alt="Preview" className="image-preview" />
-              ) : (
-                <div className="upload-placeholder">
-                  <div className="upload-text">Click to upload image</div>
-                  <input type="file" accept="image/*" onChange={handleImageChange} className="file-input hidden" id="imageUpload" />
-                  <label htmlFor="imageUpload" className="upload-button cursor-pointer">
-                    Browse
-                  </label>
-                </div>
-              )}
-            </div>
-
-         
-
-                <button
-        type="button"
-        onClick={() => {
-          setImagePreview(null);
-          setFormData((prevData) => ({ ...prevData, image: null }));
-        }}
-        className="clear-image-button bg-red-500 text-white px-2 py-1 rounded mt-2"
-      >
-        Clear Image
-      </button>
-            <div className="modal-actions flex flex-row justify-between w-full space-x-4">
-              <button type="submit" className="save-button bg-blue-500 text-white px-4 py-2 rounded">
-                SAVE
-              </button>
-              <button type="button" onClick={onClose} className="cancel-button bg-gray-400 text-white px-4 py-2 rounded">
-                CANCEL
-              </button>
-            </div>
+    <div className="modal-overlay-1">
+      <div className="modal-container-1">
+        <h2 className="modal-title-2">Stock Out Item</h2>
+        <form onSubmit={handleSubmit} className="modal-form-1">
+          {/* Image Upload Section */}
+          <div className="image-upload-container-1">
+            {imagePreview ? (
+              <img
+                src={`/src/backend/${imagePreview}`}
+                alt="Preview"
+                className="image-preview-1"
+              />
+            ) : (
+              <div className="upload-placeholder-1">
+                <label htmlFor="imageUpload" className="upload-button-1">
+                  Click to upload image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="file-input-1"
+                  id="imageUpload"
+                />
+              </div>
+            )}
           </div>
-          <div className="form-fields-container">
-          
-        
-          <div className="form-group">
 
-        <div className="item-specs">
-        {itemDesc1 + ' ' +itemDesc2} <br />
-        {itemBrand} <br />
-
-        </div>
-
-
-              <label className="form-label">Units Added</label>
-              <input type ="number" name="date" onChange={handleInputChange} className="form-select"/>
-            </div>
-     
-              <div className="form-group">
-              <label className="form-label">Date</label>
-              <input type ="date" name="date" onChange={handleInputChange} className="form-select"/>
-            </div>
-          
-            <div className="form-group">
-              <label className="form-label">Requisition #</label>
-              <input type="number" name="requisitionNum" onChange={handleInputChange} className="form-select"/>
+          {/* Form Fields Section */}
+          <div className="form-fields-container-1">
+            {/* Item Details */}
+            <div className="form-group-1 full-width-1">
+              <label className="form-label-1">Item Description</label>
+              <p className="item-desc-1">{itemDesc1 + " " + itemDesc2}</p>
             </div>
 
-     
+            <div className="form-group-1">
+              <label className="form-label-1">Brand</label>
+              <p className="item-brand-1">{itemBrand}</p>
+            </div>
 
-            <div className="form-group" style ={{display:'none'}}>
-                <label className="form-label">USERNAME</label>
-                <input type="text" name="username" value={storedValue} onChange={handleInputChange} className="form-input" />
-              </div>
+            {/* Units Added */}
+            <div className="form-group-1">
+              <label className="form-label-1">Units Added</label>
+              <input
+                type="number"
+                name="unitsAdded"
+                onChange={handleInputChange}
+                className="form-input-1"
+              />
+            </div>
 
-              <div className="form-group" style ={{display:'none'}}>
-                <label className="form-label">ITEM ID</label>
-                <input type="text" name="itemId" value={itemId} onChange={handleInputChange} className="form-input" />
-              </div>
+            {/* Date Input */}
+            <div className="form-group-1">
+              <label className="form-label-1">Date</label>
+              <input
+                type="date"
+                name="date"
+                onChange={handleInputChange}
+                className="form-input-1"
+              />
+            </div>
+
+            {/* Requisition Number */}
+            <div className="form-group-1">
+              <label className="form-label-1">Requisition #</label>
+              <input
+                type="number"
+                name="requisitionNum"
+                onChange={handleInputChange}
+                className="form-input-1"
+              />
+            </div>
+
+            {/* Hidden Fields */}
+            <input type="hidden" name="username" value={storedValue} />
+            <input type="hidden" name="itemId" value={itemId} />
+          </div>
+
+          {/* Modal Actions (Buttons) */}
+          <div className="modal-actions-1">
+            <button type="submit" className="save-button-1">
+              SAVE
+            </button>
+            <button type="button" onClick={onClose} className="cancel-button-1">
+              CANCEL
+            </button>
           </div>
         </form>
       </div>
