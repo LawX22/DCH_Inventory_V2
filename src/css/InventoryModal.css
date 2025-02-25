@@ -149,6 +149,8 @@
   flex-wrap: wrap;
   margin-top: 40px;
   gap: 12px;
+  border-top: 1px solid #ddd;
+  padding: 15px;
 }
 
 .save-button,
