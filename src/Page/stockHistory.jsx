@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineUndo, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
@@ -15,16 +15,20 @@ function StockHistory() {
     localStorage.setItem("selectedLocation", selectedLocation);
   }, [selectedLocation]);
 
-    useEffect(() => {
-      axios.get("http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php", {
-        params: { location: selectedLocation, search: searchQuery },
-      })
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+        {
+          params: { location: selectedLocation, search: searchQuery },
+        }
+      )
       .then((response) => {
         console.log(response.data); // Inspect what the API returns
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-    }, [selectedLocation, searchQuery]);
+  }, [selectedLocation, searchQuery]);
 
   useEffect(() => {
     axios
@@ -38,13 +42,12 @@ function StockHistory() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation]);
 
-
   return (
     <div className="inventory-container">
       <Header />
       {/* Action Panel */}
       <div className="action-panel">
-      <div className="warehouse-dropdown">
+        <div className="warehouse-dropdown">
           <select
             className="dropdown-select"
             value={selectedLocation}
@@ -168,20 +171,24 @@ function StockHistory() {
               </div>
 
               <div className="units-cell">
-                <div>Current - {item.current_stock}</div>
-                <div>Previous - {item.previous_units}</div>
+                <div className="item">
+                  <div>Current - {item.current_stock}</div>
+                  <div>Previous - {item.previous_units}</div>
+                </div>
               </div>
 
               <div className="Requistion-cell">
-                <div>Stock - {item.requisition_number}</div>
+                <div className="item">
+                  <div>Stock - {item.requisition_number}</div>
+                </div>
               </div>
 
               <div className="actions-cell">
                 <button className="action-button view-button">
                   <span className="action-icon">
-                    <AiOutlineEye size={18} />
+                    <AiOutlineUndo size={18} />
                   </span>
-                  <span>Fix</span>
+                  <span>Undo</span>
                 </button>
               </div>
             </div>

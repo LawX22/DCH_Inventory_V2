@@ -1,0 +1,251 @@
+/* Modal Overlay */
+.modal-overlay-1 {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 10px;
+}
+
+/* Modal Container */
+.modal-container-1 {
+    background: #fff;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 900px;
+    padding-bottom: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+/* Modal Title */
+.modal-title-1,
+.modal-title-2 {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 14px;
+    background: #b8d6eb;
+    color: #3a6ea7;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-title-2 {
+    background-color: #ffc2c2;
+    color: #a73a3a;
+}
+
+/* Modal Form */
+.modal-form-1 {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+/* Image Upload Section */
+.image-upload-container-1 {
+    flex: 0 0 300px;
+    border: 2px dashed #b8d6eb;
+    border-radius: 10px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+}
+
+.image-preview-1 {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.upload-placeholder-1 {
+    color: #888;
+}
+
+/* File Upload Button */
+.file-input-1 {
+    display: none;
+}
+
+.upload-button-1 {
+    padding: 8px 16px;
+    background: #e7ecf0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-button-1:hover {
+    background: #b8d6eb;
+}
+
+/* Form Fields */
+.form-fields-container-1 {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* Form Groups */
+.form-group-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group-1.full-width-1 {
+    grid-column: span 2;
+}
+
+/* Labels */
+.form-label-1 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs & Select */
+.form-input-1,
+.form-select-1 {
+    padding: 10px;
+    border: 1px solid #b8d6eb;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+    width: 100%;
+}
+
+.form-input-1:focus,
+.form-select-1:focus {
+    border-color: #7a9fb8;
+}
+
+/* Price & Units Section */
+.price-units-container-1 {
+    display: grid;
+    grid-template-columns: 1fr auto auto; /* Adjusts layout */
+    gap: 16px;
+    grid-column: span 2;
+}
+
+/* Make Unit Field Smaller */
+.units-group-1 {
+    width: 80px; /* Smaller width */
+    flex: 0 0 80px; /* Prevent it from stretching */
+}
+
+/* Buttons */
+.modal-actions-1 {
+    display: flex;
+    justify-content: center; /* Centers the buttons horizontally */
+    align-items: center; /* Aligns the buttons properly */
+    flex-wrap: wrap; /* Allows buttons to wrap if needed */
+    gap: 12px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    background: #fff;
+    width: 100%; /* Ensures full width inside the modal */
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .modal-actions-1 {
+        flex-direction: column; /* Stack buttons on small screens */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .save-button-1,
+    .cancel-button-1 {
+        width: 100%; /* Make buttons full-width on smaller screens */
+        max-width: 200px; /* Prevent excessive stretching */
+    }
+}
+
+
+.save-button-1,
+.cancel-button-1 {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 140px;
+    text-align: center;
+}
+
+.save-button-1 {
+    background: #bdeac1;
+    color: #25632b;
+}
+
+.save-button-1:hover {
+    background: #a5e0aa;
+}
+
+.cancel-button-1 {
+    background: #ffc2c2;
+    color: #7a3434;
+}
+
+.cancel-button-1:hover {
+    background: #ffaaaa;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modal-container-1 {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-form-1 {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .image-upload-container-1 {
+        width: 100%;
+        max-width: 250px;
+        height: 200px;
+        margin: 0 auto;
+    }
+
+    .form-fields-container-1 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .form-group-1.full-width-1 {
+        grid-column: span 1;
+    }
+
+    .price-units-container-1 {
+        grid-template-columns: 1fr;
+        grid-column: span 1;
+    }
+
+    .modal-actions-1 {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .save-button-1,
+    .cancel-button-1 {
+        width: 100%;
+        max-width: 200px;
+    }
+}

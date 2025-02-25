@@ -21,7 +21,6 @@ body {
   width: 100%;
   max-width: 100%;
 }
-
 /* Action Panel */
 .action-panel {
   display: flex;
@@ -38,8 +37,9 @@ body {
   gap: 10px;
 }
 
-/* Buttons & Dropdowns */
-.action-panel button {
+/* Buttons & Dropdown */
+.action-panel button,
+.warehouse-dropdown {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,67 +50,81 @@ body {
   cursor: pointer;
   gap: 8px;
   transition: background-color 0.3s ease;
+  flex: 1; /* Ensures uniform size */
+  min-width: 120px;
+  max-width: 160px;
 }
 
 /* Add Button */
 .add-button {
-  flex: 1;
   background-color: #bdeac1;
   color: #25632b;
-  min-width: 90px;
 }
 
 .add-button:hover {
-  background-color: #a3d7a7; /* Darker green on hover */
+  background-color: #a3d7a7;
 }
-
-
 .warehouse-dropdown {
-  flex: 1;
+  background-color: #b8d6eb;
+  border-radius: 5px;
+  position: relative;
+  max-width: 200px; /* Increased width */
+  height: 40px; /* Set fixed height */
+  cursor: pointer; /* Ensure cursor works */
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  padding: 6px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #b8d6eb;
-  border-radius: 5px;
-  min-width: 200px;
-  position: relative;
 }
 
+/* Hover effect */
+.warehouse-dropdown:hover {
+  background-color: #a0c4dc;
+}
+
+/* Ensure cursor pointer applies */
 .dropdown-select {
   width: 100%;
-  padding: 12px;
+  height: 100%;
   border: none;
   background-color: transparent;
   font-weight: 500;
-  cursor: pointer;
   color: #25632b;
-  appearance: none; /* Removes default browser styling */
-  text-align: center; /* Centers text */
+  appearance: none;
+  text-align: center;
   font-size: 14px;
+  padding: 6px;
+  box-sizing: border-box;
+  cursor: pointer; /* Apply cursor directly */
 }
 
-/* Custom arrow */
+/* Remove outline when clicked */
+.dropdown-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Custom Dropdown Arrow */
 .warehouse-dropdown::after {
   content: "▼";
   font-size: 14px;
   color: #25632b;
   position: absolute;
-  right: 15px; /* Adjust as needed */
+  right: 10px; /* Adjusted for better alignment */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+  transition: color 0.3s ease;
 }
 
-.dropdown-select:focus {
-  outline: none;
-}
-
-.dropdown-select option {
-  font-size: 14px; 
-}
-
-.warehouse-dropdown:hover {
-  background-color: #a2c6de;
+/* Ensure cursor pointer applies on hover */
+.warehouse-dropdown:hover,
+.warehouse-dropdown:hover .dropdown-select {
+  cursor: pointer;
 }
 
 /* Search Bar */
@@ -120,7 +134,7 @@ body {
   background-color: white;
   border-radius: 5px;
   padding: 12px 15px;
-  flex: 2;
+  flex-grow: 2; /* Makes search bar take up more space */
   max-width: 600px;
   width: 100%;
 }
@@ -138,19 +152,13 @@ body {
 }
 
 /* Export & Activity Buttons */
-.export-button button,
-.activity-button {
-  flex: 1;
-  min-width: 100px;
-}
-
 .export-button {
   background-color: #ffc2c2;
   color: #7a3434;
 }
 
 .export-button:hover {
-  background-color: #f5a7a7; /* Slightly darker red */
+  background-color: #f5a7a7;
 }
 
 .activity-button {
@@ -159,7 +167,7 @@ body {
 }
 
 .activity-button:hover {
-  background-color: #f3db9e; /* Slightly darker yellow */
+  background-color: #f3db9e;
 }
 
 /* Responsive Design */
@@ -178,7 +186,7 @@ body {
   }
 
   .add-button,
-  .dropdown-button,
+  .warehouse-dropdown,
   .export-button,
   .activity-button {
     width: 100%;
@@ -236,6 +244,10 @@ body {
   padding: 15px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
 }
 
 .header-cell:nth-child(1) {
@@ -311,6 +323,7 @@ body {
 }
 
 /* Other Table Cells */
+.header-cell,
 .brand-cell,
 .date-cell,
 .location-cell,
@@ -321,10 +334,22 @@ body {
 .units-cell,
 .activity-cell,
 .actions-cell {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  padding: 15px;
+  padding: 10px;
   flex: 1;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .amount-cell,
@@ -344,19 +369,51 @@ body {
 
 /* Action Buttons */
 .actions-cell {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px;
+  flex: 1;
+  min-width: 80px;
+  border-left: 2px solid rgb(215, 207, 207);
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .actions-cell {
+    font-size: 12px;
+    padding: 8px;
+    min-width: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions-cell {
+    font-size: 10px;
+    padding: 6px;
+    min-width: 60px;
+    gap: 2px;
+  }
 }
 
 .action-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
   font-size: 12px;
   cursor: pointer;
+  white-space: nowrap;
+  width: 80px;
+  height: 30px;
+  flex-shrink: 0;
+  text-align: center;
 }
 
 .view-button {

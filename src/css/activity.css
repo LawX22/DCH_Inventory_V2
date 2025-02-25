@@ -111,9 +111,8 @@
 /* Table Header */
 .table-header-1 {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr; /* Updated to add 'User' */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr; 
   border-bottom: 1px solid #eee;
-  font-weight: 500;
   width: 100%;
   background-color: #b8d6eb;
   position: sticky;
@@ -155,8 +154,8 @@
 .header-cell-1 {
   padding: 15px;
   display: flex;
-  align-items: center;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 /* Table Cells */
