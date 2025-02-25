@@ -204,7 +204,7 @@ function Inventory() {
 
         <div className="table-body">
           {filteredInventory.map((item, key) => (
-            <div className="table-row" key={item.inventory_Id}>
+            <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
@@ -221,18 +221,26 @@ function Inventory() {
                   <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
-              <div className="brand-cell">{item.brand}</div>
+              <div className="brand-cell">
+                <div className="item">{item.brand}</div>
+              </div>
               <div className="location-cell">
-                <div>{item.location}</div>
-                <div>{item.storage_area}</div>
+                <div className="item">
+                  <div>{item.location}</div>
+                  <div>{item.storage_area}</div>
+                </div>
               </div>
               <div className="price-cell">
-                <div>Price - ₱ {item.price}</div>
-                <div>Retail - ₱ {item.retail_price}</div>
+                <div className="item">
+                  <div>Price - ₱ {item.price}</div>
+                  <div>Retail - ₱ {item.retail_price}</div>
+                </div>
               </div>
-              <div className="inventory-cell">
-                <div>Stock - {item.units}</div>
-                <div>TSV - ₱ {item.totalstockValue}</div>
+                <div className="inventory-cell">
+                <div className="item">
+                  <div>Stock - {item.units}</div>
+                  <div>TSV - ₱ {item.totalstockValue}</div>
+                </div>
               </div>
               <div className="actions-cell">
                 <button

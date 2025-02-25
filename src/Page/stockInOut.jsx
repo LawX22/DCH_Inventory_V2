@@ -13,7 +13,6 @@ import StockOutModal from "../modals/stockOut_modal";
 
 import { FaBullseye } from "react-icons/fa6";
 
-
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
@@ -22,15 +21,13 @@ function StockInOut() {
   const [stockInModalOpen, setStockInModalOpen] = useState(false);
   const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
 
-
-
   const [selectedLocation, setSelectedLocation] = useState(
-      localStorage.getItem("selectedLocation") || "All"
-    );
+    localStorage.getItem("selectedLocation") || "All"
+  );
 
-     useEffect(() => {
-        localStorage.setItem("selectedLocation", selectedLocation);
-      }, [selectedLocation]);
+  useEffect(() => {
+    localStorage.setItem("selectedLocation", selectedLocation);
+  }, [selectedLocation]);
 
   useEffect(() => {
     axios
@@ -44,17 +41,15 @@ function StockInOut() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery]);
 
-
-  function openStockinFunc(data){
-    setSelectedData(data)
+  function openStockinFunc(data) {
+    setSelectedData(data);
     setStockInModalOpen(true);
   }
 
-  function openStockoutFunc(data){
-    setSelectedData(data)
+  function openStockoutFunc(data) {
+    setSelectedData(data);
     setStockOutModalOpen(true);
   }
-
 
   return (
     <div className="inventory-container">
@@ -103,21 +98,17 @@ function StockInOut() {
         </button>
       </div>
 
-
       <StockInModal
         isOpen={stockInModalOpen}
         onClose={() => setStockInModalOpen(false)}
         data={selectedData}
-        
       />
 
       <StockOutModal
         isOpen={stockOutModalOpen}
         onClose={() => setStockOutModalOpen(false)}
         data={selectedData}
-        
       />
-      
 
       {/* Inventory Table */}
       <div className="inventory-table">
@@ -151,7 +142,7 @@ function StockInOut() {
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={"/src/assets/" + item.image}
+                    src={"/src/backend/" + item.image}
                     alt={item.name}
                     className="item-image"
                   />
@@ -164,28 +155,42 @@ function StockInOut() {
                   <div className="item-id">{item.itemCode}</div>
                 </div>
               </div>
-              <div className="brand-cell">{item.brand}</div>
+              <div className="brand-cell">
+                <div className="item">{item.brand}</div>
+              </div>
               <div className="location-cell">
-                <div>{item.location}</div>
-                <div>{item.storage_area}</div>
+                <div className="item">
+                  <div>{item.location}</div>
+                  <div>{item.storage_area}</div>
+                </div>
               </div>
               <div className="price-cell">
-                <div>Price - ₱ {item.price}</div>
-                <div>Retail - ₱ {item.retail_price}</div>
+                <div className="item">
+                  <div>Price - ₱ {item.price}</div>
+                  <div>Retail - ₱ {item.retail_price}</div>
+                </div>
               </div>
               <div className="inventory-cell">
-                <div>Stock - {item.units}</div>
-                <div>TSV - ₱ {item.totalstockValue}</div>
+                <div className="item">
+                  <div>Stock - {item.units}</div>
+                  <div>TSV - ₱ {item.totalstockValue}</div>
+                </div>
               </div>
-              <div className="actions-cell">
-              <button className="action-button view-button" onClick={() => openStockinFunc(item)}>
 
+              <div className="actions-cell">
+                <button
+                  className="action-button view-button"
+                  onClick={() => openStockinFunc(item)}
+                >
                   <span className="action-icon">
                     <AiOutlineEye size={18} />
                   </span>
                   <span>Stock In</span>
                 </button>
-                <button className="action-button delete-button" onClick={() => openStockoutFunc(item)}>
+                <button
+                  className="action-button delete-button"
+                  onClick={() => openStockoutFunc(item)}
+                >
                   <span className="action-icon">
                     <AiOutlineDelete size={18} />
                   </span>
