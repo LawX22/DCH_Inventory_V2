@@ -101,33 +101,33 @@ const InventoryModal = ({ isOpen, onClose }) => {
         <h2 className="modal-title">ADD NEW ITEM</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="flex flex-col items-center space-y-4">
-          <div className="image-upload-container">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="file-input hidden"
-        id="imageUpload"
-      />
-      {imagePreview ? (
-        <img
-          src={imagePreview}
-          alt="Preview"
-          className="image-preview cursor-pointer"
-          onClick={() => document.getElementById("imageUpload").click()}
-        />
-      ) : (
-        <div className="upload-placeholder">
-          <div className="upload-text">Click to upload image</div>
-          <label
-            htmlFor="imageUpload"
-            className="upload-button cursor-pointer"
-          >
-            Browse
-          </label>
-        </div>
-      )}
-    </div>
+            <div className="image-upload-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="file-input hidden"
+                id="imageUpload"
+              />
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="image-preview cursor-pointer"
+                  onClick={() => document.getElementById("imageUpload").click()}
+                />
+              ) : (
+                <div className="upload-placeholder">
+                  <div className="upload-text">Click to upload image</div>
+                  <label
+                    htmlFor="imageUpload"
+                    className="upload-button cursor-pointer"
+                  >
+                    Browse
+                  </label>
+                </div>
+              )}
+            </div>
 
             <div className="modal-actions flex flex-row justify-between w-full space-x-4">
               <button

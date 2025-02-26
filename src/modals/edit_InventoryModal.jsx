@@ -189,23 +189,27 @@ const EditModal = ({ isOpen, onClose, data }) => {
         <h2 className="modal-title-1">EDIT NEW ITEM</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="flex flex-col items-center space-y-4">
-            <div className="image-upload-container">
+            <div className="image-upload-container-1">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="file-input hidden"
+                id="imageUpload"
+              />
               {imagePreview ? (
-                <img
-                  src={`/src/backend/${imagePreview}`}
-                  alt="Preview"
-                  className="image-preview"
-                />
+                <div className="image-preview-wrapper">
+                  <label htmlFor="imageUpload">
+                    <img
+                      src={`/src/backend/${imagePreview}`}
+                      alt="Preview"
+                      className="image-preview-1"
+                    />
+                  </label>
+                </div>
               ) : (
                 <div className="upload-placeholder">
                   <div className="upload-text">Click to upload image</div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="file-input hidden"
-                    id="imageUpload"
-                  />
                   <label
                     htmlFor="imageUpload"
                     className="upload-button cursor-pointer"
@@ -215,7 +219,6 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 </div>
               )}
             </div>
-
             <div className="modal-actions flex flex-row justify-between w-full space-x-4">
               <button
                 type="submit"
