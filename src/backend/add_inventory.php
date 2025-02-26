@@ -26,8 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description2 = $conn->real_escape_string($_POST['description2'] ?? '');
     $username = $conn->real_escape_string($_POST['username'] ?? '');
 
-
-
     // Image upload
     $imagePath = "";
     if (!empty($_FILES['image']['name'])) {
@@ -55,7 +53,6 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo json_encode(["error" => "Error: " . $conn->error]);
 }
-
     $conn->close();
     exit;
 }

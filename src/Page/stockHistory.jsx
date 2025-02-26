@@ -7,6 +7,8 @@ import axios from "axios";
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
+
+  
   
       const [selectedLocation, setSelectedLocation] = useState(
         localStorage.getItem("selectedLocation") || "All"
@@ -132,7 +134,7 @@ function StockHistory() {
 
         <div className="table-body">
           {inventory.map((item) => (
-            <div className="table-row" key={item.inventory_Id}>
+            <div className="table-row" key={item.stock_history_id }>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img

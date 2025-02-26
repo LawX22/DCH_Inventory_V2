@@ -5,6 +5,9 @@ include 'db_connection.php'; // Ensure you have your DB connection here
 
 $location = isset($_GET['location']) ? $_GET['location'] : '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+$brand = isset($_GET['brand']) ? $_GET['brand'] : '';
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+$area = isset($_GET['area']) ? $_GET['area'] : '';
 
 $sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0"; // Ensures filters can be appended properly
 
@@ -15,10 +18,25 @@ if ($location !== '' && $location !== 'All') {
 
 // Apply search filter
 if ($searchQuery !== '') {
-    $sql .= " AND (itemCode LIKE ? OR brand LIKE ? OR itemDesc_1 LIKE ? OR itemDesc_2 LIKE ?)";
+    $sql .= " AND (itemCode LIKE ? OR itemDesc_1 LIKE ? OR itemDesc_2 LIKE ?)";
 }
 
-// Add LIMIT at the end
+// Filter by brand if selected
+if ($brand !== '') {
+    $sql .= " AND brand = ?";
+}
+
+// Filter by category if selected
+if ($category !== '') {
+    $sql .= " AND category = ?";
+}
+
+// Filter by area if selected
+if ($area !== '') {
+    $sql .= " AND storage_area = ?";
+}
+
+// Add ORDER BY and LIMIT
 $sql .= " ORDER BY inventory_id DESC LIMIT 100";
 
 $stmt = $conn->prepare($sql);
@@ -28,25 +46,36 @@ $params = [];
 $types = '';
 
 if ($location !== '' && $location !== 'All') {
-
-    if($location === 'Warehouse'){
+    if ($location === 'Warehouse') {
         $params[] = 'AREA A';
         $types .= 's';
-    }
-    else {
+    } else {
         $params[] = $location;
-    $types .= 's';
+        $types .= 's';
     }
-
-   
 }
 
 if ($searchQuery !== '') {
     $likeQuery = "%$searchQuery%";
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < 3; $i++) { // Fixed loop count to match query placeholders
         $params[] = $likeQuery;
         $types .= 's';
     }
+}
+
+if ($brand !== '') {
+    $params[] = $brand;
+    $types .= 's';
+}
+
+if ($category !== '') {
+    $params[] = $category;
+    $types .= 's';
+}
+
+if ($area !== '') {
+    $params[] = $area;
+    $types .= 's';
 }
 
 // Bind parameters only if they exist

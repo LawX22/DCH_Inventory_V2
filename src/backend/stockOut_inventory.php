@@ -89,7 +89,6 @@ mysqli_stmt_bind_param($stmt, "sssi", $activity_performed, $username, $inventory
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
-// ✅ **Step 5: Send success response after all queries**
 echo json_encode(["status" => "success", "message" => "Stock updated successfully"]);
 
 ?>
