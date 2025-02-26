@@ -2,20 +2,38 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
 import { IoArrowBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
+
+    const [selectedLocation, setSelectedLocation] = useState(
+      localStorage.getItem("selectedLocation") || "All"
+    );
+  
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(
-      "http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php"
-    )
-      .then((response) => response.json())
-      .then((data) => setInventory(data))
+   useEffect(() => {
+    axios
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php", {
+        params: { location: selectedLocation, search: searchQuery },
+      })
+      .then((response) => {
+        console.log(response.data); // Inspect what the API returns
+        setInventory(response.data.inventory || response.data);
+      })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, []);
+  }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="activity-container">
@@ -42,7 +60,7 @@ function ActivityReport() {
       <div className="action-panel">
 
         <div className="warehouse-dropdown-1">
-          <select className="dropdown-select-1">
+          <select className="dropdown-select-1" value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
             <option value="All">All</option>
             <option value="Warehouse">Warehouse</option>
             <option value="Store">Store</option>
@@ -76,6 +94,9 @@ function ActivityReport() {
             <span>User</span>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
+
+
+          
           <div className="header-cell-1 with-arrow">
             <span>Date</span>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
@@ -85,7 +106,7 @@ function ActivityReport() {
 
         <div className="table-body-1">
           {inventory.map((item) => (
-            <div className="table-row-1" key={item.inventory_id}>
+            <div className="table-row-1" key={item.report_id}>
               <div className="activity-cell-1">{item.activity_performed}</div>
               <div className="type-cell-1">{item.activity_type}</div>
               <div className="user-cell-1">{item.encoder}</div>

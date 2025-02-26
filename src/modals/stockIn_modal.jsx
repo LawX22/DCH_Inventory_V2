@@ -38,6 +38,10 @@ const StockInModal = ({ isOpen, onClose, data }) => {
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
 
+  const [requisitionNum, setrequisitionNum] = useState([]);
+  const [requisitionDate, setrequisitionDate] = useState([]); 
+  const [unitsAdded, setunitsAdded] = useState([]);
+
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     if (data) {
@@ -89,43 +93,19 @@ const StockInModal = ({ isOpen, onClose, data }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+  
     switch (name) {
-      case "itemCode":
-        setItemCode(value);
-        break;
-      case "itemBrand":
-        setItemBrand(value);
-        break;
-      case "itemCategory":
-        setItemCategory(value);
-        break;
-      case "description1":
-        setItemDesc1(value);
-        break;
-      case "description2":
-        setItemDesc2(value);
-        break;
-      case "units":
-        setUnits(value);
-        break;
-      case "fixedPrice":
-        setFixedPrice(value);
-        break;
-      case "retailPrice":
-        setRetailPrice(value);
-        break;
-      case "location":
-        setLocation(value);
-        break;
-      case "storageArea":
-        setStorageArea(value);
-        break;
-      case "username":
-        setusername(value);
-        break;
       case "itemId":
         setItemId(value);
+        break;
+      case "requisitionNum":
+        setrequisitionNum(value);  // ✅ FIXED
+        break;
+      case "requisitionDate":
+        setrequisitionDate(value);
+        break;
+      case "unitsAdded":
+        setunitsAdded(value);
         break;
       default:
         break;
@@ -146,38 +126,30 @@ const StockInModal = ({ isOpen, onClose, data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    console.log("Date before sending:", requisitionDate); // Debugging
+  
     const formDataToSend = new FormData();
-
-    formDataToSend.append("itemId", itemId); // Ensure itemId is explicitly added
-    formDataToSend.append("itemCode", itemCode);
-    formDataToSend.append("itemBrand", itemBrand);
-    formDataToSend.append("itemCategory", itemCategory);
-    formDataToSend.append("description1", itemDesc1);
-    formDataToSend.append("description2", itemDesc2);
-    formDataToSend.append("units", units);
-    formDataToSend.append("fixedPrice", fixedPrice);
-    formDataToSend.append("retailPrice", retailPrice);
-    formDataToSend.append("location", location);
-    formDataToSend.append("storageArea", storageArea);
+    formDataToSend.append("itemId", itemId);
+    formDataToSend.append("requisitionNum", requisitionNum);
+    formDataToSend.append("requisitionDate", requisitionDate); // Ensure it's correctly formatted
+    formDataToSend.append("unitsAdded", unitsAdded);
     formDataToSend.append("username", username);
-
-    if (formData.image) {
-      formDataToSend.append("image", formData.image);
-    }
-
+  
     try {
       const response = await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/edit_inventory.php",
+        "http://localhost/DCH_Inventory_V2/src/backend/stockIn_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+  
+      console.log("API Response:", response.data);
       alert(response.data.message);
       onClose();
     } catch (error) {
-      console.error("Error updating item:", error);
+      console.error("Error updating item:", error.response?.data || error);
     }
   };
 
@@ -241,7 +213,7 @@ const StockInModal = ({ isOpen, onClose, data }) => {
               <label className="form-label-1">Date</label>
               <input
                 type="date"
-                name="date"
+                name="requisitionDate"
                 onChange={handleInputChange}
                 className="form-input-1"
               />
@@ -251,7 +223,7 @@ const StockInModal = ({ isOpen, onClose, data }) => {
             <div className="form-group-1">
               <label className="form-label-1">Requisition #</label>
               <input
-                type="number"
+                type="text"
                 name="requisitionNum"
                 onChange={handleInputChange}
                 className="form-input-1"
