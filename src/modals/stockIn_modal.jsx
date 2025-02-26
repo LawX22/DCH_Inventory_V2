@@ -155,7 +155,7 @@ const StockInModal = ({ isOpen, onClose, data}) => {
       console.error("Error updating item:", error.response?.data || error);
     }
   };
-  
+    
 
   if (!isOpen) return null;
 
