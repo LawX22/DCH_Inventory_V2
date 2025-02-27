@@ -9,14 +9,14 @@ if ($conn->connect_error) {
     die(json_encode(["error" => "Database connection failed"]));
 }
 
-$sql = "SELECT DISTINCT category FROM inventory_merge ORDER BY category ASC"; 
+$sql = "SELECT DISTINCT encoder FROM activity_report ORDER BY encoder ASC"; 
 
 $result = $conn->query($sql);
 
 $categories = [];
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $categories[] = ["category" => $row["category"]];
+        $categories[] = ["encoder" => $row["encoder"]];
     }
     echo json_encode($categories);
 } else {

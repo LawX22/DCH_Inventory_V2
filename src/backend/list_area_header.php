@@ -9,7 +9,7 @@ if ($conn->connect_error) {
     die(json_encode(["error" => "Database connection failed"]));
 }
 
-$sql = "SELECT DISTINCT storage_area FROM inventory_merge"; 
+$sql = "SELECT DISTINCT storage_area FROM inventory_merge ORDER BY storage_area ASC"; 
 
 $result = $conn->query($sql);
 

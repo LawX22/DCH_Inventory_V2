@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die(json_encode(["error" => "Database connection failed"]));
 }
 
-$sql = "SELECT brand from inventory_merge GROUP BY brand;"; // Change 'brands_table' to your actual table name
+$sql = "SELECT brand from inventory_merge GROUP BY brand ORDER BY brand ASC;"; // Change 'brands_table' to your actual table name
 $result = $conn->query($sql);
 
 $brands = [];

@@ -245,7 +245,7 @@ function StockInOut() {
 
         <div className="table-body">
           {inventory.map((item) => (
-            <div className="table-row" key={item.inventory_id}>
+            <div className="table-row" key={item.inventory_Id}>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
