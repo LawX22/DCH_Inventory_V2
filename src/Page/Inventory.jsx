@@ -177,7 +177,6 @@ const handleFilterChange = (e) => {
         console.error("Error fetching brands:", error);
       });
   }, []);
-
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")

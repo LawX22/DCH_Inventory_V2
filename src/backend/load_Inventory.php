@@ -16,9 +16,10 @@ if ($location !== '' && $location !== 'All') {
     $sql .= " AND location = ?";
 }
 
-// Apply search filter
-if ($searchQuery !== '') {
-    $sql .= " AND (itemCode LIKE ? OR itemDesc_1 LIKE ? OR itemDesc_2 LIKE ?)";
+// Apply search filter on itemCode or concatenated itemDesc_1 & itemDesc_2
+if ($searchQuery !== '') {  
+    $sql .= " AND (itemCode LIKE ? OR CONCAT(IFNULL(itemDesc_1, ''), IFNULL(itemDesc_2, '')) LIKE ?)";
+
 }
 
 // Filter by brand if selected
@@ -57,10 +58,9 @@ if ($location !== '' && $location !== 'All') {
 
 if ($searchQuery !== '') {
     $likeQuery = "%$searchQuery%";
-    for ($i = 0; $i < 3; $i++) { // Fixed loop count to match query placeholders
-        $params[] = $likeQuery;
-        $types .= 's';
-    }
+    $params[] = $likeQuery;
+    $params[] = $likeQuery;
+    $types .= 'ss';
 }
 
 if ($brand !== '') {

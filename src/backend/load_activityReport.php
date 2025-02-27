@@ -7,6 +7,12 @@ include 'db_connection.php';  // Include database connection
 $location = isset($_GET['location']) ? $_GET['location'] : '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 
+$date = isset($_GET['date']) ? $_GET['date'] : '';
+$user = isset($_GET['user']) ? $_GET['user'] : '';
+$activityType = isset($_GET['activityType']) ? $_GET['activityType'] : '';
+
+
+
 $sql = "SELECT * FROM activity_report WHERE 1=1";  
 $params = [];
 $types = "";
@@ -29,6 +35,23 @@ if ($searchQuery !== '') {
     $types .= "s";
 }
 
+
+if ($date !== '') {
+    $sql .= " AND date_performed = ?";
+}
+
+// Filter by category if selected
+if ($user !== '') {
+    $sql .= " AND encoder = ?";
+}
+
+// Filter by area if selected
+if ($activityType !== '') {
+    $sql .= " AND 	activity_type = ?";
+}
+
+
+
 $sql .= " ORDER BY report_id DESC LIMIT 100";
 
 // Prepare the statement
@@ -36,6 +59,22 @@ $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     echo json_encode(["error" => "Query preparation failed: " . $conn->error]);
     exit;
+}
+
+
+if ($date !== '') {
+    $params[] = $date;
+    $types .= 's';
+}
+
+if ($user !== '') {
+    $params[] = $user;
+    $types .= 's';
+}
+
+if ($activityType !== '') {
+    $params[] = $activityType;
+    $types .= 's';
 }
 
 // Bind parameters if any exist

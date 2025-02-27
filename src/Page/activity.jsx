@@ -9,6 +9,49 @@ function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
+    const [activityType, setActivityType] = useState('');
+    const [date, setDate] = useState('');
+    const [user, setUser] = useState('');
+
+    const [userList, setUserList] = useState([]);
+
+
+    useEffect(() => {
+      axios
+        .get("http://localhost/DCH_Inventory_V2/src/backend/list_encoders_header.php")
+        .then((response) => {
+          setUserList(response.data); // Store fetched brands in state
+        })
+        .catch((error) => {
+          console.error("Error fetching brands:", error);
+        });
+    }, []);
+
+
+    const handleFilterChange = (e) => {
+      const { name, value } = e.target;
+    
+      switch (name) {
+        case "users":
+          setUser(value);
+    
+          break;
+  
+          case "date":
+            setDate(value);
+      
+            break;
+            
+            case "activity":
+            setActivityType(value);
+    
+          break;
+        default:
+          console.warn("Unknown filter:", name);
+      }
+    };
+
+
     const [selectedLocation, setSelectedLocation] = useState(
       localStorage.getItem("selectedLocation") || "All"
     );
@@ -18,14 +61,14 @@ function ActivityReport() {
    useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php", {
-        params: { location: selectedLocation, search: searchQuery },
+        params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType },
       })
       .then((response) => {
         console.log(response.data); // Inspect what the API returns
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory, date, activityType, user]); // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,18 +130,34 @@ function ActivityReport() {
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }} />
           </div>
           <div className="header-cell-1 with-arrow">
-            <span>Activity Type</span>
+          <select name="activity" onChange={handleFilterChange}>
+            <option value="">Activity</option>
+            <option value="INSERT">INSERT</option>
+            <option value="UPDATE">UPDATE</option>
+            <option value="DELETE">DELETE</option>
+            <option value="STOCK OUT">STOCK OUT</option>
+            <option value="STOCK IN">STOCK IN</option>
+
+         
+            </select>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1 with-arrow">
-            <span>User</span>
+          <select name="user" onChange={handleFilterChange}>
+            <option value="">Encoder</option>
+            {userList.map((option) => (
+            <option key={option.inventory_Id} value={option.encoder}>
+            {option.encoder}
+            </option>
+            ))}
+            </select>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
 
 
           
           <div className="header-cell-1 with-arrow">
-            <span>Date</span>
+          <span>Date <input type="date" name="date" onChange={handleFilterChange}/></span>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1">Actions</div>

@@ -7,6 +7,14 @@ include 'db_connection.php';
 $location = isset($_GET['location']) ? $_GET['location'] : '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 
+$brand = isset($_GET['brand']) ? $_GET['brand'] : '';
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+$area = isset($_GET['area']) ? $_GET['area'] : '';
+
+$date = isset($_GET['date']) ? $_GET['date'] : '';
+$activity = isset($_GET['activity']) ? $_GET['activity'] : '';
+
+
 $sql = "SELECT * FROM stock_history WHERE 1=1";
 
 // Filter by location if selected
@@ -20,9 +28,31 @@ if ($location !== '' && $location !== 'All') {
 
 // Apply search filter
 if ($searchQuery !== '') {
-    $sql .= " AND (item_code LIKE ? OR brand LIKE ? OR stock_name LIKE ?)";
+    $sql .= " AND (item_code LIKE ? OR stock_name LIKE ? OR requisition_number LIKE ?)";
 }
 
+if ($brand !== '') {
+    $sql .= " AND brand = ?";
+}
+
+// Filter by category if selected
+if ($category !== '') {
+    $sql .= " AND category = ?";
+}
+
+// Filter by area if selected
+if ($area !== '') {
+    $sql .= " AND location = ?";
+}
+
+
+if ($date !== '') {
+    $sql .= " AND transaction_date = ?";
+}
+
+if ($activity !== '') {
+    $sql .= " AND transaction_type = ?";
+}
 // Add LIMIT at the end
 $sql .= " ORDER BY stock_history_id DESC LIMIT 100";
 
@@ -46,6 +76,33 @@ if ($searchQuery !== '') {
         $types .= 's';
     }
 }
+
+
+if ($brand !== '') {
+    $params[] = $brand;
+    $types .= 's';
+}
+
+if ($category !== '') {
+    $params[] = $category;
+    $types .= 's';
+}
+
+if ($area !== '') {
+    $params[] = $area;
+    $types .= 's';
+}
+
+if ($date !== '') {
+    $params[] = $date;
+    $types .= 's';
+}
+
+if ($activity !== '') {
+    $params[] = $activity;
+    $types .= 's';
+}
+
 
 // Debugging - Check Query and Parameters
 // error_log("SQL: " . $sql);
