@@ -34,6 +34,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
   const [username, setusername] = useState(user);
 
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageChange, setImageChange] = useState(false);
+
 
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
@@ -53,6 +55,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
       setLocation(data.location || "");
       setStorageArea(data.storage_area || "");
       setImagePreview(data.image || "");
+      setImageChange(false);
     }
   }, [data]); // Add dependency to ensure it runs when `data` changes
 
@@ -136,6 +139,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
     const file = e.target.files[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
+      setImageChange(true);
       setImagePreview(objectUrl);
       setFormData((prevData) => ({
         ...prevData,
@@ -161,6 +165,11 @@ const EditModal = ({ isOpen, onClose, data }) => {
     formDataToSend.append("location", location);
     formDataToSend.append("storageArea", storageArea);
     formDataToSend.append("username", username);
+    formDataToSend.append("imageChange", imageChange);
+    console.log(imageChange);
+
+
+ 
 
     if (formData.image) {
       formDataToSend.append("image", formData.image);
@@ -174,7 +183,12 @@ const EditModal = ({ isOpen, onClose, data }) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(`${key}:`, value);
+    }
       alert(response.data.message);
+      console.log(response.data)
       onClose();
     } catch (error) {
       console.error("Error updating item:", error);
@@ -182,7 +196,6 @@ const EditModal = ({ isOpen, onClose, data }) => {
   };
 
   if (!isOpen) return null;
-
   return (
     <div className="modal-overlay">
       <div className="modal-container">
@@ -200,11 +213,14 @@ const EditModal = ({ isOpen, onClose, data }) => {
               {imagePreview ? (
                 <div className="image-preview-wrapper">
                   <label htmlFor="imageUpload">
-                    <img
-                      src={`/src/backend/${imagePreview}`}
-                      alt="Preview"
-                      className="image-preview-1"
-                    />
+                  <img 
+    src={imagePreview.startsWith("blob:") 
+        ? imagePreview 
+        : `/src/backend/${imagePreview}`
+    } 
+    alt="Preview" 
+    className="image-preview-1" 
+/>
                   </label>
                 </div>
               ) : (
@@ -366,7 +382,6 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 className="form-input"
               />
             </div>
-
             <div className="form-group" style={{ display: "none" }}>
               <label className="form-label">ITEM ID</label>
               <input
