@@ -20,7 +20,9 @@ function Header() {
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
-      localStorage.clear();
+      localStorage.removeItem('username');
+      localStorage.removeItem('userType');
+
       navigate("/");
     }
   };

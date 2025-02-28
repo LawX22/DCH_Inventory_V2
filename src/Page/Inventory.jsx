@@ -16,9 +16,20 @@ import EditModal from "../modals/edit_InventoryModal";
 function Inventory() {
   const [editModalOpen, seteditModalOpen] = useState(false);
 
-  const [category, setCategory] = useState();
-  const [brand, setBrand] = useState('');
-  const [area, setArea] = useState('');
+  
+
+  const [category, setCategory] = useState(
+    localStorage.getItem("category") || ''
+  );
+
+  const [brand, setBrand] = useState(
+    localStorage.getItem("brand") || ''
+  );
+
+  const [area, setArea] = useState(
+    localStorage.getItem("area") || ''
+  );
+
 
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
@@ -48,6 +59,9 @@ function Inventory() {
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
   );
+
+
+  
   const [username, setUsername] = useState(
     localStorage.getItem("username") || "Unknown"
   );
@@ -57,7 +71,11 @@ function Inventory() {
   // Update localStorage when the location changes
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
-  }, [selectedLocation]);
+    localStorage.setItem("brand", brand);
+    localStorage.setItem("area", area);
+    localStorage.setItem("category", category);
+
+  }, [selectedLocation,brand,area,category]);
 
   //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
@@ -102,7 +120,6 @@ const handleFilterChange = (e) => {
   }
 };
 
-  
 
   function openEditFunc(data) {
     setSelectedData(data);
@@ -154,6 +171,14 @@ const handleFilterChange = (e) => {
   const handleExport = () => {
     window.open("http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php", "_blank");
   };
+
+  useEffect(() => {
+    localStorage.setItem('brand', '');       // Set brand to empty string (or any value you want)
+    localStorage.setItem('area', '');        // Set area to empty string
+    localStorage.setItem('category', '');    // Set category to empty string
+    
+
+}, []);
 
 
   useEffect(() => {
@@ -251,11 +276,11 @@ const handleFilterChange = (e) => {
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell with-arrow">
-            <select name="category" onChange={handleFilterChange}> 
+            <select name="category" onChange={(e) =>setCategory(e.target.value)}> 
 
             <option value="">Item</option>
         {categoryList.map((option) => (
-          <option key={option.inventory_Id} value={option.category}>
+          <option value={option.category}>
             {option.category}
           </option>
         ))}
@@ -266,11 +291,11 @@ const handleFilterChange = (e) => {
           </div>
           <div className="header-cell with-arrow">
            
-            <select name="brand" onChange={handleFilterChange}>  
+            <select name="brand" onChange={(e) =>setBrand(e.target.value)}>     
 
             <option value="">Brand</option>
             {brandList.map((option) => (
-            <option key={option.inventory_Id} value={option.brand}>
+            <option value={option.brand}>
             {option.brand}
             </option>
             ))}
@@ -279,10 +304,10 @@ const handleFilterChange = (e) => {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-            <select name="area" onChange={handleFilterChange}>
+            <select name="area" onChange={(e) =>setArea(e.target.value)}>
             <option value="">Area</option>
             {areaList.map((option) => (
-            <option key={option.inventory_Id} value={option.storage_area}>
+            <option value={option.storage_area}>
             {option.storage_area}
             </option>
             ))}
