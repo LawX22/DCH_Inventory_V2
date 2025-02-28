@@ -10,12 +10,25 @@ function StockHistory() {
 
 
 
-  const [category, setCategory] = useState('');
-  const [brand, setBrand] = useState('');
-  const [area, setArea] = useState('');
-  const [date, setDate] = useState('');
-  const [activity, setActivity] = useState('');
+    const [category, setCategory] = useState(
+       localStorage.getItem("categorySH") || ''
+     );
+   
+     const [brand, setBrand] = useState(
+       localStorage.getItem("brandSH") || ''
+     );
+   
+     const [area, setArea] = useState(
+       localStorage.getItem("areaSH") || ''
+     );
 
+     const [date, setDate] = useState(
+      localStorage.getItem("dateSH") || ''
+    );
+  
+    const [activity, setActivity] = useState(
+      localStorage.getItem("activitySH") || ''
+    );
 
 
   const [categoryList, setCategoryList] = useState([]);
@@ -96,35 +109,28 @@ function StockHistory() {
       );
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
-  }, [selectedLocation]);
+    localStorage.setItem("brandSH", brand);
+    localStorage.setItem("areaSH", area);
+    localStorage.setItem("categorySH", category);
+    localStorage.setItem("dateSH", date);
+    localStorage.setItem("activitySH", activity);
+
+  }, [selectedLocation,brand,area,category,date,activity]);
+
+  
 
   useEffect(() => {
     axios
       .get(
         "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
         {
-          params: { location: selectedLocation, search: searchQuery },
-        }
-      )
-      .then((response) => {
-        console.log(response.data); // Inspect what the API returns
-        setInventory(response.data.inventory || response.data);
-      })
-      .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery]);
-
-  useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
-        {
-          params: { location: selectedLocation , category: category, brand: brand, area: area, date:date, activity:activity},
+          params: { location: selectedLocation ,search: searchQuery , category: category, brand: brand, area: area, date:date, activity:activity},
         }
       )
       .then((response) => setInventory(response.data))
       .catch((error) => console.error("Error fetching inventory:", error));
       console.log(activity)
-  }, [selectedLocation, activity,category,brand, area, date ]);
+  }, [selectedLocation, activity,category,brand, area,date, searchQuery]);
 
   return (
     <div className="inventory-container">
@@ -176,7 +182,7 @@ function StockHistory() {
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell with-arrow">
-          <select name="category" onChange={handleFilterChange}> 
+          <select name="category" onChange={(e) =>setCategory(e.target.value)}> 
 
 <option value="">Item</option>
 {categoryList.map((option) => (
@@ -188,11 +194,13 @@ function StockHistory() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-            <span>Date <input type="date" name="date" onChange={handleFilterChange}/></span>
+            <span>Date<input type="date" name="date" onChange={(e) =>setDate(e.target.value)}/></span>
+
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-          <select name="brand" onChange={handleFilterChange}>  
+          <select name="brand" onChange={(e) =>setBrand(e.target.value)}>
+
             <option value="">Brand</option>
             {brandList.map((option) => (
             <option key={option.inventory_Id} value={option.brand}>
@@ -203,7 +211,8 @@ function StockHistory() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-          <select name="area" onChange={handleFilterChange}>
+          <select name="area" onChange={(e) =>setArea(e.target.value)}>
+
             <option value="">Area</option>
             {areaList.map((option) => (
             <option key={option.inventory_Id} value={option.storage_area}>
@@ -214,7 +223,7 @@ function StockHistory() {
             <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
-          <select name="activity" onChange={handleFilterChange}>
+          <select name="activity" onChange={(e) =>setActivity(e.target.value)}>
             <option value="">Activity</option>
             <option value="Stock In">Stock In</option>
             <option value="Stock Out">Stock Out</option>

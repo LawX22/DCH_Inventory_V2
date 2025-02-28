@@ -22,9 +22,17 @@ function StockInOut() {
   const [stockInModalOpen, setStockInModalOpen] = useState(false);
   const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
 
-  const [category, setCategory] = useState("");
-    const [brand, setBrand] = useState('');
-    const [area, setArea] = useState('');
+   const [category, setCategory] = useState(
+     localStorage.getItem("category") || ''
+   );
+ 
+   const [brand, setBrand] = useState(
+     localStorage.getItem("brand") || ''
+   );
+ 
+   const [area, setArea] = useState(
+     localStorage.getItem("area") || ''
+   );
   
     const [categoryList, setCategoryList] = useState([]);
     const [brandList, setBrandList] = useState([]);
@@ -36,7 +44,11 @@ function StockInOut() {
 
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
-  }, [selectedLocation]);
+    localStorage.setItem("brand", brand);
+    localStorage.setItem("area", area);
+    localStorage.setItem("category", category);
+
+  }, [selectedLocation,brand,area,category]);
 
   useEffect(() => {
     axios
@@ -194,7 +206,7 @@ function StockInOut() {
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell with-arrow">
-           <select name="category" onChange={handleFilterChange}> 
+          <select name="category" onChange={(e) =>setCategory(e.target.value)}> 
            
                        <option value="">Item</option>
                    {categoryList.map((option) => (
@@ -203,13 +215,12 @@ function StockInOut() {
                      </option>
                    ))}
                        </select>
-           
-                      
                        <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
                      </div>
                      <div className="header-cell with-arrow">
                       
-                       <select name="brand" onChange={handleFilterChange}>  
+                     <select name="brand" onChange={(e) =>setBrand(e.target.value)}>     
+
            
                        <option value="">Brand</option>
                        {brandList.map((option) => (
@@ -218,11 +229,10 @@ function StockInOut() {
                        </option>
                        ))}
                        </select>
-           
                        <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
                      </div>
                      <div className="header-cell with-arrow">
-                       <select name="area" onChange={handleFilterChange}>
+                     <select name="area" onChange={(e) =>setArea(e.target.value)}>
                        <option value="">Area</option>
                        {areaList.map((option) => (
                        <option key={option.inventory_Id} value={option.storage_area}>

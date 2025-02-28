@@ -30,26 +30,20 @@ if ($location !== '' && $location !== 'All') {
 if ($searchQuery !== '') {
     $sql .= " AND (item_code LIKE ? OR stock_name LIKE ? OR requisition_number LIKE ?)";
 }
-
 if ($brand !== '') {
     $sql .= " AND brand = ?";
 }
-
 // Filter by category if selected
 if ($category !== '') {
     $sql .= " AND category = ?";
 }
-
 // Filter by area if selected
 if ($area !== '') {
     $sql .= " AND location = ?";
 }
-
-
 if ($date !== '') {
     $sql .= " AND transaction_date = ?";
 }
-
 if ($activity !== '') {
     $sql .= " AND transaction_type = ?";
 }

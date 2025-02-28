@@ -9,9 +9,19 @@ function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
-    const [activityType, setActivityType] = useState('');
-    const [date, setDate] = useState('');
-    const [user, setUser] = useState('');
+   
+
+       const [activityType, setActivityType] = useState(
+         localStorage.getItem("activityTypeAH") || ''
+       );
+     
+       const [date, setDate] = useState(
+         localStorage.getItem("dateAH") || ''
+       );
+     
+       const [user, setUser] = useState(
+         localStorage.getItem("userAH") || ''
+       );
 
     const [userList, setUserList] = useState([]);
 
@@ -52,9 +62,16 @@ function ActivityReport() {
     };
 
 
-    const [selectedLocation, setSelectedLocation] = useState(
-      localStorage.getItem("selectedLocation") || "All"
-    );
+     const [selectedLocation, setSelectedLocation] = useState(
+       localStorage.getItem("selectedLocation") || "All"
+     );
+   
+     useEffect(() => {
+       localStorage.setItem("selectedLocation", selectedLocation);
+       localStorage.setItem("activityTypeAH", activityType);
+       localStorage.setItem("dateAH", date);
+       localStorage.setItem("userAH", user);
+     }, [selectedLocation,date,user,activityType]);
   
   const navigate = useNavigate();
 
@@ -130,7 +147,7 @@ function ActivityReport() {
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }} />
           </div>
           <div className="header-cell-1 with-arrow">
-          <select name="activity" onChange={handleFilterChange}>
+          <select name="activity" onChange={(e) =>setActivityType(e.target.value)}>    
             <option value="">Activity</option>
             <option value="INSERT">INSERT</option>
             <option value="UPDATE">UPDATE</option>
@@ -143,7 +160,8 @@ function ActivityReport() {
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1 with-arrow">
-          <select name="user" onChange={handleFilterChange}>
+          <select name="user" onChange={(e) =>setUser(e.target.value)}>    
+
             <option value="">Encoder</option>
             {userList.map((option) => (
             <option key={option.inventory_Id} value={option.encoder}>
@@ -157,7 +175,7 @@ function ActivityReport() {
 
           
           <div className="header-cell-1 with-arrow">
-          <span>Date <input type="date" name="date" onChange={handleFilterChange}/></span>
+          <span>Date <input type="date" name="date"  onChange={(e) =>setDate(e.target.value)}/></span>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
           <div className="header-cell-1">Actions</div>
