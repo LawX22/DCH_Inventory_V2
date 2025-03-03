@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { FaChevronDown } from "react-icons/fa";
 import {
   AiOutlineSearch,
   AiOutlineEye,
   AiOutlineDelete,
   AiOutlinePlus,
-  AiOutlineDown,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
@@ -16,29 +16,20 @@ import EditModal from "../modals/edit_InventoryModal";
 function Inventory() {
   const [editModalOpen, seteditModalOpen] = useState(false);
 
-  
-
   const [category, setCategory] = useState(
-    localStorage.getItem("category") || ''
+    localStorage.getItem("category") || ""
   );
 
-  const [brand, setBrand] = useState(
-    localStorage.getItem("brand") || ''
-  );
+  const [brand, setBrand] = useState(localStorage.getItem("brand") || "");
 
-  const [area, setArea] = useState(
-    localStorage.getItem("area") || ''
-  );
-
+  const [area, setArea] = useState(localStorage.getItem("area") || "");
 
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
 
-
   const [searchQuery, setSearchQuery] = useState("");
   const user = localStorage.getItem("username");
-
 
   const [inventory, setInventory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,8 +51,6 @@ function Inventory() {
     localStorage.getItem("selectedLocation") || "All"
   );
 
-
-  
   const [username, setUsername] = useState(
     localStorage.getItem("username") || "Unknown"
   );
@@ -74,21 +63,25 @@ function Inventory() {
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
-
-  }, [selectedLocation,brand,area,category]);
+  }, [selectedLocation, brand, area, category]);
 
   //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-        params: { location: selectedLocation, search: searchQuery , category: category, brand: brand, area: area},
+        params: {
+          location: selectedLocation,
+          search: searchQuery,
+          category: category,
+          brand: brand,
+          area: area,
+        },
       })
       .then((response) => {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-
   }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
@@ -99,27 +92,26 @@ function Inventory() {
     }));
   };
 
-const handleFilterChange = (e) => {
-  const { name, value } = e.target;
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
 
-  switch (name) {
-    case "category":
-      setCategory(value);
+    switch (name) {
+      case "category":
+        setCategory(value);
 
-      break;
-    case "brand":
-      setBrand(value);
+        break;
+      case "brand":
+        setBrand(value);
 
-      break;
-    case "area":
-      setArea(value);
+        break;
+      case "area":
+        setArea(value);
 
-      break;
-    default:
-      console.warn("Unknown filter:", name);
-  }
-};
-
+        break;
+      default:
+        console.warn("Unknown filter:", name);
+    }
+  };
 
   function openEditFunc(data) {
     setSelectedData(data);
@@ -143,7 +135,6 @@ const handleFilterChange = (e) => {
       );
 
       console.log("Deleted successfully");
-  
     } catch (error) {
       console.error("Error deleting item:", error);
     }
@@ -167,23 +158,24 @@ const handleFilterChange = (e) => {
         item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-
   const handleExport = () => {
-    window.open("http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php", "_blank");
+    window.open(
+      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "_blank"
+    );
   };
 
   useEffect(() => {
-    localStorage.setItem('brand', '');       // Set brand to empty string (or any value you want)
-    localStorage.setItem('area', '');        // Set area to empty string
-    localStorage.setItem('category', '');    // Set category to empty string
-    
-
-}, []);
-
+    localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+    localStorage.setItem("area", ""); // Set area to empty string
+    localStorage.setItem("category", ""); // Set category to empty string
+  }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php")
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+      )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
       })
@@ -194,7 +186,9 @@ const handleFilterChange = (e) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php")
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+      )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
       })
@@ -275,52 +269,53 @@ const handleFilterChange = (e) => {
 
       <div className="inventory-table">
         <div className="table-header">
-          <div className="header-cell with-arrow">
-            <select name="category" onChange={(e) =>setCategory(e.target.value)}> 
-
-            <option value="">Item</option>
-        {categoryList.map((option) => (
-          <option value={option.category}>
-            {option.category}
-          </option>
-        ))}
-            </select>
-
-           
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+          <div className="header-cell">
+            <div className="select-container">
+              <select
+                name="category"
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Select Category</option>
+                {categoryList.map((option) => (
+                  <option key={option.category} value={option.category}>
+                    {option.category}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />
+            </div>
           </div>
           <div className="header-cell with-arrow">
-           
-            <select name="brand" onChange={(e) =>setBrand(e.target.value)}>     
-
-            <option value="">Brand</option>
-            {brandList.map((option) => (
-            <option value={option.brand}>
-            {option.brand}
-            </option>
-            ))}
-            </select>
-
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <div className="select-container">
+              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+                <option value="">Brand</option>
+                {brandList.map((option) => (
+                  <option key={option.inventory_Id} value={option.brand}>
+                    {option.brand}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />{" "}
+            </div>
           </div>
           <div className="header-cell with-arrow">
-            <select name="area" onChange={(e) =>setArea(e.target.value)}>
-            <option value="">Area</option>
-            {areaList.map((option) => (
-            <option value={option.storage_area}>
-            {option.storage_area}
-            </option>
-            ))}
-            </select>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <div className="select-container">
+              <select name="area" onChange={(e) => setArea(e.target.value)}>
+                <option value="">Area</option>
+                {areaList.map((option) => (
+                  <option key={option.inventory_Id} value={option.storage_area}>
+                    {option.storage_area}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />{" "}
+            </div>
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell">Actions</div>
         </div>
@@ -359,7 +354,7 @@ const handleFilterChange = (e) => {
                   <div>Retail - ₱ {item.retail_price}</div>
                 </div>
               </div>
-                <div className="inventory-cell">
+              <div className="inventory-cell">
                 <div className="item">
                   <div>Stock - {item.units}</div>
                   <div>TSV - ₱ {item.totalstockValue}</div>
