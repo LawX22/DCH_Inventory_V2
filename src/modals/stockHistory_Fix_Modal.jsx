@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const StockOutModal = ({ isOpen, onClose, data}) => {
+const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -19,6 +19,7 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   });
 
   const [itemId, setItemId] = useState('');
+  const [Id, setId] = useState('');
 
   const [itemCode, setItemCode] = useState('');
   const [itemBrand, setItemBrand] = useState('');
@@ -40,10 +41,23 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
 
+  const [transactionDate, setTransactionDate] = useState('');
+  const [unitsInputted, setUnitsInputted] = useState('');
+  const [reqNum, setReqNum] = useState('');
+  const [stockType, setStockType] = useState('');
+  const [prevUnits, setPrevUnits] = useState('');
+  const [latestUnits, setLatestUnits] = useState('');  
+  const [oldCurrentUnits, setOldCurrentUnits] = useState('');  
+  const [stock_name, setStockName] = useState('');  
+  const [inputChanged, setInputChanged] = useState(false);  
+
+
+
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     if (data) {
       setItemId(data.inventory_Id || '');
+      setId(data.stock_history_id  || '');
       setItemCode(data.itemCode || '');
       setItemBrand(data.brand || '');
       setItemCategory(data.category || '');
@@ -55,9 +69,36 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
       setLocation(data.location || '');
       setStorageArea(data.storage_area || '');
       setImagePreview(data.image || '');
+      setTransactionDate(data.transaction_date || '');
+      setUnitsInputted(data.units_added || '');
+      setReqNum(data.requisition_number || '');
+      setStockType(data.transaction_type || '');
+      setPrevUnits(data.previous_units || '');
+      setOldCurrentUnits(data.current_stock || '');
+      setStockName(data.stock_name || '');
+
+      
+
     }
   }, [data]); // Add dependency to ensure it runs when `data` changes
   
+
+  useEffect(() => {
+    axios
+        .get("http://localhost/DCH_Inventory_V2/src/backend/get_latest_units.php", {
+            params: { latest_unit_id: itemId },
+        })
+        .then((response) => {
+            if (response.data.length > 0) {
+                setLatestUnits(response.data[0].units);
+            } else {
+                setLatestUnits(null);  // or any default value you want
+            }
+        })
+        .catch((error) => console.error("Error fetching inventory:", error));
+}, [itemId]);
+
+
 
 
   useEffect(() => {
@@ -83,6 +124,8 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   }, []);
 
   useEffect(() => {
+
+   
     return () => {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
     };
@@ -98,14 +141,24 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
       case "itemId":
         setItemId(value);
         break;
+      case "stockId":
+        setId(value);
+        break;
       case "requisitionNum":
         setrequisitionNum(value);  // ✅ FIXED
         break;
       case "requisitionDate":
         setrequisitionDate(value);
         break;
-      case "unitsAdded":
+      case "stockInputed":
         setunitsAdded(value);
+        setInputChanged(true);
+
+        break;
+      case "stockType":
+        setStockType(value);
+        setInputChanged(true);
+
         break;
       default:
         break;
@@ -139,10 +192,13 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   
     const formDataToSend = new FormData();
     formDataToSend.append("itemId", itemId);
+    formDataToSend.append("Id", Id);
     formDataToSend.append("requisitionNum", requisitionNum);
     formDataToSend.append("requisitionDate", requisitionDate);
     formDataToSend.append("unitsAdded", unitsAdded);
     formDataToSend.append("username", username);
+    formDataToSend.append("inputChanged", inputChanged);
+
   
     try {
       const response = await axios.post(
@@ -170,7 +226,7 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   return (
     <div className="modal-overlay-1">
       <div className="modal-container-1">
-        <h2 className="modal-title-2">Stock Out Item</h2>
+        <h2 className="modal-title-2">Stock History Fix</h2>
         <form onSubmit={handleSubmit} className="modal-form-1">
           {/* Image Upload Section */}
           <div className="image-upload-container-1">
@@ -201,24 +257,39 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
             {/* Item Details */}
             <div className="form-group-1 full-width-1">
               <label className="form-label-1">Item Description</label>
-              <p className="item-desc-1">{itemDesc1 + " " + itemDesc2}</p>
+              <p className="item-desc-1">{stock_name}</p>
             </div>
+
+            
+        
 
             <div className="form-group-1">
               <label className="form-label-1">Brand</label>
               <p className="item-brand-1">{itemBrand}</p>
+
+              
             </div>
 
-            {/* Units Added */}
-            <div className="form-group-1">
-              <label className="form-label-1">Units Removed</label>
-              <input
-                type="number"
-                name="unitsAdded"
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
+
+
+            <div className="form-group-1 full-width-1">
+              <label className="form-label-1">Current Units</label>
+              <p className="item-desc-1">{latestUnits}</p>
             </div>
+
+            <div className="form-group-1 full-width-1">
+              <label className="form-label-1">Units Before Change</label>
+              <p className="item-desc-1">{prevUnits}</p>
+            </div>
+
+            <div className="form-group-1 full-width-1">
+              <label className="form-label-1">Units After Change</label>
+              <p className="item-desc-1">{oldCurrentUnits}</p>
+            </div>
+
+
+            {/* Units Added */}
+           
 
             {/* Date Input */}
             <div className="form-group-1">
@@ -227,6 +298,7 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
                 type="date"
                 name="requisitionDate"
                 onChange={handleInputChange}
+                value={transactionDate}
                 className="form-input-1"
               />
             </div>
@@ -237,14 +309,48 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
               <input
                 type="number"
                 name="requisitionNum"
+                value={reqNum}
                 onChange={handleInputChange}
                 className="form-input-1"
               />
+            </div>
+                    {/* Requisition Number */}
+                    <div className="form-group-1">
+              <label className="form-label-1">Stock Inputed</label>
+              <input
+                type="number"
+                name="stockInputed"
+                value={unitsInputted}
+                onChange={handleInputChange}
+                className="form-input-1"
+              />
+            </div>
+                {/* Stock Type */}
+                <div className="form-group-1">
+              <label className="form-label-1">Stock Type</label>
+              <select  type="text"
+                name="stockType"
+                value={stockType}
+                onChange={handleInputChange}
+                className="form-input-1">
+
+<option value="Stock Out">Stock Out</option>
+<option value="Stock In">Stock In</option>
+
+                </select>
+             
+
+        
+               
             </div>
 
             {/* Hidden Fields */}
             <input type="hidden" name="username" value={storedValue} />
             <input type="hidden" name="itemId" value={itemId} />
+            <input type="hidden" name="stockId" value={Id} />
+            <input type="hidden" name="inputChanged" value={inputChanged} />
+
+
           </div>
 
           {/* Modal Actions (Buttons) */}
@@ -262,4 +368,4 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   );
 };
 
-export default StockOutModal;
+export default StockHistoryFixModal;

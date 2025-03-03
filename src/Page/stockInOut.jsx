@@ -60,7 +60,7 @@ function StockInOut() {
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area]); // Fixed dependency array
+  }, [selectedLocation, searchQuery, category, brand, area, inventory]); // Fixed dependency array
    // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {

@@ -3,10 +3,16 @@ import { AiOutlineSearch, AiOutlineUndo, AiOutlineDown } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
+import StockHistoryFixModal from "../modals/stockHistory_Fix_Modal";
+
 
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+
+  const [historyFixIsOpen, setHistoryFixIsOpen] = useState(false);
+
 
 
 
@@ -117,6 +123,8 @@ function StockHistory() {
 
   }, [selectedLocation,brand,area,category,date,activity]);
 
+
+
   
 
   useEffect(() => {
@@ -132,9 +140,21 @@ function StockHistory() {
       console.log(activity)
   }, [selectedLocation, activity,category,brand, area,date, searchQuery]);
 
+
+  function openHistoryFixFunc(data) {
+    setSelectedData(data);
+    setHistoryFixIsOpen(true);
+  }
+
   return (
     <div className="inventory-container">
       <Header />
+
+      <StockHistoryFixModal
+        isOpen={historyFixIsOpen}
+        onClose={() => setHistoryFixIsOpen(false)}
+        data={selectedData}
+      />
       {/* Action Panel */}
       <div className="action-panel">
         <div className="warehouse-dropdown">
@@ -297,19 +317,17 @@ function StockHistory() {
                   <div>Previous - {item.previous_units}</div>
                 </div>
               </div>
-
               <div className="Requistion-cell">
                 <div className="item">
                   <div>Stock - {item.requisition_number}</div>
                 </div>
               </div>
-
               <div className="actions-cell">
-                <button className="action-button view-button">
+                <button className="action-button view-button" onClick={() => openHistoryFixFunc(item)}>
                   <span className="action-icon">
                     <AiOutlineUndo size={18} />
                   </span>
-                  <span>Undo</span>
+                  <span>Fix</span>
                 </button>
               </div>
             </div>
