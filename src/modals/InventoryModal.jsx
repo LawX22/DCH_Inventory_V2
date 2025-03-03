@@ -244,7 +244,7 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                className="form-select"
+                className="form-select-2"
               >
                 <option value="">Select Location</option>
                 <option value="Store">Store</option>
@@ -257,7 +257,7 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 name="storageArea"
                 value={formData.storageArea}
                 onChange={handleInputChange}
-                className="form-select"
+                className="form-select-2"
               >
                 <option value="">Select Storage Area</option>
                 <option value="Store 1st Floor">Store 1st Floor</option>

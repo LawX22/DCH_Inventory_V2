@@ -36,7 +36,6 @@ const EditModal = ({ isOpen, onClose, data }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageChange, setImageChange] = useState(false);
 
-
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
 
@@ -168,9 +167,6 @@ const EditModal = ({ isOpen, onClose, data }) => {
     formDataToSend.append("imageChange", imageChange);
     console.log(imageChange);
 
-
- 
-
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
@@ -186,9 +182,9 @@ const EditModal = ({ isOpen, onClose, data }) => {
 
       for (let [key, value] of formDataToSend.entries()) {
         console.log(`${key}:`, value);
-    }
+      }
       alert(response.data.message);
-      console.log(response.data)
+      console.log(response.data);
       onClose();
     } catch (error) {
       console.error("Error updating item:", error);
@@ -213,14 +209,15 @@ const EditModal = ({ isOpen, onClose, data }) => {
               {imagePreview ? (
                 <div className="image-preview-wrapper">
                   <label htmlFor="imageUpload">
-                  <img 
-    src={imagePreview.startsWith("blob:") 
-        ? imagePreview 
-        : `/src/backend/${imagePreview}`
-    } 
-    alt="Preview" 
-    className="image-preview-1" 
-/>
+                    <img
+                      src={
+                        imagePreview.startsWith("blob:")
+                          ? imagePreview
+                          : `/src/backend/${imagePreview}`
+                      }
+                      alt="Preview"
+                      className="image-preview-1"
+                    />
                   </label>
                 </div>
               ) : (
@@ -350,7 +347,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 name="location"
                 value={location}
                 onChange={handleInputChange}
-                className="form-select"
+                className="form-select-2"
               >
                 <option value="">Select Location</option>
                 <option value="Store">Store</option>
@@ -363,7 +360,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 name="storageArea"
                 value={storageArea}
                 onChange={handleInputChange}
-                className="form-select"
+                className="form-select-2"
               >
                 <option value="">Select Storage Area</option>
                 <option value="Store 1st Floor">Store 1st Floor</option>
