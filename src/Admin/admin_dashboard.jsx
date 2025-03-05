@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "./admin_Header";
+import axios from "axios";
 
+// Icon imports
 import { FiDownload, FiActivity } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
 import {
@@ -9,7 +11,18 @@ import {
   FileTextIcon,
   TruckIcon,
 } from "lucide-react";
-import axios from "axios";
+
+// Example staff data (typically would come from backend)
+const exampleStaffData = [
+  {
+    "username": "Dhaniel Malinao",
+    "role": "Inventory Manager"
+  },
+  {
+    "username": "Lawrenz Carisusa",
+    "role": "Warehouse Supervisor"
+  }
+];
 
 const Dashboard = () => {
   // State for current date and time
@@ -29,18 +42,15 @@ const Dashboard = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch staffs list
+  // Fetch staffs list (simulated with example data)
   useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_staffs_header.php"
-      )
-      .then((response) => {
-        setStaffsList(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching staffs:", error);
-      });
+    // In a real application, this would be an actual API call
+    try {
+      // Simulating API response with example data
+      setStaffsList(exampleStaffData);
+    } catch (error) {
+      console.error("Error fetching staffs:", error);
+    }
   }, []);
 
   // Update localStorage when staff changes
@@ -64,7 +74,7 @@ const Dashboard = () => {
     hour12: true,
   };
 
-  // Sample data
+  // Dashboard metrics
   const [inventoryCount, setInventoryCount] = useState(5234);
   const [requisitionsCount, setRequisitionsCount] = useState(342);
   const [ordersCount, setOrdersCount] = useState(128);
