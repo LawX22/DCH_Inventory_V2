@@ -42,25 +42,25 @@ function Header() {
       </div>
 
       <nav className={`main-nav ${menuOpen ? "open" : ""}`}>
-        <div className={`nav-item ${isActive("/Inventory")}`} onClick={() => navigate("/Inventory")}>
+        <div className={`nav-item ${isActive("/Admin_dashboard")}`} onClick={() => navigate("/Admin_dashboard")}>
           <FaBoxes className="nav-icon" />
-          <span>Inventory</span>
+          <span>Dashboard</span>
         </div>
-        <div className={`nav-item ${isActive("/StockInOut")}`} onClick={() => navigate("/StockInOut")}>
-          <FaExchangeAlt className="nav-icon" />
-          <span>Stock In/Out</span>
+        <div className={`nav-item ${isActive("/Admin_Inventory")}`} onClick={() => navigate("/Admin_Inventory")}>
+          <FaBoxes className="nav-icon" />
+          <span>Admin Inventory</span>
         </div>
-        <div className={`nav-item ${isActive("/stockHistory")}`} onClick={() => navigate("/stockHistory")}>
+        <div className={`nav-item ${isActive("/Admin_stockHistory")}`} onClick={() => navigate("/Admin_stockHistory")}>
           <FaHistory className="nav-icon" />
-          <span>Stock History</span>
+          <span>Admin Stock History</span>
         </div>
         <div className={`nav-item ${isActive("/Suppliers")}`} onClick={() => navigate("/Suppliers")}>
           <FaTruck className="nav-icon" />
-          <span>Suppliers</span>
+          <span>Admin Suppliers</span>
         </div>
         <div className={`nav-item ${isActive("/Orders")}`} onClick={() => navigate("/Orders")}>
           <FaClipboardList className="nav-icon" />
-          <span>Orders</span>
+          <span>Admin Orders</span>
         </div>
 
         {/* Logout Button */}
