@@ -42,6 +42,10 @@ function Header() {
       </div>
 
       <nav className={`main-nav ${menuOpen ? "open" : ""}`}>
+        <div className={`nav-item ${isActive("/Dashboard")}`} onClick={() => navigate("/Dashboard")}>
+          <FaBoxes className="nav-icon" />
+          <span>Dashboard</span>
+        </div>
         <div className={`nav-item ${isActive("/Inventory")}`} onClick={() => navigate("/Inventory")}>
           <FaBoxes className="nav-icon" />
           <span>Inventory</span>

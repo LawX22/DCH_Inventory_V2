@@ -6,6 +6,7 @@ import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";
 import StockHistory from "./Page/stockHistory";
 import ActivityReport from "./Page/activity";
+import Dashboard from "./Page/dashboard";
 import NotFoundPage from "./404/MaintenancePage";
 
 function StaffRoute() {
@@ -21,6 +22,7 @@ function StaffRoute() {
         <Route path="/stockInOut" element={<ProtectedRoute><StockInOut /></ProtectedRoute>} />
         <Route path="/stockHistory" element={<ProtectedRoute><StockHistory /></ProtectedRoute>} />
         <Route path="/activity" element={<ProtectedRoute><ActivityReport /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
         {/* 404 Not Found Route */}
         <Route path="*" element={<NotFoundPage />} />
