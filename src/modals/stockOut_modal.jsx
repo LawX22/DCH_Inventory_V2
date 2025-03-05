@@ -93,7 +93,7 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     switch (name) {
       case "itemId":
         setItemId(value);

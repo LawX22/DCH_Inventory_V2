@@ -7,13 +7,13 @@ $latest_unit_id = isset($_GET['latest_unit_id']) ? $_GET['latest_unit_id'] : '';
 
 
 // Prepare the SQL statement
-$sql = "SELECT units FROM inventory_merge WHERE inventory_id=?";
+$sql = "SELECT units,image FROM inventory_merge WHERE inventory_id=?";
 
 // Prepare the statement
 $stmt = $conn->prepare($sql);
 
 // Bind the parameter (assuming `inventory_id` is an integer, use 'i'; if it's a string, use 's')
-$stmt->bind_param('s', $latest_unit_id);
+$stmt->bind_param('i', $latest_unit_id);
 
 // Execute the statement
 $stmt->execute();

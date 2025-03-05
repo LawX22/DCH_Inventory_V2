@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { FaChevronDown } from "react-icons/fa";
 import {
   AiOutlineSearch,
   AiOutlineInbox,
   AiOutlineExport,
-  AiOutlineDelete,
   AiOutlineDown,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
@@ -11,8 +11,6 @@ import Header from "./Header";
 import axios from "axios";
 import StockInModal from "../modals/stockIn_modal";
 import StockOutModal from "../modals/stockOut_modal";
-
-import { FaBullseye } from "react-icons/fa6";
 
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,21 +20,17 @@ function StockInOut() {
   const [stockInModalOpen, setStockInModalOpen] = useState(false);
   const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
 
-   const [category, setCategory] = useState(
-     localStorage.getItem("category") || ''
-   );
- 
-   const [brand, setBrand] = useState(
-     localStorage.getItem("brand") || ''
-   );
- 
-   const [area, setArea] = useState(
-     localStorage.getItem("area") || ''
-   );
-  
-    const [categoryList, setCategoryList] = useState([]);
-    const [brandList, setBrandList] = useState([]);
-    const [areaList, setAreaList] = useState([]);
+  const [category, setCategory] = useState(
+    localStorage.getItem("category") || ""
+  );
+
+  const [brand, setBrand] = useState(localStorage.getItem("brand") || "");
+
+  const [area, setArea] = useState(localStorage.getItem("area") || "");
+
+  const [categoryList, setCategoryList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
+  const [areaList, setAreaList] = useState([]);
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -47,13 +41,31 @@ function StockInOut() {
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
+  }, [selectedLocation, brand, area, category]);
 
-  }, [selectedLocation,brand,area,category]);
+
+    useEffect(() => {
+      localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+      localStorage.setItem("area", ""); // Set area to empty string
+      localStorage.setItem("category", ""); // Set category to empty string
+  
+      setCategory('');
+      setBrand('');
+      setArea('');
+  
+    
+    }, []);
 
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-        params: { location: selectedLocation, search: searchQuery, category:category, brand:brand, area:area },
+        params: {
+          location: selectedLocation,
+          search: searchQuery,
+          category: category,
+          brand: brand,
+          area: area,
+        },
       })
       .then((response) => {
         setInventory(response.data.inventory || response.data);
@@ -62,6 +74,7 @@ function StockInOut() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery, category, brand, area, inventory]); // Fixed dependency array
    // Re-run when searchQuery changes
+  // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -81,12 +94,11 @@ function StockInOut() {
     setStockOutModalOpen(true);
   }
 
-
-
-  
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php")
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+      )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
       })
@@ -97,7 +109,9 @@ function StockInOut() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php")
+      .get(
+        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+      )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
       })
@@ -117,31 +131,26 @@ function StockInOut() {
       });
   }, []);
 
-
-
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-  
+
     switch (name) {
       case "category":
         setCategory(value);
-  
+
         break;
       case "brand":
         setBrand(value);
-  
+
         break;
       case "area":
         setArea(value);
-  
+
         break;
       default:
         console.warn("Unknown filter:", name);
     }
   };
-  
-
-
 
   return (
     <div className="inventory-container">
@@ -205,50 +214,53 @@ function StockInOut() {
       {/* Inventory Table */}
       <div className="inventory-table">
         <div className="table-header">
+          <div className="header-cell">
+            <div className="select-container">
+              <select
+                name="category"
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Select Category</option>
+                {categoryList.map((option) => (
+                  <option key={option.category} value={option.category}>
+                    {option.category}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />
+            </div>
+          </div>
           <div className="header-cell with-arrow">
-          <select name="category" onChange={(e) =>setCategory(e.target.value)}> 
-           
-                       <option value="">Item</option>
-                   {categoryList.map((option) => (
-                     <option key={option.inventory_Id} value={option.category}>
-                       {option.category}
-                     </option>
-                   ))}
-                       </select>
-                       <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
-                     </div>
-                     <div className="header-cell with-arrow">
-                      
-                     <select name="brand" onChange={(e) =>setBrand(e.target.value)}>     
-
-           
-                       <option value="">Brand</option>
-                       {brandList.map((option) => (
-                       <option key={option.inventory_Id} value={option.brand}>
-                       {option.brand}
-                       </option>
-                       ))}
-                       </select>
-                       <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
-                     </div>
-                     <div className="header-cell with-arrow">
-                     <select name="area" onChange={(e) =>setArea(e.target.value)}>
-                       <option value="">Area</option>
-                       {areaList.map((option) => (
-                       <option key={option.inventory_Id} value={option.storage_area}>
-                       {option.storage_area}
-                       </option>
-                       ))}
-                       </select>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
+            <div className="select-container">
+              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+                <option value="">Brand</option>
+                {brandList.map((option) => (
+                  <option key={option.inventory_Id} value={option.brand}>
+                    {option.brand}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />{" "}
+            </div>
+          </div>
+          <div className="header-cell with-arrow">
+            <div className="select-container">
+              <select name="area" onChange={(e) => setArea(e.target.value)}>
+                <option value="">Area</option>
+                {areaList.map((option) => (
+                  <option key={option.inventory_Id} value={option.storage_area}>
+                    {option.storage_area}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />{" "}
+            </div>
           </div>
           <div className="header-cell with-arrow">
             <span>Price</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell with-arrow">
             <span>Inventory</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "10" }} />
           </div>
           <div className="header-cell">Actions</div>
         </div>

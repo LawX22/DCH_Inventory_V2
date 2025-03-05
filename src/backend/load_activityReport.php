@@ -52,7 +52,7 @@ if ($activityType !== '') {
 
 
 
-$sql .= " ORDER BY report_id DESC LIMIT 100";
+$sql .= " ORDER BY date_performed DESC LIMIT 500";
 
 // Prepare the statement
 $stmt = $conn->prepare($sql);

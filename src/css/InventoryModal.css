@@ -47,22 +47,29 @@
 }
 
 /* Image Upload Section */
-.image-upload-container {
+.image-upload-container,
+.image-upload-container-1{
   margin-top: 10px;
-  flex: 0 0 300px;
+  width: 300px; /* Fixed width */
+  height: 250px; /* Fixed height */
   border: 2px dashed #b8d6eb;
   border-radius: 10px;
-  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative; /* Added for positioning context */
 }
 
-.image-preview {
+.image-preview, 
+.image-preview  {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  position: absolute; /* Position absolutely within container */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the image */
 }
 
 .upload-placeholder {
@@ -119,7 +126,8 @@
 
 /* Form Inputs and Selects */
 .form-input,
-.form-select {
+.form-select,
+.form-select-2 {
   padding: 8px;
   border: 1px solid #b8d6eb;
   border-radius: 5px;
@@ -129,8 +137,14 @@
   width: 100%;
 }
 
+.form-select-2 {
+  padding: 8px;
+  width: 94%;
+}
+
 .form-input:focus,
-.form-select:focus {
+.form-select:focus,
+.form-select-2:focus  {
   border-color: #7a9fb8;
 }
 

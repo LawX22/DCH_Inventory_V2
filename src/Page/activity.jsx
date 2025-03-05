@@ -23,6 +23,18 @@ function ActivityReport() {
          localStorage.getItem("userAH") || ''
        );
 
+          useEffect(() => {
+             localStorage.setItem("activityTypeAH", ""); // Set brand to empty string (or any value you want)
+             localStorage.setItem("dateAH", ""); // Set area to empty string
+             localStorage.setItem("userAH", ""); // Set category to empty string
+         
+             setActivityType('');
+             setDate('');
+             setUser('');
+         
+           
+           }, []);
+
     const [userList, setUserList] = useState([]);
 
 
@@ -178,7 +190,7 @@ function ActivityReport() {
           <span>Date <input type="date" name="date"  onChange={(e) =>setDate(e.target.value)}/></span>
             <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
           </div>
-          <div className="header-cell-1">Actions</div>
+          <div className="header-cell-1">Location</div>
         </div>
 
         <div className="table-body-1">
@@ -196,10 +208,7 @@ function ActivityReport() {
               </div>
               <div className="actions-cell-1">
                 <button className="action-button-1 view-button-1">
-                  <span className="action-icon-1">
-                    <AiOutlineEye size={18} />
-                  </span>
-                  <span>Revert</span>
+                 {item.location}
                 </button>
               </div>
             </div>

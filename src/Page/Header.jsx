@@ -30,6 +30,19 @@ function Header() {
   // Function to check if a nav item is active
   const isActive = (path) => (location.pathname === path ? "active" : "");
 
+  function clearHeaderFilter(){
+    localStorage.setItem("activityTypeAH", ""); // Set brand to empty string (or any value you want)
+    localStorage.setItem("dateAH", ""); // Set area to empty string
+    localStorage.setItem("userAH", ""); //
+localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+localStorage.setItem("area", ""); // Set area to empty string
+localStorage.setItem("category", ""); 
+localStorage.setItem("brandSH", ""); // Set brand to empty string (or any value you want)
+localStorage.setItem("areaSH", ""); // Set area to empty string
+localStorage.setItem("dateSH", ""); // Set category to empty string
+localStorage.getItem("categorySH", "");
+  }
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -42,19 +55,31 @@ function Header() {
       </div>
 
       <nav className={`main-nav ${menuOpen ? "open" : ""}`}>
-        <div className={`nav-item ${isActive("/Inventory")}`} onClick={() => navigate("/Inventory")}>
+        <div className={`nav-item ${isActive("/Inventory")}`} onClick={() => {
+    clearHeaderFilter();
+    navigate("/Inventory");
+  }}>
           <FaBoxes className="nav-icon" />
           <span>Inventory</span>
         </div>
-        <div className={`nav-item ${isActive("/StockInOut")}`} onClick={() => navigate("/StockInOut")}>
+        <div className={`nav-item ${isActive("/StockInOut")}`} onClick={() => {
+    clearHeaderFilter();
+    navigate("/StockInOut");
+  }}>
           <FaExchangeAlt className="nav-icon" />
           <span>Stock In/Out</span>
         </div>
-        <div className={`nav-item ${isActive("/stockHistory")}`} onClick={() => navigate("/stockHistory")}>
+        <div className={`nav-item ${isActive("/stockHistory")}`}  onClick={() => {
+    clearHeaderFilter();
+    navigate("/stockHistory");
+  }}>
           <FaHistory className="nav-icon" />
           <span>Stock History</span>
         </div>
-        <div className={`nav-item ${isActive("/Suppliers")}`} onClick={() => navigate("/Suppliers")}>
+        <div className={`nav-item ${isActive("/Suppliers")}`} onClick={() => {
+    clearHeaderFilter();
+    navigate("/Suppliers");
+  }}>
           <FaTruck className="nav-icon" />
           <span>Suppliers</span>
         </div>

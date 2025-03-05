@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SelectFixOpModal from "../modals/stockHistory_Select_Option";
 import ManualFixModal from "../modals/stockHistory_ManualFix_Modal";
 
 
-const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
+const SelectFixOpModal = ({ isOpen, onClose, data}) => {
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -40,7 +39,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [requisitionNum, setrequisitionNum] = useState([]);
   const [requisitionDate, setrequisitionDate] = useState([]); 
-  const [unitsAdded, setunitsAdded] = useState('');
+  const [unitsAdded, setunitsAdded] = useState([]);
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
 
@@ -53,22 +52,20 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
   const [oldCurrentUnits, setOldCurrentUnits] = useState('');  
   const [stock_name, setStockName] = useState('');  
   const [inputChanged, setInputChanged] = useState(false);  
-  const [selectOpModalOpen, setSelectOpModalOpen] = useState('');  
   const [manualFixModalOpen, setManualFixModalOpen] = useState(false);  
+    const [selectedData, setSelectedData] = useState([]);  
+ 
 
-  const [selectedData, setSelectedData] = useState([]);  
 
-  function openFixOptionFunc(data){
+
+  function openManualFixFunc(data){
     setSelectedData(data);
-    setSelectOpModalOpen(true);
-
-  }
-
-  
-  function openManualFixFunc(){
-    
     setManualFixModalOpen(true);
+
   }
+
+
+
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     if (data) {
@@ -92,9 +89,12 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
       setPrevUnits(data.previous_units || '');
       setOldCurrentUnits(data.current_stock || '');
       setStockName(data.stock_name || '');
-      
+
     }
   }, [data]); // Add dependency to ensure it runs when `data` changes
+
+
+
   
 
   useEffect(() => {
@@ -160,13 +160,13 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
         setId(value);
         break;
       case "requisitionNum":
-        setReqNum(value);  // ✅ FIXED
+        setrequisitionNum(value);  // ✅ FIXED
         break;
       case "requisitionDate":
-        setTransactionDate(value);
+        setrequisitionDate(value);
         break;
       case "stockInputed":
-        setUnitsInputted(value);
+        setunitsAdded(value);
         setInputChanged(true);
 
         break;
@@ -180,9 +180,22 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
     }
   };
   
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setImagePreview(objectUrl);
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
-    if(inputChanged === true){
-      alert("You changed.");
+    if(unitsAdded > units){
+      alert("Units added cannot be greater than the available units.");
       return;
     }
     else{
@@ -201,6 +214,9 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
     formDataToSend.append("username", username);
     formDataToSend.append("inputChanged", inputChanged);
     formDataToSend.append("stockType", stockType);
+
+
+  
     try {
       const response = await axios.post(
         "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
@@ -226,23 +242,13 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
 
   return (
     <div className="modal-overlay-1">
-
-      
-      
-
       <div className="modal-container-1">
-
-
-
- 
-
-          <SelectFixOpModal
-        isOpen={selectOpModalOpen}
-        onClose={() => setSelectOpModalOpen(false)}
-        data={selectedData}
-      />
-
-        <h2 className="modal-title-2">Stock History Fix</h2>
+        <ManualFixModal
+                isOpen={manualFixModalOpen}
+                onClose={() => setManualFixModalOpen(false)}
+                data={selectedData}
+              />
+        <h2 className="modal-title-2">ALERT!</h2>
         <form onSubmit={handleSubmit} className="modal-form-1">
           {/* Image Upload Section */}
           <div className="image-upload-container-1">
@@ -260,6 +266,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
                 <input
                   type="file"
                   accept="image/*"
+                  onChange={handleImageChange}
                   className="file-input-1"
                   id="imageUpload"
                 />
@@ -271,42 +278,17 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
           <div className="form-fields-container-1">
             {/* Item Details */}
             <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Item Description</label>
-              <p className="item-desc-1">{stock_name}</p>
+              <label className="form-label-1">You have changed the stock value or transaction type of this entry. Do you want to change the unit value of</label>
+              <p className="item-desc-1">{stock_name}?</p>
             </div>
 
-            
-        
-
-            <div className="form-group-1">
-              <label className="form-label-1">Brand</label>
-              <p className="item-brand-1">{itemBrand}</p>
-
-              
-            </div>
-
-
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Current Units</label>
-              <p className="item-desc-1">{latestUnits}</p>
-            </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units Before Change</label>
-              <p className="item-desc-1">{prevUnits}</p>
-            </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units After Change</label>
-              <p className="item-desc-1">{oldCurrentUnits}</p>
-            </div>
+    
 
             {/* Units Added */}
+           
 
             {/* Date Input */}
             <div className="form-group-1">
-              <label className="form-label-1">Date</label>
               <input
                 type="date"
                 name="requisitionDate"
@@ -315,11 +297,11 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
                 className="form-input-1"
               />
             </div>
+
             {/* Requisition Number */}
             <div className="form-group-1">
-              <label className="form-label-1">Requisition #</label>
               <input
-                type="number"
+                type="text"
                 name="requisitionNum"
                 value={reqNum}
                 onChange={handleInputChange}
@@ -328,9 +310,8 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
             </div>
                     {/* Requisition Number */}
                     <div className="form-group-1">
-              <label className="form-label-1">Stock Inputed</label>
               <input
-                type="number"
+                type="text"
                 name="stockInputed"
                 value={unitsInputted}
                 onChange={handleInputChange}
@@ -339,17 +320,13 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
             </div>
                 {/* Stock Type */}
                 <div className="form-group-1">
-              <label className="form-label-1">Stock Type</label>
-              <select  type="text"
+              <input  type="text"
                 name="stockType"
                 value={stockType}
                 onChange={handleInputChange}
-                className="form-input-1">
+                className="form-input-1"/>
 
-<option value="Stock Out">Stock Out</option>
-<option value="Stock In">Stock In</option>
 
-                </select>
              
 
         
@@ -362,27 +339,30 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
             <input type="hidden" name="stockId" value={Id} />
             <input type="hidden" name="inputChanged" value={inputChanged} />
 
+
           </div>
 
           {/* Modal Actions (Buttons) */}
           <div className="modal-actions-1">
             <button type="submit" className="save-button-1">
-              SAVE
+              DO NOT  CHANGE
             </button>
-
-         
-          
             <button type="button" onClick={onClose} className="cancel-button-1">
               CANCEL
             </button>
           </div>
         </form>
-        <button className="save-button-1"   onClick={() => openFixOptionFunc(data)}>
-              Options
+
+            <button type="button" onClick={onClose} className="cancel-button-1">
+            AUTO FIX
+            </button>
+
+            <button type="button" onClick={() => openManualFixFunc(data)} className="cancel-button-1">
+              MANUALLY FIX
             </button>
       </div>
     </div>
   );
 };
 
-export default StockHistoryFixModal;
+export default SelectFixOpModal;
