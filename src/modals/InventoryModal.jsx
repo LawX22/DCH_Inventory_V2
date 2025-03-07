@@ -247,8 +247,8 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 className="form-select-2"
               >
                 <option value="">Select Location</option>
-                <option value="Store">Store</option>
-                <option value="Warehouse">Warehouse</option>
+                <option value="STORE">STORE</option>
+                <option value="WAREHOUSE">WAREHOUSE</option>
               </select>
             </div>
             <div className="form-group">

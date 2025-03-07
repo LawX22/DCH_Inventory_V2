@@ -82,7 +82,7 @@ function Inventory() {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory, brand, category, area]); // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -169,6 +169,12 @@ function Inventory() {
     localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
     localStorage.setItem("area", ""); // Set area to empty string
     localStorage.setItem("category", ""); // Set category to empty string
+
+    setCategory('');
+    setBrand('');
+    setArea('');
+
+  
   }, []);
 
   useEffect(() => {

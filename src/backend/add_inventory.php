@@ -43,7 +43,7 @@ if ($conn->query($sql) === TRUE) {
     $inventoryId = $conn->insert_id; // Get the last inserted ID
     $activity_performed = 'Added item '.$description1;
     // Insert into activity_report
-    $activity_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, activity_category) 
+    $activity_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, location) 
     VALUES ('Add Item', NOW(), '$activity_performed', '$username' , '$inventoryId' , '$location')";
     if ($conn->query($activity_sql) === TRUE) {
         echo json_encode(["message" => "Item added successfully!", "image" => $imagePath]);

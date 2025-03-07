@@ -43,6 +43,19 @@ function StockInOut() {
     localStorage.setItem("category", category);
   }, [selectedLocation, brand, area, category]);
 
+
+    useEffect(() => {
+      localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+      localStorage.setItem("area", ""); // Set area to empty string
+      localStorage.setItem("category", ""); // Set category to empty string
+  
+      setCategory('');
+      setBrand('');
+      setArea('');
+  
+    
+    }, []);
+
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
@@ -59,7 +72,8 @@ function StockInOut() {
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area]); // Fixed dependency array
+  }, [selectedLocation, searchQuery, category, brand, area, inventory]); // Fixed dependency array
+   // Re-run when searchQuery changes
   // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {

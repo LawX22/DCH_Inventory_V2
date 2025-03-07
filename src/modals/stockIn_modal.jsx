@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const StockInModal = ({ isOpen, onClose, data }) => {
+const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -42,7 +42,6 @@ const StockInModal = ({ isOpen, onClose, data }) => {
   const [requisitionDate, setrequisitionDate] = useState([]); 
   const [unitsAdded, setunitsAdded] = useState([]);
 
-  // Fetch brand data from backend when component mounts
   useEffect(() => {
     if (data) {
       setItemId(data.inventory_Id || "");
@@ -250,4 +249,4 @@ const StockInModal = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default StockInModal;
+export default StockHistoryFixModal;

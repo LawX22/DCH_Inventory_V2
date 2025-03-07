@@ -24,13 +24,32 @@ const exampleStaffData = [
   }
 ];
 
+
+
+function ItemDetails({ }) {
+  const [itemData, setItemData] = useState({});
+
+  useEffect(() => {
+      const fetchItem = async () => {
+          try {
+              const response = await axios.get(`http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php`);
+              setItemData(response.data);
+          } catch (error) {
+              console.error("Error fetching item data:", error);
+          }
+      };
+
+      fetchItem();
+  }, [itemId]);
+}
+
+
+
 const Dashboard = () => {
   // State for current date and time
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [staffsList, setStaffsList] = useState([]);
-  const [selectedStaff, setSelectedStaff] = useState(
-    localStorage.getItem("selectedStaff") || ""
-  );
+
 
   // Update date and time every second
   useEffect(() => {
@@ -53,10 +72,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Update localStorage when staff changes
-  useEffect(() => {
-    localStorage.setItem("selectedStaff", selectedStaff);
-  }, [selectedStaff]);
+
 
   // Format options for date
   const dateFormatOptions = {
@@ -75,9 +91,24 @@ const Dashboard = () => {
   };
 
   // Dashboard metrics
-  const [inventoryCount, setInventoryCount] = useState(5234);
+
+  const [inventoryCount, setInventoryCount] = useState(0);
   const [requisitionsCount, setRequisitionsCount] = useState(342);
   const [ordersCount, setOrdersCount] = useState(128);
+
+  useEffect(() => {
+    axios.get('http://localhost/DCH_Inventory_V2/src/backend/dashboard_data.php')
+        .then(response => {
+            console.log('Dashboard Stats:', response.data);
+            // Example usage:
+            console.log('Weekly Average Activity:', response.data.weekly_average_activity);
+            setInventoryCount(response.data.inventory_merge_total);
+            console.log('Total Inventory:', response.data.inventory_merge_total);
+        })
+        .catch(error => {
+            console.error('Failed to fetch dashboard stats:', error);
+        });
+}, []);
 
   // Dashboard card data
   const dashboardCards = [
@@ -111,76 +142,41 @@ const Dashboard = () => {
     },
   ];
 
+
+
   // Activity data
-  const [activityData, setActivityData] = useState([
-    {
-      action: "Insert",
-      monday: 2,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 2,
-    },
-    {
-      action: "Update",
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 0,
-    },
-    {
-      action: "Delete",
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 0,
-    },
-    {
-      action: "Stock In",
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 0,
-    },
-    {
-      action: "Stock Out",
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 0,
-    },
-    {
-      action: "Per day",
-      monday: 2,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      total: 2,
-    },
-  ]);
+ const [activityData, setActivityData] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php") // Adjust the URL to your actual PHP file location
+      .then((response) => {
+        setActivityData(response.data);
+
+        const perDayRow = data.find(row => row.action === "Per day");
+
+      if (perDayRow) {
+        setActivityTotal(perDayRow.total); // Set total into state
+      } else {
+        setActivityTotal(0); // Fallback if "Per day" row is missing
+      }
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the activity data!", error);
+      });
+  }, []);
 
   const average = 0.29;
+
+
+
+
+
+
 
   return (
     <div className="dashboard-container">
       <Header />
-
+    
       <div className="action-panel-1">
         <div className="left-panel">
           <div className="date-time-display">
@@ -198,7 +194,6 @@ const Dashboard = () => {
             <div className="select-container">
               <select
                 className="dropdown-select-1"
-                value={selectedStaff}
                 onChange={(e) => setSelectedStaff(e.target.value)}
               >
                 <option value="">Select Staff</option>

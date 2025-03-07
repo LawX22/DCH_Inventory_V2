@@ -82,10 +82,10 @@ mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
 // ✅ **Step 4: Insert into activity_report BEFORE sending response**
-$activity_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, activity_category) 
+$activity_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, location) 
                  VALUES ('Stock Out', NOW(), ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conn, $activity_sql);
-mysqli_stmt_bind_param($stmt, "sssi", $activity_performed, $username, $inventory_Id, $location);
+mysqli_stmt_bind_param($stmt, "ssss", $activity_performed, $username, $inventory_Id, $location);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 

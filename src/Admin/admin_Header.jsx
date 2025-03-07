@@ -48,19 +48,19 @@ function Header() {
         </div>
         <div className={`nav-item ${isActive("/Admin_Inventory")}`} onClick={() => navigate("/Admin_Inventory")}>
           <FaBoxes className="nav-icon" />
-          <span>Admin Inventory</span>
+          <span>Inventory</span>
         </div>
         <div className={`nav-item ${isActive("/Admin_stockHistory")}`} onClick={() => navigate("/Admin_stockHistory")}>
           <FaHistory className="nav-icon" />
-          <span>Admin Stock History</span>
+          <span>Stock History</span>
         </div>
         <div className={`nav-item ${isActive("/Suppliers")}`} onClick={() => navigate("/Suppliers")}>
           <FaTruck className="nav-icon" />
-          <span>Admin Suppliers</span>
+          <span>Suppliers</span>
         </div>
         <div className={`nav-item ${isActive("/Orders")}`} onClick={() => navigate("/Orders")}>
           <FaClipboardList className="nav-icon" />
-          <span>Admin Orders</span>
+          <span>Orders</span>
         </div>
 
         {/* Logout Button */}
