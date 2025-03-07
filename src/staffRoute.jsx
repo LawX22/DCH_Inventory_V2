@@ -6,6 +6,9 @@ import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";
 import StockHistory from "./Page/stockHistory";
 import ActivityReport from "./Page/activity";
+import Admin_dashboard from "./Admin/admin_dashboard";
+import Admin_Inventory from "./Admin/admin_Inventory";
+import Admin_stockHistory from "./Admin/admin_stockHistory";
 import NotFoundPage from "./404/MaintenancePage";
 
 function StaffRoute() {
@@ -21,6 +24,9 @@ function StaffRoute() {
         <Route path="/stockInOut" element={<ProtectedRoute><StockInOut /></ProtectedRoute>} />
         <Route path="/stockHistory" element={<ProtectedRoute><StockHistory /></ProtectedRoute>} />
         <Route path="/activity" element={<ProtectedRoute><ActivityReport /></ProtectedRoute>} />
+        <Route path="/admin_dashboard" element={<ProtectedRoute><Admin_dashboard /></ProtectedRoute>} />
+        <Route path="/admin_Inventory" element={<ProtectedRoute><Admin_Inventory /></ProtectedRoute>} />
+        <Route path="/admin_stockHistory" element={<ProtectedRoute><Admin_stockHistory /></ProtectedRoute>} />
 
         {/* 404 Not Found Route */}
         <Route path="*" element={<NotFoundPage />} />

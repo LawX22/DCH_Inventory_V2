@@ -7,6 +7,7 @@ import "../src/css/LogIn.css";
 import "../src/css/InventoryModal.css";
 import "../src/css/In&OutModal.css";
 import "../src/css/activity.css";
+import "../src/css/dashboard.css";
 import "../src/css/404.css";
 
 import StaffRoute from "./staffRoute.jsx";
