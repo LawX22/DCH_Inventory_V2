@@ -13,42 +13,66 @@ import {
 } from "lucide-react";
 
 // Example staff data (typically would come from backend)
-const exampleStaffData = [
-  {
-    "username": "Dhaniel Malinao",
-    "role": "Inventory Manager"
-  },
-  {
-    "username": "Lawrenz Carisusa",
-    "role": "Warehouse Supervisor"
-  }
-];
-
-
-
-function ItemDetails({ }) {
-  const [itemData, setItemData] = useState({});
-
-  useEffect(() => {
-      const fetchItem = async () => {
-          try {
-              const response = await axios.get(`http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php`);
-              setItemData(response.data);
-          } catch (error) {
-              console.error("Error fetching item data:", error);
-          }
-      };
-
-      fetchItem();
-  }, [itemId]);
-}
-
 
 
 const Dashboard = () => {
   // State for current date and time
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [staffsList, setStaffsList] = useState([]);
+
+
+  const getCurrentDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+  const [itemData, setItemData] = useState({});
+  const [selectedWeek, setSelectedWeek] = useState(getCurrentDate()); 
+
+    const [selectedEncoder, setSelectedEncoder] = useState(
+      localStorage.getItem("selectedEncoder") || "All"
+    );
+
+      useEffect(() => {
+        localStorage.setItem("selectedEncoder", selectedEncoder);
+      }, [selectedEncoder]);
+
+  const [userList, setUserList] = useState([]);
+ useEffect(() => {
+      axios
+        .get("http://localhost/DCH_Inventory_V2/src/backend/list_encoders_header.php")
+        .then((response) => {
+          setUserList(response.data); // Store fetched brands in state
+        })
+        .catch((error) => {
+          console.error("Error fetching brands:", error);
+        });
+    }, []);
+
+    useEffect(() => {
+      console.log("Selected Encoder:",selectedEncoder); // Debugging
+  
+      const fetchItem = async () => {
+          if (!selectedEncoder) {
+              console.warn("No encoder selected, skipping API call.");
+              return;
+          }
+  
+          try {
+              const response = await axios.get(
+                  "http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php",{
+                      params: { encoder: selectedEncoder },
+                  }
+              )
+              console.log("API Response:", response.data);
+              setItemData(response.data);
+          } catch (error) {
+              console.error("Error fetching item data:", error);
+          }
+      };
+  
+      fetchItem();
+  }, [selectedEncoder]); // Remove `itemData` from dependencies to prevent infinite re-renders
+  
+  
 
 
   // Update date and time every second
@@ -62,15 +86,7 @@ const Dashboard = () => {
   }, []);
 
   // Fetch staffs list (simulated with example data)
-  useEffect(() => {
-    // In a real application, this would be an actual API call
-    try {
-      // Simulating API response with example data
-      setStaffsList(exampleStaffData);
-    } catch (error) {
-      console.error("Error fetching staffs:", error);
-    }
-  }, []);
+
 
 
 
@@ -108,7 +124,7 @@ const Dashboard = () => {
         .catch(error => {
             console.error('Failed to fetch dashboard stats:', error);
         });
-}, []);
+}, [inventoryCount]);
 
   // Dashboard card data
   const dashboardCards = [
@@ -141,42 +157,102 @@ const Dashboard = () => {
       color: "orange",
     },
   ];
-
-
-
   // Activity data
  const [activityData, setActivityData] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php") // Adjust the URL to your actual PHP file location
-      .then((response) => {
+
+
+ useEffect(() => {
+  console.log("Selected Encoder:", selectedEncoder);
+  const { start, end } = getWeekRange(selectedWeek);
+
+  const fetchItem = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php",
+        { params: { encoder: selectedEncoder, startOfWeek: start, endOfWeek: end } }
+      );
+      console.log("API Response:", response.data);
+      // Ensure response is an array before setting state
+      if (Array.isArray(response.data)) {
         setActivityData(response.data);
-
-        const perDayRow = data.find(row => row.action === "Per day");
-
-      if (perDayRow) {
-        setActivityTotal(perDayRow.total); // Set total into state
       } else {
-        setActivityTotal(0); // Fallback if "Per day" row is missing
+        console.error("Unexpected API response format:", response.data);
+        setActivityData([]); // Reset state to empty array
       }
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the activity data!", error);
-      });
-  }, []);
+    } catch (error) {
+      console.error("Error fetching item data:", error);
+      setActivityData([]); // Reset state to prevent errors in .map()
+    }
+  };
+  if (selectedEncoder) { 
+    fetchItem();
+  }
+}, [selectedEncoder, selectedWeek]);
+ // Don't include itemData, prevents infinite requests
+
 
   const average = 0.29;
 
+  function getWeekRange(selectedWeek) {
+    try {
+        if (!selectedWeek) {
+            throw new Error("No week selected");
+        }
+
+        // Extract year and week number from "YYYY-Wxx"
+        let year = parseInt(selectedWeek.substring(0, 4));   // Extract "2024"
+        let week = parseInt(selectedWeek.substring(6));      // Extract "15"
+
+        if (isNaN(year) || isNaN(week)) {
+            throw new Error("Invalid week format");
+        }
+
+        // Get January 1st of the given year
+        let firstDayOfYear = new Date(year, 0, 1);
+        let daysOffset = (week - 1) * 7;
+
+        // Find Monday of the selected week
+        let firstMonday = new Date(firstDayOfYear);
+        firstMonday.setDate(firstDayOfYear.getDate() + daysOffset - firstDayOfYear.getDay() + 1);
+
+        // Set Monday as start, and Saturday as end
+        let start = new Date(firstMonday);
+        let end = new Date(start);
+        end.setDate(start.getDate() + 5); // Saturday (5 days after Monday)
+
+        // Convert to YYYY-MM-DD format
+        let startFormatted = start.toISOString().split("T")[0];
+        let endFormatted = end.toISOString().split("T")[0];
+
+        return { start: startFormatted, end: endFormatted };
+    } catch (error) {
+        console.error("Error in getWeekRange:", error.message);
+        return { start: null, end: null };
+    }
+}
 
 
 
+  function getCurrentWeek() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const weekNumber = getWeekNumber(today);
+    return `${year}-W${weekNumber}`;
+  }
 
-
+  // Function to get the week number (ISO standard)
+  function getWeekNumber(date) {
+    const tempDate = new Date(date);
+    tempDate.setHours(0, 0, 0, 0);
+    tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+    const firstJan = new Date(tempDate.getFullYear(), 0, 4);
+    return Math.ceil(((tempDate - firstJan) / 86400000 + 1) / 7);
+  }
 
   return (
     <div className="dashboard-container">
       <Header />
-    
+
       <div className="action-panel-1">
         <div className="left-panel">
           <div className="date-time-display">
@@ -192,23 +268,28 @@ const Dashboard = () => {
         <div className="right-panel">
           <div className="staffs-dropdown">
             <div className="select-container">
-              <select
-                className="dropdown-select-1"
-                onChange={(e) => setSelectedStaff(e.target.value)}
-              >
-                <option value="">Select Staff</option>
-                {staffsList.map((staff) => (
-                  <option key={staff.username} value={staff.username}>
-                    {staff.username}
-                  </option>
-                ))}
-              </select>
+             <div className="warehouse-dropdown">
+             <select
+          
+            value={selectedEncoder}
+            onChange={(e) => setSelectedEncoder(e.target.value)}
+          >
+            <option value="All">All</option>  
+            <option value="dhaniel">dhaniel</option>
+            <option value="jeff">jeff</option>
+          </select>
+        </div>
               <FaChevronDown className="select-icon-1" />
             </div>
           </div>
 
           <div className="select-date-container-1">
-            <input type="date" className="date-input-1" />
+          <label>Select Week:</label>
+      <input
+        type="week" 
+        value={selectedWeek}
+        onChange={(e) => setSelectedWeek(e.target.value)}
+      />
           </div>
 
           <button className="export-button-1">
@@ -216,7 +297,10 @@ const Dashboard = () => {
             <span>Export</span>
           </button>
 
-          <button className="activity-button-1">
+          <button className="activity-button-1"
+           onClick={() =>
+            window.open("/activity", "_blank", "noopener,noreferrer")
+          }>
             <FiActivity size={18} />
             <span>Activity</span>
           </button>

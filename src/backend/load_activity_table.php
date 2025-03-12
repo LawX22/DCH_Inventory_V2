@@ -1,22 +1,29 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Content-Type: application/json");
 
-
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Database connection
 include 'db_connection.php';
 
+// Get parameters from frontend
+$encoder = isset($_GET['encoder']) ? $_GET['encoder'] : '';
+$startOfWeek = isset($_GET['startOfWeek']) ? $_GET['startOfWeek'] : '';
+$endOfWeek = isset($_GET['endOfWeek']) ? $_GET['endOfWeek'] : '';
 
-// Connect to databas
+// Log received parameters for debugging
+file_put_contents("debug_log.txt", "Encoder: $encoder, Start: $startOfWeek, End: $endOfWeek\n", FILE_APPEND);
 
-// Get the start and end of the current week (Monday to Saturday)
+if (empty($startOfWeek) || empty($endOfWeek)) {
+    echo json_encode(["error" => "Missing start or end of week"]);
+    exit;
+}
 
-
-$startOfWeek = date('Y-m-d', strtotime('monday this week'));
-$endOfWeek = date('Y-m-d', strtotime('saturday this week'));
-
-// Query to get counts by action and day
+// Base SQL query
 $sql = "
     SELECT 
         activity_type,
@@ -25,13 +32,33 @@ $sql = "
     FROM 
         activity_report
     WHERE 
-        date_performed >= '$startOfWeek' AND date_performed <= '$endOfWeek'
-    GROUP BY 
-        activity_type, DAYNAME(date_performed)
+        date_performed BETWEEN ? AND ?
 ";
 
-$result = $conn->query($sql);
+// Add encoder filter if it's not "All"
+if ($encoder !== 'All' && !empty($encoder)) {
+    $sql .= " AND encoder = ?";
+}
 
+$sql .= " GROUP BY activity_type, DAYNAME(date_performed)";
+
+// Prepare the query
+$stmt = $conn->prepare($sql);
+
+// Bind parameters based on whether encoder is included
+if ($encoder !== 'All' && !empty($encoder)) {
+    $stmt->bind_param("sss", $startOfWeek, $endOfWeek, $encoder);
+} else {
+    $stmt->bind_param("ss", $startOfWeek, $endOfWeek);
+}
+
+// Execute the query
+if (!$stmt->execute()) {
+    echo json_encode(["error" => "Database query failed", "details" => $stmt->error]);
+    exit;
+}
+
+$result = $stmt->get_result();
 $data = [];
 
 // Default structure
@@ -54,16 +81,14 @@ foreach ($actions as $action) {
 }
 
 // Populate with actual counts from the database
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $action = $row['activity_type'];
-        $day = strtolower($row['day']); // e.g., "monday"
-        $count = $row['count'];
+while ($row = $result->fetch_assoc()) {
+    $action = $row['activity_type'];
+    $day = strtolower($row['day']); // e.g., "monday"
+    $count = (int)$row['count']; // Ensure it's an integer
 
-        if (isset($data[$action][$day])) {
-            $data[$action][$day] = $count;
-            $data[$action]['total'] += $count;
-        }
+    if (isset($data[$action][$day])) {
+        $data[$action][$day] = $count;
+        $data[$action]['total'] += $count;
     }
 }
 
@@ -91,7 +116,15 @@ foreach ($days as $day) {
 $response = array_values($data);
 $response[] = $perDay; // Add "Per day" row at the end
 
-echo json_encode($response);
+// Ensure JSON encoding success
+$jsonOutput = json_encode($response);
+if ($jsonOutput === false) {
+    echo json_encode(["error" => "JSON encoding failed", "details" => json_last_error_msg()]);
+} else {
+    echo $jsonOutput;
+}
 
+// Close the statement and connection
+$stmt->close();
 $conn->close();
-
+?>
