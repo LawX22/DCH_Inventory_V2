@@ -46,26 +46,22 @@ function Inventory() {
     storageArea: "",
     image: null,
   });
-
-  const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "All"
-  );
-
   const [username, setUsername] = useState(
     localStorage.getItem("username") || "Unknown"
   );
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
 
-  // Update localStorage when the location changes
+  const [selectedLocation, setSelectedLocation] = useState(
+    localStorage.getItem("selectedLocation") || "All"
+  );
+
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
   }, [selectedLocation, brand, area, category]);
-
-  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
   useEffect(() => {
     axios
@@ -82,7 +78,16 @@ function Inventory() {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory, brand, category, area]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory, brand, category, area]);
+
+
+
+  // Update localStorage when the location changes
+ 
+
+  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
+
+ // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

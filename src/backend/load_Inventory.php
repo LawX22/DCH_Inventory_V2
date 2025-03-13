@@ -9,7 +9,7 @@ $brand = isset($_GET['brand']) ? $_GET['brand'] : '';
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $area = isset($_GET['area']) ? $_GET['area'] : '';
 
-$sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0"; // Ensures filters can be appended properly
+$sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0";
 
 // Filter by location if selected
 if ($location !== '' && $location !== 'All') {

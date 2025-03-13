@@ -8,8 +8,8 @@ $startOfWeek = date('Y-m-d', strtotime('monday this week'));
 $endOfWeek = date('Y-m-d', strtotime('saturday this week'));
 $startOfMonth = date('Y-m-01');
 $endOfMonth = date('Y-m-t');
-
 // Initialize response array
+
 $response = [
     "weekly_average_activity" => 0,
     "weekly_total_activity" => 0,
@@ -34,6 +34,9 @@ $sql = "
     GROUP BY 
         DAYNAME(date_performed)
 ";
+
+
+
 
 $result = $conn->query($sql);
 if ($result) {
