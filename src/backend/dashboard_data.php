@@ -10,6 +10,10 @@ $startOfMonth = date('Y-m-01');
 $endOfMonth = date('Y-m-t');
 // Initialize response array
 
+$encoder = isset($_GET['encoder']) ? $_GET['encoder'] : '';
+$startOfWeek = isset($_GET['startOfWeek']) ? $_GET['startOfWeek'] : '';
+$endOfWeek = isset($_GET['endOfWeek']) ? $_GET['endOfWeek'] : '';
+
 $response = [
     "weekly_average_activity" => 0,
     "weekly_total_activity" => 0,
@@ -47,9 +51,7 @@ if ($result) {
 }
 $weeklyTotal = array_sum($totals);
 $response['weekly_total_activity'] = $weeklyTotal;
-$response['weekly_average_activity'] = round($weeklyTotal / count($days), 2);
-
-
+$response['weekly_average_activity'] = round($weeklyTotal / 5);
 
 // --- 2. Get Monthly Total Stock In ---
 $sql = "
@@ -72,7 +74,6 @@ FROM stock_history
 WHERE transaction_date >= '$startOfMonth' 
 AND transaction_date <= '$endOfMonth'
 AND location = 'STORE'
-
 ";
 $result = $conn->query($sql);
 if ($result) {
