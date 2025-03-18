@@ -1,6 +1,8 @@
 <?php
-header("Access-Control-Allow-Origin: *");  // Allow any origin (change this in production)
-header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *"); // Allow all origins
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 include 'db_connection.php'; // Ensure you have your DB connection here
 
 $location = isset($_GET['location']) ? $_GET['location'] : '';

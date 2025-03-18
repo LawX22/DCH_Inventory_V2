@@ -30,7 +30,6 @@ function Inventory() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const user = localStorage.getItem("username");
-
   const [inventory, setInventory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,14 +54,12 @@ function Inventory() {
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
   );
-
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
   }, [selectedLocation, brand, area, category]);
-
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
@@ -250,6 +247,16 @@ function Inventory() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+
+        <button
+          className="activity-button"
+          onClick={() =>
+            window.open("/List_Restock", "_blank", "noopener,noreferrer")
+          }
+        >
+          <FiActivity size={18} />
+          <span>List Stocks</span>
+        </button>
 
         <button className="export-button" onClick={handleExport}>
           <FiDownload size={18} />
