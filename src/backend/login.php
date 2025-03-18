@@ -2,9 +2,10 @@
 session_start();
 include "db_connection.php"; // Ensure this file connects to your database
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Origin: *"); // Change * to your frontend URL if needed
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
 
 $data = json_decode(file_get_contents("php://input"), true);

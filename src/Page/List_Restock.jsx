@@ -2,23 +2,20 @@ import React, { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import {
   AiOutlineSearch,
-  AiOutlineInbox,
-  AiOutlineExport,
-  AiOutlineDown,
+  AiOutlineEye,
+  AiOutlineDelete,
+  AiOutlinePlus,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
-import StockInModal from "../modals/stockIn_modal";
-import StockOutModal from "../modals/stockOut_modal";
+import { IoArrowBack } from "react-icons/io5";
 
-function StockInOut() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [inventory, setInventory] = useState([]);
-  const [selectedData, setSelectedData] = useState([]);
+import SelectedItemsModal from "../modals/reviewSelected_Modal";
+import EditModal from "../modals/edit_InventoryModal";
 
-  const [stockInModalOpen, setStockInModalOpen] = useState(false);
-  const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
+function List_Restock() {
+  const [editModalOpen, seteditModalOpen] = useState(false);
 
   const [category, setCategory] = useState(
     localStorage.getItem("category") || ""
@@ -28,14 +25,64 @@ function StockInOut() {
 
   const [area, setArea] = useState(localStorage.getItem("area") || "");
 
+  const [selectedItems, setSelectedItems] = useState(() => {
+    return JSON.parse(localStorage.getItem("selectedItems")) || [];
+  });
+
+  const toggleSelection = (itemId, isSelected) => {
+    const updatedSelection = !isSelected; // Toggle true/false
+    axios
+      .post("http://localhost/DCH_Inventory_V2/src/backend/update_selection.php", {
+        itemId,
+        isSelected: updatedSelection ? 1 : 0, // Send as 1 or 0
+      })
+      .then((response) => {
+        console.log("Server Response:", response.data); // Log the response from the server
+
+        setInventory((prevInventory) =>
+          prevInventory.map((item) =>
+            item.inventory_Id === itemId ? { ...item, isSelected: updatedSelection } : item
+          )
+        );
+      })
+      .catch((error) => console.error("Error updating selection:", error));
+};
+
+  
+  
+
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const user = localStorage.getItem("username");
+  const [inventory, setInventory] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ModalOpen, setModalOpen] = useState(false);
+
+  const [formData, setFormData] = useState({
+    itemCode: "",
+    itemBrand: "",
+    itemCategory: "",
+    description1: "",
+    description2: "",
+    units: "",
+    fixedPrice: "",
+    retailPrice: "",
+    location: "",
+    storageArea: "",
+    image: null,
+  });
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || "Unknown"
+  );
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
   );
-
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
     localStorage.setItem("brand", brand);
@@ -44,37 +91,24 @@ function StockInOut() {
   }, [selectedLocation, brand, area, category]);
 
 
-    useEffect(() => {
-      localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
-      localStorage.setItem("area", ""); // Set area to empty string
-      localStorage.setItem("category", ""); // Set category to empty string
-  
-      setCategory('');
-      setBrand('');
-      setArea('');
-  
-    
-    }, []);
+useEffect(() => {
+  axios
+    .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      params: {
+        location: selectedLocation,
+        search: searchQuery,
+        category: category,
+        brand: brand,
+        area: area,
+      },
+    })
+    .then((response) => {
+      setInventory(response.data.inventory || response.data);
+    })
+    .catch((error) => console.error("Error fetching inventory:", error));
+}, [selectedLocation, searchQuery, brand, category, area, inventory]); // Removed inventory
 
-  useEffect(() => {
-    axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-        params: {
-          location: selectedLocation,
-          search: searchQuery,
-          category: category,
-          brand: brand,
-          area: area,
-        },
-      })
-      .then((response) => {
-        setInventory(response.data.inventory || response.data);
-        console.log(area);
-      })
-      .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area, inventory]); // Fixed dependency array
-   // Re-run when searchQuery changes
-  // Re-run when searchQuery changes
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,15 +118,90 @@ function StockInOut() {
     }));
   };
 
-  function openStockinFunc(data) {
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "category":
+        setCategory(value);
+
+        break;
+      case "brand":
+        setBrand(value);
+
+        break;
+      case "area":
+        setArea(value);
+
+        break;
+      default:
+        console.warn("Unknown filter:", name);
+    }
+  };
+
+  function openEditFunc(data) {
     setSelectedData(data);
-    setStockInModalOpen(true);
+    seteditModalOpen(true);
   }
 
-  function openStockoutFunc(data) {
-    setSelectedData(data);
-    setStockOutModalOpen(true);
+  async function deleteFunc(id, username) {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!isConfirmed) return; // Stop if the user cancels
+
+    try {
+      await axios.post(
+        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        new URLSearchParams({
+          id: id,
+          username: username, // Add username here
+        })
+      );
+
+      console.log("Deleted successfully");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    setIsModalOpen(false);
+  };
+
+  const filteredInventory = inventory.filter(
+    (item) =>
+      (item.itemCode &&
+        item.itemCode.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemBrand &&
+        item.itemBrand.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemDesc_1 &&
+        item.itemDesc_1.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.itemDesc_2 &&
+        item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  const handleExport = () => {
+    window.open(
+      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "_blank"
+    );
+  };
+
+  useEffect(() => {
+    localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+    localStorage.setItem("area", ""); // Set area to empty string
+    localStorage.setItem("category", ""); // Set category to empty string
+
+    setCategory('');
+    setBrand('');
+    setArea('');
+
+  
+  }, []);
 
   useEffect(() => {
     axios
@@ -119,7 +228,6 @@ function StockInOut() {
         console.error("Error fetching brands:", error);
       });
   }, []);
-
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
@@ -131,40 +239,33 @@ function StockInOut() {
       });
   }, []);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "category":
-        setCategory(value);
-
-        break;
-      case "brand":
-        setBrand(value);
-
-        break;
-      case "area":
-        setArea(value);
-
-        break;
-      default:
-        console.warn("Unknown filter:", name);
-    }
-  };
-
   return (
     <div className="inventory-container">
-      <Header />
 
-      {/* Action Panel */}
 
-     
-
+       <header className="header-1">
+              {/* Back Button on the Left */}
+              <div
+                className="close-btn"
+                onClick={() => {
+                  navigate("/inventory"); // Navigate to Inventory
+                  setTimeout(() => window.close());
+                }}
+              >
+               <IoArrowBack size={20} />  Close
+              </div>
+      
+              {/* Logo in the Center */}
+              <div className="logo-container-1">
+                <img src="/src/assets/DCH.png" alt="DCH" className="DCH-1" />
+              </div>
+        </header>
+ 
 
       <div className="action-panel">
 
-
-
+      <button  className="add-button"onClick={() => setModalOpen(true)}>Review Items</button>
+   
 
         <div className="warehouse-dropdown">
           <select
@@ -189,37 +290,52 @@ function StockInOut() {
           />
         </div>
 
-        {/* Export Button */}
-        <button className="export-button">
-          <FiDownload size={18} />
-          <span>Export</span>
-        </button>
+     
 
-        {/* Activity Button */}
         <button
-          className="activity-button"
-          onClick={() =>
-            window.open("/activity", "_blank", "noopener,noreferrer")
-          }
-        >
-          <FiActivity size={18} />
-          <span>Activity</span>
-        </button>
+  className="activity-button"
+  onClick={async () => {
+    try {
+      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/clear_selection.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "clearSelection" }), // Send action to PHP
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert("All selections cleared!");
+      } else {
+        alert("Failed to clear selections.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred.");
+    }
+  }}
+>
+  <FiActivity size={18} />
+  <span>Clear All</span>
+</button>
+
       </div>
 
-      <StockInModal
-        isOpen={stockInModalOpen}
-        onClose={() => setStockInModalOpen(false)}
+
+
+<SelectedItemsModal
+  selectedItems={inventory.filter((item) => item.isSelected)}
+  isOpen={ModalOpen}
+  onClose={() => setModalOpen(false)}
+/>
+
+      <EditModal
+        isOpen={editModalOpen}
+        onClose={() => seteditModalOpen(false)}
         data={selectedData}
       />
 
-      <StockOutModal
-        isOpen={stockOutModalOpen}
-        onClose={() => setStockOutModalOpen(false)}
-        data={selectedData}
-      />
-
-      {/* Inventory Table */}
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell">
@@ -274,12 +390,12 @@ function StockInOut() {
         </div>
 
         <div className="table-body">
-          {inventory.map((item) => (
-            <div className="table-row" key={item.inventory_Id}>
+          {filteredInventory.map((item, key) => (
+            <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
                   <img
-                    src={"/src/backend/" + item.image}
+                    src={`/src/backend/${item.image}`}
                     alt={item.name}
                     className="item-image"
                   />
@@ -313,27 +429,12 @@ function StockInOut() {
                   <div>TSV - ₱ {item.totalstockValue}</div>
                 </div>
               </div>
-
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openStockinFunc(item)}
-                >
-                  <span className="action-icon">
-                    <AiOutlineInbox size={18} />
-                  </span>
-                  <span>Stock In</span>
-                </button>
-                <button
-                  className="action-button delete-button"
-                  onClick={() => openStockoutFunc(item)}
-                >
-                  <span className="action-icon">
-                    <AiOutlineExport size={18} />
-                  </span>
-                  <span>Stock out</span>
-                </button>
-              </div>
+              <input
+  type="checkbox"
+  checked={item.isSelected === 1} // Ensure the checkbox stays checked
+  onChange={() => toggleSelection(item.inventory_Id, item.isSelected)}
+/>              </div>
             </div>
           ))}
         </div>
@@ -342,4 +443,4 @@ function StockInOut() {
   );
 }
 
-export default StockInOut;
+export default List_Restock;
