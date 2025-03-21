@@ -94,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Log activity to the activity_report table
         $activity_performed = "Updated item: " . $itemDesc1;
         $activity_sql = "INSERT INTO activity_report 
-                         (activity_type, date_performed, activity_performed, encoder, inventory_Id, location) 
-                         VALUES (?, NOW(), ?, ?, ?, ?)";
+                         (activity_type, date_performed, activity_performed, encoder, inventory_Id, location, time) 
+                         VALUES (?, NOW(), ?, ?, ?, ?,NOW())";
         $activity_stmt = $conn->prepare($activity_sql);
         $activity_type = "Update Item";
         $activity_stmt->bind_param("sssis", 

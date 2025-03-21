@@ -29,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($stmt->execute()) {
         // Log the deletion into activity_report
         $activity_performed = "Deleted item with ID " . $id;
-        $log_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id) 
-                    VALUES ('Delete Item', NOW(), ?, ?, ?)";
+        $log_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, time) 
+                    VALUES ('Delete Item', NOW(), ?, ?, ?, NOW())";
         $log_stmt = $conn->prepare($log_sql);
 
         if ($log_stmt) {

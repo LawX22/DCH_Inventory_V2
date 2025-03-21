@@ -7,14 +7,13 @@ import {
   AiOutlinePlus,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "./Header";
+import Header from "./Salesman_Header";
 import axios from "axios";
-import { IoArrowBack } from "react-icons/io5";
 
-import SelectedItemsModal from "../modals/reviewSelected_Modal";
-import EditModal from "../modals/edit_InventoryModal";
+import InventoryModal from "../modals/InventoryModal";
+import ViewModal from "../modals/view_InventoryModal";
 
-function List_Restock() {
+function SalesmanPriceList() {
   const [editModalOpen, seteditModalOpen] = useState(false);
 
   const [category, setCategory] = useState(
@@ -25,32 +24,6 @@ function List_Restock() {
 
   const [area, setArea] = useState(localStorage.getItem("area") || "");
 
-  const [selectedItems, setSelectedItems] = useState(() => {
-    return JSON.parse(localStorage.getItem("selectedItems")) || [];
-  });
-
-  const toggleSelection = (itemId, isSelected) => {
-    const updatedSelection = !isSelected; // Toggle true/false
-    axios
-      .post("http://localhost/DCH_Inventory_V2/src/backend/update_selection.php", {
-        itemId,
-        isSelected: updatedSelection ? 1 : 0, // Send as 1 or 0
-      })
-      .then((response) => {
-        console.log("Server Response:", response.data); // Log the response from the server
-
-        setInventory((prevInventory) =>
-          prevInventory.map((item) =>
-            item.inventory_Id === itemId ? { ...item, isSelected: updatedSelection } : item
-          )
-        );
-      })
-      .catch((error) => console.error("Error updating selection:", error));
-};
-
-  
-  
-
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
@@ -59,8 +32,6 @@ function List_Restock() {
   const user = localStorage.getItem("username");
   const [inventory, setInventory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ModalOpen, setModalOpen] = useState(false);
-
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -89,25 +60,31 @@ function List_Restock() {
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
   }, [selectedLocation, brand, area, category]);
+  useEffect(() => {
+    axios
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+        params: {
+          location: selectedLocation,
+          search: searchQuery,
+          category: category,
+          brand: brand,
+          area: area,
+        },
+      })
+      .then((response) => {
+        setInventory(response.data.inventory || response.data);
+      })
+      .catch((error) => console.error("Error fetching inventory:", error));
+  }, [selectedLocation, searchQuery, inventory, brand, category, area]);
 
 
-useEffect(() => {
-  axios
-    .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-      params: {
-        location: selectedLocation,
-        search: searchQuery,
-        category: category,
-        brand: brand,
-        area: area,
-      },
-    })
-    .then((response) => {
-      setInventory(response.data.inventory || response.data);
-    })
-    .catch((error) => console.error("Error fetching inventory:", error));
-}, [selectedLocation, searchQuery, brand, category, area, inventory]); // Removed inventory
 
+  // Update localStorage when the location changes
+ 
+
+  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
+
+ // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -240,31 +217,10 @@ useEffect(() => {
 
   return (
     <div className="inventory-container">
-
-
-       <header className="header-1">
-              {/* Back Button on the Left */}
-              <div
-                className="close-btn"
-                onClick={() => {
-                  navigate("/inventory"); // Navigate to Inventory
-                  setTimeout(() => window.close());
-                }}
-              >
-               <IoArrowBack size={20} />  Close
-              </div>
-      
-              {/* Logo in the Center */}
-              <div className="logo-container-1">
-                <img src="/src/assets/DCH.png" alt="DCH" className="DCH-1" />
-              </div>
-        </header>
- 
+      <Header />
 
       <div className="action-panel">
-
-      <button  className="add-button"onClick={() => setModalOpen(true)}>Review Items</button>
-   
+     
 
         <div className="warehouse-dropdown">
           <select
@@ -289,47 +245,16 @@ useEffect(() => {
           />
         </div>
 
-     
+        
 
-        <button
-  className="activity-button"
-  onClick={async () => {
-    try {
-      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/clear_selection.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "clearSelection" }), // Send action to PHP
-      });
+       
 
-      const result = await response.json();
-      if (result.success) {
-        alert("All selections cleared!");
-      } else {
-        alert("Failed to clear selections.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred.");
-    }
-  }}
->
-  <FiActivity size={18} />
-  <span>Clear All</span>
-</button>
-
+       
       </div>
 
 
 
-<SelectedItemsModal
-  selectedItems={inventory.filter((item) => item.isSelected)}
-  isOpen={ModalOpen}
-  onClose={() => setModalOpen(false)}
-/>
-
-      <EditModal
+      <ViewModal
         isOpen={editModalOpen}
         onClose={() => seteditModalOpen(false)}
         data={selectedData}
@@ -429,11 +354,15 @@ useEffect(() => {
                 </div>
               </div>
               <div className="actions-cell">
-              <input
-  type="checkbox"
-  checked={item.isSelected === 1} // Ensure the checkbox stays checked
-  onChange={() => toggleSelection(item.inventory_Id, item.isSelected)}
-/>              </div>
+                <button
+                  className="action-button view-button"
+                  onClick={() => openEditFunc(item)}
+                >
+                  <AiOutlineEye size={18} />
+                  <span>View</span>
+                </button>
+               
+              </div>
             </div>
           ))}
         </div>
@@ -442,4 +371,4 @@ useEffect(() => {
   );
 }
 
-export default List_Restock;
+export default SalesmanPriceList;

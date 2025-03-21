@@ -9,7 +9,11 @@ function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
-   
+
+  const [time, setTime] = useState(
+    localStorage.getItem("timeAH") || ''
+  );
+
 
        const [activityType, setActivityType] = useState(
          localStorage.getItem("activityTypeAH") || ''
@@ -27,10 +31,13 @@ function ActivityReport() {
              localStorage.setItem("activityTypeAH", ""); // Set brand to empty string (or any value you want)
              localStorage.setItem("dateAH", ""); // Set area to empty string
              localStorage.setItem("userAH", ""); // Set category to empty string
+             localStorage.setItem("timeAH", "");
          
              setActivityType('');
              setDate('');
              setUser('');
+             setTime('');
+
          
            
            }, []);
@@ -63,6 +70,11 @@ function ActivityReport() {
             setDate(value);
       
             break;
+
+            case "time":
+              setTime(value);
+        
+              break;
             
             case "activity":
             setActivityType(value);
@@ -83,21 +95,23 @@ function ActivityReport() {
        localStorage.setItem("activityTypeAH", activityType);
        localStorage.setItem("dateAH", date);
        localStorage.setItem("userAH", user);
-     }, [selectedLocation,date,user,activityType]);
+       localStorage.setItem("timeAH", time);
+
+     }, [selectedLocation,date,user,activityType,time]);
   
   const navigate = useNavigate();
 
    useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php", {
-        params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType },
+        params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType, time:time},
       })
       .then((response) => {
         console.log(response.data); // Inspect what the API returns
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory, date, activityType, user]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory, date, activityType, user, time]); // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -185,6 +199,11 @@ function ActivityReport() {
           </div>
 
 
+          <div className="header-cell-1 with-arrow">
+          <span>Time<input type="time" name="time"  onChange={(e) =>setTime(e.target.value)}/></span>
+            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
+          </div>
+
           
           <div className="header-cell-1 with-arrow">
           <span>Date <input type="date" name="date"  onChange={(e) =>setDate(e.target.value)}/></span>
@@ -199,6 +218,7 @@ function ActivityReport() {
               <div className="activity-cell-1">{item.activity_performed}</div>
               <div className="type-cell-1">{item.activity_type}</div>
               <div className="user-cell-1">{item.encoder}</div>
+              <div className="time-cell-1">{item.time}</div>
               <div className="date-cell-1">
                 {new Date(item.date_performed).toLocaleDateString("en-US", {
                   year: "numeric",

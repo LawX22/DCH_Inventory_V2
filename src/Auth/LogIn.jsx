@@ -26,7 +26,12 @@ const LogIn = () => {
         } else if (response.data.userType === "Staff") {
           // console.log('login');
           navigate("/Inventory");
+        } else if (response.data.userType === "Salesman") {
+          // console.log('login');
+          navigate("/Salesman_PriceList");
         }
+
+        
       } else {
         alert("Invalid username or password");
       }

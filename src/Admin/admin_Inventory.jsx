@@ -10,7 +10,7 @@ import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./admin_Header";
 import axios from "axios";
 
-import InventoryModal from "../modals/InventoryModal";
+import StockHistoryModal from "../modals/focusedStockHistory_Modal";
 import EditModal from "../modals/edit_InventoryModal";
 
 function Inventory() {
@@ -33,6 +33,7 @@ function Inventory() {
 
   const [inventory, setInventory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInventoryId, setSelectedInventoryId] = useState(null);
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -46,6 +47,18 @@ function Inventory() {
     storageArea: "",
     image: null,
   });
+
+
+  const openModal = (inventory_Id) => {
+    setSelectedInventoryId(inventory_Id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedInventoryId(null);
+  };
+
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -256,9 +269,10 @@ function Inventory() {
         </button>
       </div>
 
-      <InventoryModal
+      <StockHistoryModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
+        inventory_Id={selectedInventoryId}
       />
 
       <EditModal
@@ -366,14 +380,17 @@ function Inventory() {
                   onClick={() => openEditFunc(item)}
                 >
                   <AiOutlineEye size={18} />
-                  <span>Edit</span>
+                  <span>Details</span>
                 </button>
+
+                
                 <button
                   className="action-button delete-button"
-                  onClick={() => deleteFunc(item.inventory_Id, user)}
+                  onClick={() => openModal(item.inventory_Id)}
+                 
                 >
                   <AiOutlineDelete size={18} />
-                  <span>Delete</span>
+                  <span>History</span>
                 </button>
               </div>
             </div>
