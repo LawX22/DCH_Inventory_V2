@@ -5,6 +5,7 @@ import ProtectedRoute from "./Auth/ProtectedRoute";
 import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";
 import StockHistory from "./Page/stockHistory";
+import RequestBoard from "./Page/RequestBoard";
 import ActivityReport from "./Page/activity";
 import Admin_dashboard from "./Admin/admin_dashboard";
 import Admin_Inventory from "./Admin/admin_Inventory";
@@ -25,6 +26,7 @@ function StaffRoute() {
         <Route path="/inventory" element={ <ProtectedRoute><Inventory /></ProtectedRoute>} />
         <Route path="/stockInOut" element={<ProtectedRoute><StockInOut /></ProtectedRoute>} />
         <Route path="/stockHistory" element={<ProtectedRoute><StockHistory /></ProtectedRoute>} />
+        <Route path="/RequestBoard" element={<ProtectedRoute><RequestBoard /></ProtectedRoute>} />
         <Route path="/activity" element={<ProtectedRoute><ActivityReport /></ProtectedRoute>} />
         <Route path="/List_Restock" element={<ProtectedRoute><List_Restock /></ProtectedRoute>} />
 
