@@ -9,6 +9,8 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 
 $date = isset($_GET['date']) ? $_GET['date'] : '';
 $user = isset($_GET['user']) ? $_GET['user'] : '';
+$time = isset($_GET['time']) ? $_GET['time'] : '';
+
 $activityType = isset($_GET['activityType']) ? $_GET['activityType'] : '';
 
 
@@ -50,6 +52,10 @@ if ($activityType !== '') {
     $sql .= " AND 	activity_type = ?";
 }
 
+if ($time !== '') {
+    $sql .= " AND 	time >= ?";
+}
+
 
 
 $sql .= " ORDER BY date_performed DESC LIMIT 500";
@@ -74,6 +80,11 @@ if ($user !== '') {
 
 if ($activityType !== '') {
     $params[] = $activityType;
+    $types .= 's';
+}
+
+if ($time !== '') {
+    $params[] = $time;
     $types .= 's';
 }
 
