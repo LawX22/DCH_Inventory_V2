@@ -17,7 +17,9 @@ import {
   FaTh,
   FaThList,
   FaEye,
-  FaInfoCircle
+  FaInfoCircle,
+  FaCheck,
+  FaTimes
 } from "react-icons/fa";
 import Header from "./Header";
 import CommentModal from "../modals/CommentsModal";
@@ -28,6 +30,8 @@ const RequestBoard = () => {
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [layoutType, setLayoutType] = useState("square"); // 'square' or 'rectangular'
+  const [isApprovalConfirmOpen, setIsApprovalConfirmOpen] = useState(false);
+  const [requestToApprove, setRequestToApprove] = useState(null);
 
   const requests = [
     {
@@ -110,6 +114,16 @@ const RequestBoard = () => {
     setActiveRequestId(null);
   };
 
+  const openApprovalConfirm = (requestId) => {
+    setRequestToApprove(requestId);
+    setIsApprovalConfirmOpen(true);
+  };
+
+  const closeApprovalConfirm = () => {
+    setIsApprovalConfirmOpen(false);
+    setRequestToApprove(null);
+  };
+
   const handleAddComment = (requestId, commentText) => {
     // Add new comment
     const updatedRequests = requestsData.map((request) => {
@@ -132,6 +146,54 @@ const RequestBoard = () => {
     setRequestsData(updatedRequests);
   };
 
+  const handleApproveRequest = () => {
+    // Update request status to Approved
+    const updatedRequests = requestsData.map((request) => {
+      if (request.id === requestToApprove) {
+        return {
+          ...request,
+          status: "Approved",
+          comments: [
+            ...request.comments,
+            {
+              user: "Current User", // Replace with actual logged-in user
+              comment: "Request approved",
+              timestamp: new Date().toLocaleString(),
+            },
+          ],
+        };
+      }
+      return request;
+    });
+
+    setRequestsData(updatedRequests);
+    closeApprovalConfirm();
+  };
+
+  const handleCancelRequest = () => {
+    // Update request status to Rejected
+    const updatedRequests = requestsData.map((request) => {
+      if (request.id === requestToApprove) {
+        return {
+          ...request,
+          status: "Rejected",
+          comments: [
+            ...request.comments,
+            {
+              user: "Current User", // Replace with actual logged-in user
+              comment: "Request cancelled",
+              timestamp: new Date().toLocaleString(),
+            },
+          ],
+        };
+      }
+      return request;
+    });
+
+    setRequestsData(updatedRequests);
+    closeApprovalConfirm();
+  };
+
   const toggleLayout = () => {
     setLayoutType(layoutType === "square" ? "rectangular" : "square");
   };
@@ -139,6 +201,7 @@ const RequestBoard = () => {
   // Find the active request
   const activeRequest = requestsData.find((req) => req.id === activeRequestId);
   const activeComments = activeRequest ? activeRequest.comments : [];
+  const requestToApproveData = requestsData.find((req) => req.id === requestToApprove);
 
   return (
     <div className="request-container">
@@ -288,7 +351,11 @@ const RequestBoard = () => {
                   )}
                 </button>
                 
-                <button className="action-button approve-button">
+                <button 
+                  className="action-button approve-button"
+                  onClick={() => openApprovalConfirm(request.id)}
+                  disabled={request.status === "Approved" || request.status === "Rejected"}
+                >
                   Request approval
                 </button>
               </div>
@@ -313,6 +380,40 @@ const RequestBoard = () => {
         request={activeRequest}
         openCommentModal={openCommentModal}
       />
+
+      {/* Approval Confirmation Modal */}
+      {isApprovalConfirmOpen && requestToApproveData && (
+        <div className="approval-modal-overlay">
+          <div className="approval-modal">
+            <div className="approval-modal-header">
+              <h3>Confirm Request Action</h3>
+              <button className="close-button" onClick={closeApprovalConfirm}>×</button>
+            </div>
+            <div className="approval-modal-content">
+              <p>Do you want to approve or cancel request <strong>{requestToApproveData.id}</strong>?</p>
+              <p className="request-details">
+                <strong>{requestToApproveData.description}</strong> - 
+                {requestToApproveData.quantity} {requestToApproveData.quantity > 1 ? 'items' : 'item'} - 
+                Total: ${requestToApproveData.amountDue.toFixed(2)}
+              </p>
+            </div>
+            <div className="approval-modal-actions">
+              <button 
+                className="cancel-request-button" 
+                onClick={handleCancelRequest}
+              >
+                <FaTimes /> Cancel Request
+              </button>
+              <button 
+                className="approve-request-button" 
+                onClick={handleApproveRequest}
+              >
+                <FaCheck /> Approve Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
