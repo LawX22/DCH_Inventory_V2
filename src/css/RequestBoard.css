@@ -1,0 +1,491 @@
+/* Request Board Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  background-color: #f5f7f9;
+}
+
+/* Request Container */
+.request-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Action Panel */
+.action-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  background-color: #e7ecf0;
+  border-radius: 10px;
+  margin: 20px;
+  border: 1px solid #b8d6eb9a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 40px);
+  gap: 10px;
+}
+
+/* Buttons & Dropdown */
+.action-panel button,
+.warehouse-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-weight: 500;
+  cursor: pointer;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+  max-width: 160px;
+}
+
+/* Add Button */
+.add-button {
+  background-color: #bdeac1;
+  color: #25632b;
+}
+
+.add-button:hover {
+  background-color: #a3d7a7;
+}
+
+/* Warehouse Dropdown */
+.warehouse-dropdown {
+  background-color: #b8d6eb;
+  border-radius: 5px;
+  position: relative;
+  max-width: 200px;
+  height: 40px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  padding: 6px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warehouse-dropdown:hover {
+  background-color: #a0c4dc;
+}
+
+/* Dropdown Select */
+.dropdown-select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  color: #25632b;
+  appearance: none;
+  text-align: center;
+  font-size: 14px;
+  padding: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.dropdown-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Custom Dropdown Arrow */
+.warehouse-dropdown::after {
+  content: "▼";
+  font-size: 14px;
+  color: #25632b;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 12px 15px;
+  flex-grow: 2;
+  max-width: 600px;
+  width: 100%;
+}
+
+.search-icon {
+  color: #888;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  width: 100%;
+  margin-left: 8px;
+}
+
+/* Export & Activity Buttons */
+.export-button {
+  background-color: #ffc2c2;
+  color: #7a3434;
+}
+
+.export-button:hover {
+  background-color: #f5a7a7;
+}
+
+.activity-button {
+  background-color: #ffefc2;
+  color: #7a6034;
+}
+
+.activity-button:hover {
+  background-color: #f3db9e;
+}
+
+/* Request Table */
+.request-table {
+  margin: 0 20px 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 40px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  width: 100%;
+  background-color: #b8d6eb;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Table Body with Scrolling */
+.table-body {
+  max-height: calc(100vh - 280px);
+  min-height: 200px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Table Row */
+.table-row {
+  display: flex;
+  border-bottom: 1px solid #f5f5f5;
+  align-items: center;
+  width: 100%;
+}
+
+.table-row:hover {
+  background-color: #f9fafc;
+}
+
+/* Header Cell */
+.header-cell {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
+}
+
+.header-cell:nth-child(1) {
+  flex: 2;
+}
+
+/* Item Cell */
+.item-cell {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  flex: 2;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.item-image-container {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-image {
+  max-width: 40px;
+  max-height: 40px;
+  color: #3a6ea7;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.item-name {
+  font-weight: 500;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-category,
+.item-id {
+  font-size: 12px;
+  color: #888;
+  margin-top: 3px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status, Price, Units, Date Cells */
+.status-cell,
+.price-cell,
+.units-cell,
+.date-cell {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px;
+  flex: 1;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #ffefc2;
+  color: #7a6034;
+}
+
+.status-badge.approved {
+  background-color: #bdeac1;
+  color: #25632b;
+}
+
+.status-badge.rejected {
+  background-color: #ffc2c2;
+  color: #7a3434;
+}
+
+/* Actions Cell */
+.actions-cell {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px;
+  flex: 1;
+  min-width: 80px;
+  border-left: 2px solid rgb(215, 207, 207);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Action Buttons */
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 80px;
+  height: 30px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.view-button {
+  background-color: #eef5ff;
+  color: #3a6ea7;
+}
+
+.approve-button {
+  background-color: #bdeac1;
+  color: #25632b;
+  width: 120px;
+}
+
+.action-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+/* Comments Panel */
+.comments-panel {
+  margin: 0 20px 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 40px);
+}
+
+.comments-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #b8d6eb;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.comments-header h3 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.comments-body {
+  padding: 15px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.comment-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+  gap: 10px;
+}
+
+.comment-checkbox {
+  margin-right: 5px;
+}
+
+.comment-user {
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.comments-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+}
+
+.comments-count {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Custom Scrollbar */
+.table-body::-webkit-scrollbar,
+.comments-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-body::-webkit-scrollbar-track,
+.comments-body::-webkit-scrollbar-track {
+  background: #e7ecf0;
+  border-radius: 5px;
+}
+
+.table-body::-webkit-scrollbar-thumb,
+.comments-body::-webkit-scrollbar-thumb {
+  background: #b8d6eb;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover,
+.comments-body::-webkit-scrollbar-thumb:hover {
+  background: #7a9fb8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .action-panel {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-panel > * {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
+
+  .table-row {
+    flex-wrap: wrap;
+  }
+
+  .item-cell {
+    flex: 1 0 100%;
+  }
+
+  .status-cell,
+  .price-cell,
+  .units-cell,
+  .date-cell {
+    flex: 1 0 calc(50% - 10px);
+  }
+
+  .actions-cell {
+    flex: 1 0 100%;
+    border-left: none;
+    border-top: 2px solid rgb(215, 207, 207);
+  }
+}

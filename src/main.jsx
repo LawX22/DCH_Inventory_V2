@@ -9,6 +9,8 @@ import "../src/css/In&OutModal.css";
 import "../src/css/activity.css";
 import "../src/css/dashboard.css";
 import "../src/css/404.css";
+import "../src/css/RequestBoard.css";
+import "../src/css/CommentsModal.css";
 
 import StaffRoute from "./staffRoute.jsx";
 
