@@ -11,6 +11,7 @@ import "../src/css/dashboard.css";
 import "../src/css/404.css";
 import "../src/css/RequestBoard.css";
 import "../src/css/CommentsModal.css";
+import "../src/css/ViewDetails.css";
 
 import StaffRoute from "./staffRoute.jsx";
 

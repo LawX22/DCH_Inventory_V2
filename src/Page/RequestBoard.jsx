@@ -9,13 +9,25 @@ import {
   FaHistory,
   FaFilter,
   FaCalendarAlt,
+  FaUser,
+  FaTag,
+  FaBox,
+  FaDollarSign,
+  FaRegClock,
+  FaTh,
+  FaThList,
+  FaEye,
+  FaInfoCircle
 } from "react-icons/fa";
 import Header from "./Header";
 import CommentModal from "../modals/CommentsModal";
+import DetailModal from "../modals/DetailsModal";
 
 const RequestBoard = () => {
   const [activeRequestId, setActiveRequestId] = useState(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [layoutType, setLayoutType] = useState("square"); // 'square' or 'rectangular'
 
   const requests = [
     {
@@ -88,6 +100,16 @@ const RequestBoard = () => {
     setActiveRequestId(null);
   };
 
+  const openDetailModal = (requestId) => {
+    setActiveRequestId(requestId);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setActiveRequestId(null);
+  };
+
   const handleAddComment = (requestId, commentText) => {
     // Add new comment
     const updatedRequests = requestsData.map((request) => {
@@ -110,7 +132,11 @@ const RequestBoard = () => {
     setRequestsData(updatedRequests);
   };
 
-  // Find the active request's comments
+  const toggleLayout = () => {
+    setLayoutType(layoutType === "square" ? "rectangular" : "square");
+  };
+
+  // Find the active request
   const activeRequest = requestsData.find((req) => req.id === activeRequestId);
   const activeComments = activeRequest ? activeRequest.comments : [];
 
@@ -158,6 +184,12 @@ const RequestBoard = () => {
           </select>
         </div>
 
+        {/* Layout Toggle Button */}
+        <button className="layout-toggle-button" onClick={toggleLayout}>
+          {layoutType === "square" ? <FaThList /> : <FaTh />}
+          {layoutType === "square" ? "Rectangular" : "Square"}
+        </button>
+
         <button className="export-button">
           <FaFileExport /> Export
         </button>
@@ -167,73 +199,102 @@ const RequestBoard = () => {
         </button>
       </div>
 
-      {/* Main Request Table */}
-      <div className="request-table">
-        <div className="table-header">
-          <div className="header-cell">Request</div>
-          <div className="header-cell">Status</div>
-          <div className="header-cell">Price</div>
-          <div className="header-cell">Quantity</div>
-          <div className="header-cell">Date</div>
-          <div className="header-cell">Actions</div>
-        </div>
-
-        <div className="table-body">
-          {requestsData.map((request) => (
-            <div className="table-row" key={request.id}>
-              <div className="item-cell">
-                <div className="item-image-container">
-                  <FaClipboardList className="item-image" />
-                </div>
-                <div className="item-details">
-                  <div className="item-name">{request.description}</div>
-                  <div className="item-category">{request.type}</div>
-                  <div className="item-id">
-                    ID: {request.id} | Requester: {request.requester}
-                  </div>
-                </div>
-              </div>
-
-              <div className="status-cell">
+      {/* Card-based Request Layout */}
+      <div className={`request-cards-container ${layoutType}`}>
+        {requestsData.map((request) => (
+          <div className={`request-card ${layoutType}`} key={request.id}>
+            {/* Card Header */}
+            <div className="card-header">
+              <span className="request-id">{request.id}</span>
+              <div className="header-right">
+                {layoutType === "square" && (
+                  <button 
+                    className="view-details-icon" 
+                    onClick={() => openDetailModal(request.id)}
+                    title="View full details"
+                  >
+                    <FaEye />
+                  </button>
+                )}
                 <div className={`status-badge ${request.status.toLowerCase()}`}>
                   {request.status}
                 </div>
               </div>
-
-              <div className="price-cell">
-                <div>${request.price.toFixed(2)}</div>
-                <div>Due: ${request.amountDue.toFixed(2)}</div>
+            </div>
+            
+            {/* Card Content */}
+            <div className="card-content">
+              <div className="item-image-container">
+                <FaClipboardList className="item-image" />
               </div>
-
-              <div className="units-cell">
-                <div>{request.quantity}</div>
-                <div>units</div>
+              
+              <div className="item-details">
+                <span className="item-name">{request.description}</span>
+                
+                <div className="item-description">
+                  <div className="item-info">
+                    <span className="info-label">Type:</span>
+                    <span className="info-value">{request.type}</span>
+                  </div>
+                  
+                  <div className="item-info">
+                    <span className="info-label">Quantity:</span>
+                    <span className="info-value">{request.quantity}</span>
+                  </div>
+                  
+                  <div className="item-info">
+                    <span className="info-label">Price:</span>
+                    <span className="info-value">${request.price.toFixed(2)}</span>
+                  </div>
+                  
+                  <div className="item-info">
+                    <span className="info-label">Total:</span>
+                    <span className="info-value">${request.amountDue.toFixed(2)}</span>
+                  </div>
+                  
+                  {layoutType === "rectangular" && (
+                    <>
+                      <div className="item-info">
+                        <span className="info-label">Item Code:</span>
+                        <span className="info-value">{request.itemCode}</span>
+                      </div>
+                      
+                      <div className="item-info">
+                        <span className="info-label">Date:</span>
+                        <span className="info-value">{request.date}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
-
-              <div className="date-cell">
-                <div>{request.date}</div>
-                <div>{request.itemCode}</div>
+            </div>
+            
+            {/* Card Footer */}
+            <div className="card-footer">
+              <div className="requester">
+                <FaUser />
+                <span className="requester-name">{request.requester}</span>
               </div>
-
-              <div className="actions-cell">
-                <button
+              
+              <div className="item-actions">
+                <button 
                   className="action-button view-button"
                   onClick={() => openCommentModal(request.id)}
                 >
-                  <div className="action-icon">
-                    <FaComments />
-                  </div>
-                  Comment{" "}
-                  {request.comments.length > 0 &&
-                    `(${request.comments.length})`}
+                  <FaComments />
+                  Comments
+                  {request.comments.length > 0 && (
+                    <span className="comment-count">{request.comments.length}</span>
+                  )}
                 </button>
+                
                 <button className="action-button approve-button">
                   Request approval
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* Comment Modal */}
@@ -243,6 +304,14 @@ const RequestBoard = () => {
         requestId={activeRequestId}
         comments={activeComments}
         onAddComment={handleAddComment}
+      />
+
+      {/* Detail Modal */}
+      <DetailModal
+        isOpen={isDetailModalOpen}
+        onClose={closeDetailModal}
+        request={activeRequest}
+        openCommentModal={openCommentModal}
       />
     </div>
   );
