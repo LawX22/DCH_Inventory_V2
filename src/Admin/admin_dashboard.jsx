@@ -391,9 +391,9 @@ const Dashboard = () => {
           </div>
 
           <div className="right-panel">
-            <div className="staffs-dropdown">
+            <div className="staffs-dropdown-2">
               <div className="select-container">
-                <div className="warehouse-dropdown">
+                <div className="warehouse-dropdown-2">
                   <select
                     value={selectedEncoder}
                     onChange={(e) => setSelectedEncoder(e.target.value)}

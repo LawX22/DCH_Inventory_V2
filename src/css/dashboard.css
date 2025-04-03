@@ -131,7 +131,7 @@
   gap: 1rem;
 }
 
-.staffs-dropdown {
+.staffs-dropdown-2 {
   position: relative;
 }
 
@@ -139,8 +139,8 @@
   position: relative;
 }
 
-.warehouse-dropdown select {
-  padding: 0.5rem 2rem 0.5rem 0.75rem;
+.warehouse-dropdown-2 select {
+  padding: 0.5rem 0 0.5rem 0.5rem;
   border-radius: 6px;
   border: 1px solid #ddd;
   background-color: #f9fafb;
@@ -221,7 +221,7 @@
     flex-wrap: wrap;
   }
   
-  .warehouse-dropdown select,
+  .warehouse-dropdown-2 select,
   .select-date-container-1,
   .export-button-1,
   .activity-button-1 {

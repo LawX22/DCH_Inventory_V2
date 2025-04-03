@@ -132,9 +132,9 @@ function StockHistory() {
       <Header />
       {/* Action Panel */}
       <div className="action-panel">
-        <div className="warehouse-dropdown">
+        <div className="warehouse-dropdown-1">
           <select
-            className="dropdown-select"
+            className="dropdown-select-1"
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
           >
