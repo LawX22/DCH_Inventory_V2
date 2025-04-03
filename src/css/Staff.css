@@ -133,14 +133,14 @@ body {
   align-items: center;
   background-color: white;
   border-radius: 5px;
-  padding: 12px 15px;
-  flex-grow: 2; /* Makes search bar take up more space */
-  max-width: 600px;
-  width: 100%;
+  padding: 0 15px;
+  flex: 3;
+  height: 40px;
 }
 
 .search-icon {
   color: #888;
+  margin-right: 8px;
 }
 
 .search-input {

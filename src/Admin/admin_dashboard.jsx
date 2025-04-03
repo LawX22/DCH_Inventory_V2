@@ -434,7 +434,7 @@ const Dashboard = () => {
         </div>
 
         <div className="activity-table-card">
-          <div className="table-header">
+          <div className="table-header-1">
             <h2>Weekly Activity</h2>
           </div>
           <div className="activity-table-container">

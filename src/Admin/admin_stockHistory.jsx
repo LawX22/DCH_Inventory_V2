@@ -128,13 +128,13 @@ function StockHistory() {
   }, [selectedLocation, activity, category, brand, area, date, searchQuery]);
 
   return (
-    <div className="inventory-container">
+    <div className="adm-inventory-container">
       <Header />
       {/* Action Panel */}
-      <div className="action-panel">
-        <div className="warehouse-dropdown-1">
+      <div className="adm-action-panel">
+        <div className="adm-warehouse-dropdown">
           <select
-            className="dropdown-select-1"
+            className="adm-dropdown-select"
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
           >
@@ -144,11 +144,11 @@ function StockHistory() {
           </select>
         </div>
 
-        <div className="search-container">
-          <AiOutlineSearch size={18} className="search-icon" />
+        <div className="adm-search-container">
+          <AiOutlineSearch size={18} className="adm-search-icon" />
           <input
             type="text"
-            className="search-input"
+            className="adm-search-input"
             placeholder="Search something..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -156,14 +156,14 @@ function StockHistory() {
         </div>
 
         {/* Export Button */}
-        <button className="export-button">
+        <button className="adm-export-button">
           <FiDownload size={18} />
           <span>Export</span>
         </button>
 
         {/* Activity Button */}
         <button
-          className="activity-button"
+          className="adm-activity-button"
           onClick={() =>
             window.open("/activity", "_blank", "noopener,noreferrer")
           }
@@ -174,10 +174,10 @@ function StockHistory() {
       </div>
 
       {/* Inventory Table */}
-      <div className="inventory-table">
-        <div className="table-header">
-          <div className="header-cell">
-            <div className="select-container">
+      <div className="adm-inventory-table">
+        <div className="adm-table-header">
+          <div className="adm-header-cell">
+            <div className="adm-select-container">
               <select
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
@@ -189,22 +189,22 @@ function StockHistory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />
+              <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             Date
-            <span className="date-input-container">
+            <span className="adm-date-input-container">
               <input
                 type="date"
                 name="date"
                 onChange={(e) => setDate(e.target.value)}
-                className="styled-date-input"
+                className="adm-styled-date-input"
               />
             </span>
           </div>
-          <div className="header-cell with-arrow">
-            <div className="select-container">
+          <div className="adm-header-cell adm-with-arrow">
+            <div className="adm-select-container">
               <select name="brand" onChange={(e) => setBrand(e.target.value)}>
                 <option value="">Brand</option>
                 {brandList.map((option) => (
@@ -213,11 +213,11 @@ function StockHistory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="adm-select-icon" />{" "}
             </div>
           </div>
-          <div className="header-cell with-arrow">
-            <div className="select-container">
+          <div className="adm-header-cell adm-with-arrow">
+            <div className="adm-select-container">
               <select name="area" onChange={(e) => setArea(e.target.value)}>
                 <option value="">Area</option>
                 {areaList.map((option) => (
@@ -226,13 +226,13 @@ function StockHistory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="adm-select-icon" />{" "}
             </div>
           </div>
 
           {/* Activity Dropdown */}
-          <div className="header-cell with-arrow">
-            <div className="select-container">
+          <div className="adm-header-cell adm-with-arrow">
+            <div className="adm-select-container">
               <select
                 name="activity"
                 onChange={(e) => setActivity(e.target.value)}
@@ -241,44 +241,44 @@ function StockHistory() {
                 <option value="Stock In">Stock In</option>
                 <option value="Stock Out">Stock Out</option>
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="adm-select-icon" />{" "}
             </div>
           </div>
 
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             <span>Amount</span>
           </div>
 
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             <span>Units</span>
           </div>
 
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             <span>Requistion #</span>
           </div>
 
-          <div className="header-cell">Actions</div>
+          <div className="adm-header-cell">Actions</div>
         </div>
 
-        <div className="table-body">
+        <div className="adm-table-body">
           {inventory.map((item) => (
-            <div className="table-row" key={item.stock_history_id}>
-              <div className="item-cell">
-                <div className="item-image-container">
+            <div className="adm-table-row" key={item.stock_history_id}>
+              <div className="adm-item-cell">
+                <div className="adm-item-image-container">
                   <img
                     src={"/src/assets/" + item.image}
                     alt={item.name}
-                    className="item-image"
+                    className="adm-item-image"
                   />
                 </div>
-                <div className="item-details">
-                  <div className="item-name">{item.stock_name}</div>
-                  <div className="item-category">{item.category}</div>
-                  <div className="item-id">{item.itemCode}</div>
+                <div className="adm-item-details">
+                  <div className="adm-item-name">{item.stock_name}</div>
+                  <div className="adm-item-category">{item.category}</div>
+                  <div className="adm-item-id">{item.itemCode}</div>
                 </div>
               </div>
 
-              <div className="date-cell">
+              <div className="adm-date-cell">
                 {new Date(item.transaction_date).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -286,36 +286,36 @@ function StockHistory() {
                 })}
               </div>
 
-              <div className="brand-cell">
+              <div className="adm-brand-cell">
                 <div>{item.brand}</div>
               </div>
-              <div className="location-cell">
+              <div className="adm-location-cell">
                 <div>{item.location}</div>
               </div>
-              <div className="activity-cell">
+              <div className="adm-activity-cell">
                 <div>{item.transaction_type}</div>
               </div>
 
-              <div className="amount-cell">
+              <div className="adm-amount-cell">
                 <div>{item.units_added}</div>
               </div>
 
-              <div className="units-cell">
-                <div className="item">
+              <div className="adm-units-cell">
+                <div className="adm-item">
                   <div>Current - {item.current_stock}</div>
                   <div>Previous - {item.previous_units}</div>
                 </div>
               </div>
 
-              <div className="Requistion-cell">
-                <div className="item">
+              <div className="adm-Requistion-cell">
+                <div className="adm-item">
                   <div>Stock - {item.requisition_number}</div>
                 </div>
               </div>
 
-              <div className="actions-cell">
-                <button className="action-button view-button">
-                  <span className="action-icon">
+              <div className="adm-actions-cell">
+                <button className="adm-action-button adm-view-button">
+                  <span className="adm-action-icon">
                     <AiOutlineUndo size={18} />
                   </span>
                   <span>Undo</span>
