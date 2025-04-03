@@ -193,21 +193,21 @@ const EditModal = ({ isOpen, onClose, data }) => {
 
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <h2 className="modal-title-1">EDIT NEW ITEM</h2>
-        <form onSubmit={handleSubmit} className="modal-form">
+    <div className="edm-modal-overlay">
+      <div className="edm-modal-container">
+        <h2 className="edm-modal-title">EDIT NEW ITEM</h2>
+        <form onSubmit={handleSubmit} className="edm-modal-form">
           <div className="flex flex-col items-center space-y-4">
-            <div className="image-upload-container-1">
+            <div className="edm-image-upload-container">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="file-input hidden"
+                className="edm-file-input hidden"
                 id="imageUpload"
               />
               {imagePreview ? (
-                <div className="image-preview-wrapper">
+                <div className="edm-image-preview-wrapper">
                   <label htmlFor="imageUpload">
                     <img
                       src={
@@ -216,57 +216,57 @@ const EditModal = ({ isOpen, onClose, data }) => {
                           : `/src/backend/${imagePreview}`
                       }
                       alt="Preview"
-                      className="image-preview-1"
+                      className="edm-image-preview"
                     />
                   </label>
                 </div>
               ) : (
-                <div className="upload-placeholder">
-                  <div className="upload-text">Click to upload image</div>
+                <div className="edm-upload-placeholder">
+                  <div className="edm-upload-text">Click to upload image</div>
                   <label
                     htmlFor="imageUpload"
-                    className="upload-button cursor-pointer"
+                    className="edm-upload-button cursor-pointer"
                   >
                     Browse
                   </label>
                 </div>
               )}
             </div>
-            <div className="modal-actions flex flex-row justify-between w-full space-x-4">
+            <div className="edm-modal-actions flex flex-row justify-between w-full space-x-4">
               <button
                 type="submit"
-                className="save-button bg-blue-500 text-white px-4 py-2 rounded"
+                className="edm-save-button bg-blue-500 text-white px-4 py-2 rounded"
               >
                 SAVE
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="cancel-button bg-gray-400 text-white px-4 py-2 rounded"
+                className="edm-cancel-button bg-gray-400 text-white px-4 py-2 rounded"
               >
                 CANCEL
               </button>
             </div>
           </div>
-          <div className="form-fields-container">
-            <div className="form-group full-width">
-              <label className="form-label">ITEM CODE</label>
+          <div className="edm-form-fields-container">
+            <div className="edm-form-group edm-full-width">
+              <label className="edm-form-label">ITEM CODE</label>
               <input
                 type="text"
                 name="itemCode"
                 value={itemCode}
                 onChange={handleInputChange}
-                className="form-input"
+                className="edm-form-input"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">ITEM BRAND</label>
+            <div className="edm-form-group">
+              <label className="edm-form-label">ITEM BRAND</label>
               <input
                 list="brands"
                 name="itemBrand"
                 value={itemBrand}
                 onChange={handleInputChange}
-                className="form-select"
+                className="edm-form-select"
               />
               <datalist id="brands">
                 {brands.map((brand, index) => (
@@ -274,14 +274,14 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 ))}
               </datalist>
             </div>
-            <div className="form-group">
-              <label className="form-label">ITEM CATEGORY</label>
+            <div className="edm-form-group">
+              <label className="edm-form-label">ITEM CATEGORY</label>
               <input
                 list="categories"
                 name="itemCategory"
                 value={itemCategory}
                 onChange={handleInputChange}
-                className="form-select"
+                className="edm-form-select"
               />
               <datalist id="categories">
                 {category.map((category, index) => (
@@ -289,78 +289,78 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 ))}
               </datalist>
             </div>
-            <div className="form-group full-width">
-              <label className="form-label">DESCRIPTION 1</label>
+            <div className="edm-form-group edm-full-width">
+              <label className="edm-form-label">DESCRIPTION 1</label>
               <input
                 type="text"
                 name="description1"
                 value={itemDesc1}
                 onChange={handleInputChange}
-                className="form-input"
+                className="edm-form-input"
               />
             </div>
-            <div className="form-group full-width">
-              <label className="form-label">DESCRIPTION 2</label>
+            <div className="edm-form-group edm-full-width">
+              <label className="edm-form-label">DESCRIPTION 2</label>
               <input
                 type="text"
                 name="description2"
                 value={itemDesc2}
                 onChange={handleInputChange}
-                className="form-input"
+                className="edm-form-input"
               />
             </div>
-            <div className="price-units-container">
-              <div className="form-group">
-                <label className="form-label">ITEM UNITS</label>
+            <div className="edm-price-units-container">
+              <div className="edm-form-group">
+                <label className="edm-form-label">ITEM UNITS</label>
                 <input
                   type="number"
                   name="units"
                   value={units}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="edm-form-input"
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">FIXED PRICE</label>
+              <div className="edm-form-group">
+                <label className="edm-form-label">FIXED PRICE</label>
                 <input
                   type="number"
                   name="fixedPrice"
                   value={fixedPrice}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="edm-form-input"
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">RETAIL PRICE</label>
+              <div className="edm-form-group">
+                <label className="edm-form-label">RETAIL PRICE</label>
                 <input
                   type="number"
                   name="retailPrice"
                   value={retailPrice}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="edm-form-input"
                 />
               </div>
             </div>
-            <div className="form-group">
-              <label className="form-label">LOCATION</label>
+            <div className="edm-form-group">
+              <label className="edm-form-label">LOCATION</label>
               <select
                 name="location"
                 value={location}
                 onChange={handleInputChange}
-                className="form-select-2"
+                className="edm-form-select-2"
               >
                 <option value="">Select Location</option>
                 <option value="Store">Store</option>
                 <option value="Warehouse">Warehouse</option>
               </select>
             </div>
-            <div className="form-group">
-              <label className="form-label">STORAGE AREA</label>
+            <div className="edm-form-group">
+              <label className="edm-form-label">STORAGE AREA</label>
               <select
                 name="storageArea"
                 value={storageArea}
                 onChange={handleInputChange}
-                className="form-select-2"
+                className="edm-form-select-2"
               >
                 <option value="">Select Storage Area</option>
                 <option value="Store 1st Floor">Store 1st Floor</option>
@@ -369,24 +369,24 @@ const EditModal = ({ isOpen, onClose, data }) => {
               </select>
             </div>
 
-            <div className="form-group" style={{ display: "none" }}>
-              <label className="form-label">USERNAME</label>
+            <div className="edm-form-group" style={{ display: "none" }}>
+              <label className="edm-form-label">USERNAME</label>
               <input
                 type="text"
                 name="username"
                 value={storedValue}
                 onChange={handleInputChange}
-                className="form-input"
+                className="edm-form-input"
               />
             </div>
-            <div className="form-group" style={{ display: "none" }}>
-              <label className="form-label">ITEM ID</label>
+            <div className="edm-form-group" style={{ display: "none" }}>
+              <label className="edm-form-label">ITEM ID</label>
               <input
                 type="text"
                 name="itemId"
                 value={itemId}
                 onChange={handleInputChange}
-                className="form-input"
+                className="edm-form-input"
               />
             </div>
           </div>

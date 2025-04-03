@@ -16,10 +16,11 @@
     border-radius: 10px;
     width: 90%;
     max-width: 900px;
-    padding-bottom: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
     max-height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Modal Title */
@@ -28,37 +29,51 @@
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-    padding: 14px;
+    padding: 16px;
+    border-radius: 10px 10px 0 0;
+    margin: 0;
+}
+
+.modal-title-1 {
     background: #b8d6eb;
     color: #3a6ea7;
-    border-radius: 10px 10px 0 0;
 }
 
 .modal-title-2 {
-    background-color: #ffc2c2;
+    background: #ffc2c2;
     color: #a73a3a;
 }
 
 /* Modal Form */
 .modal-form-1 {
-    flex: 1;
-    padding: 20px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+}
+
+/* Content Container - Holds Image and Form Fields */
+.modal-content-container {
+    display: flex;
     gap: 24px;
 }
 
 /* Image Upload Section */
 .image-upload-container-1 {
-    flex: 0 0 300px;
+    flex: 0 0 260px;
     border: 2px dashed #b8d6eb;
     border-radius: 10px;
-    height: 250px;
+    height: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     text-align: center;
+}
+
+/* StockOut styling for image container */
+.modal-title-2 ~ form .image-upload-container-1 {
+    border: 2px dashed #ffc2c2;
 }
 
 .image-preview-1 {
@@ -69,6 +84,10 @@
 
 .upload-placeholder-1 {
     color: #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 /* File Upload Button */
@@ -77,11 +96,12 @@
 }
 
 .upload-button-1 {
-    padding: 8px 16px;
+    padding: 10px 16px;
     background: #e7ecf0;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
+    font-size: 14px;
 }
 
 .upload-button-1:hover {
@@ -93,14 +113,31 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Item Description Section */
+.item-details-section {
+    grid-column: span 2;
+    background-color: #f7fbff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+}
+
+/* StockOut styling */
+.item-details-section.stockout {
+    background-color: #fff7f7;
 }
 
 /* Form Groups */
 .form-group-1 {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .form-group-1.full-width-1 {
@@ -117,7 +154,7 @@
 /* Inputs & Select */
 .form-input-1,
 .form-select-1 {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #b8d6eb;
     border-radius: 5px;
     font-size: 14px;
@@ -126,63 +163,60 @@
     width: 100%;
 }
 
+/* StockOut styling for inputs */
+.modal-title-2 ~ form .form-input-1,
+.modal-title-2 ~ form .form-select-1 {
+    border: 1px solid #ffc2c2;
+}
+
 .form-input-1:focus,
 .form-select-1:focus {
     border-color: #7a9fb8;
+    box-shadow: 0 0 0 2px rgba(122, 159, 184, 0.2);
 }
 
-/* Price & Units Section */
-.price-units-container-1 {
-    display: grid;
-    grid-template-columns: 1fr auto auto; /* Adjusts layout */
-    gap: 16px;
-    grid-column: span 2;
+.modal-title-2 ~ form .form-input-1:focus,
+.modal-title-2 ~ form .form-select-1:focus {
+    border-color: #e79191;
+    box-shadow: 0 0 0 2px rgba(184, 122, 122, 0.2);
 }
 
-/* Make Unit Field Smaller */
-.units-group-1 {
-    width: 80px; /* Smaller width */
-    flex: 0 0 80px; /* Prevent it from stretching */
+/* Read-only Info */
+.item-desc-1, 
+.item-brand-1 {
+    background-color: #f0f4f8;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #dce4ec;
+    color: #4a4a4a;
+    font-size: 14px;
+}
+
+.modal-title-2 ~ form .item-desc-1,
+.modal-title-2 ~ form .item-brand-1 {
+    background-color: #f8f0f0;
+    border: 1px solid #ecdcdc;
 }
 
 /* Buttons */
 .modal-actions-1 {
     display: flex;
-    justify-content: center; /* Centers the buttons horizontally */
-    align-items: center; /* Aligns the buttons properly */
-    flex-wrap: wrap; /* Allows buttons to wrap if needed */
-    gap: 12px;
-    padding: 15px;
-    border-top: 1px solid #ddd;
-    background: #fff;
-    width: 100%; /* Ensures full width inside the modal */
-    text-align: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    border-top: 1px solid #eaeaea;
+    margin-top: auto;
 }
-
-@media (max-width: 768px) {
-    .modal-actions-1 {
-        flex-direction: column; /* Stack buttons on small screens */
-        gap: 10px;
-        padding: 10px;
-    }
-
-    .save-button-1,
-    .cancel-button-1 {
-        width: 100%; /* Make buttons full-width on smaller screens */
-        max-width: 200px; /* Prevent excessive stretching */
-    }
-}
-
 
 .save-button-1,
 .cancel-button-1 {
-    padding: 10px 24px;
+    padding: 12px 24px;
     border: none;
     border-radius: 5px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s;
-    width: 140px;
+    transition: all 0.2s;
+    min-width: 120px;
     text-align: center;
 }
 
@@ -193,6 +227,7 @@
 
 .save-button-1:hover {
     background: #a5e0aa;
+    transform: translateY(-1px);
 }
 
 .cancel-button-1 {
@@ -202,47 +237,52 @@
 
 .cancel-button-1:hover {
     background: #ffaaaa;
+    transform: translateY(-1px);
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .modal-container-1 {
-        width: 95%;
-        max-height: 85vh;
-    }
-
-    .modal-form-1 {
+    .modal-content-container {
         flex-direction: column;
-        gap: 16px;
+        align-items: center;
     }
-
+    
     .image-upload-container-1 {
         width: 100%;
-        max-width: 250px;
-        height: 200px;
-        margin: 0 auto;
+        max-width: 220px;
+        height: 220px;
     }
 
     .form-fields-container-1 {
         grid-template-columns: 1fr;
-        gap: 12px;
+        width: 100%;
     }
 
-    .form-group-1.full-width-1 {
-        grid-column: span 1;
-    }
-
-    .price-units-container-1 {
+    .item-details-section {
         grid-template-columns: 1fr;
-        grid-column: span 1;
+        grid-column: 1;
     }
+    
+    .form-group-1.full-width-1 {
+        grid-column: 1;
+    }
+}
 
+@media (max-width: 480px) {
+    .modal-container-1 {
+        width: 95%;
+    }
+    
+    .modal-form-1 {
+        padding: 16px;
+        gap: 16px;
+    }
+    
     .modal-actions-1 {
         flex-direction: column;
         align-items: center;
-        gap: 8px;
     }
-
+    
     .save-button-1,
     .cancel-button-1 {
         width: 100%;

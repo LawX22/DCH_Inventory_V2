@@ -1,0 +1,245 @@
+/* Modal Overlay */
+.edm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 10px;
+  }
+  
+  /* Modal Container */
+  .edm-modal-container {
+    background-color: white;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    width: 90%;
+    max-width: 1000px;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+  
+  /* Modal Title */
+  .edm-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 14px;
+    background-color: #bdeac1;
+    color: #25632b;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Modal Form Layout */
+  .edm-modal-form {
+    padding: 20px;
+    display: flex;
+    gap: 24px;
+  }
+  
+  /* Image Upload Section */
+  .edm-image-upload-container,
+  .edm-image-upload-container-1{
+    margin-top: 10px;
+    width: 300px; /* Fixed width */
+    height: 250px; /* Fixed height */
+    border: 2px dashed #b8d6eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative; /* Added for positioning context */
+  }
+  
+  .edm-image-preview, 
+  .edm-image-preview-1 {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: absolute; /* Position absolutely within container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image */
+  }
+  
+  .edm-upload-placeholder {
+    text-align: center;
+    color: #888;
+  }
+  
+  .edm-upload-text {
+    margin-bottom: 10px;
+  }
+  
+  .edm-file-input {
+    display: none;
+  }
+  
+  .edm-upload-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e7ecf0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edm-upload-button:hover {
+    background-color: #b8d6eb;
+  }
+  
+  /* Form Fields Container */
+  .edm-form-fields-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  /* Form Groups */
+  .edm-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .edm-form-group.edm-full-width {
+    grid-column: span 2;
+  }
+  
+  /* Form Labels */
+  .edm-form-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  /* Form Inputs and Selects */
+  .edm-form-input,
+  .edm-form-select,
+  .edm-form-select-2 {
+    padding: 8px;
+    border: 1px solid #b8d6eb;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+  
+  .edm-form-select-2 {
+    padding: 8px;
+    width: 94%;
+  }
+  
+  .edm-form-input:focus,
+  .edm-form-select:focus,
+  .edm-form-select-2:focus {
+    border-color: #7a9fb8;
+  }
+  
+  /* Price and Units Section */
+  .edm-price-units-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    grid-column: span 2;
+  }
+  
+  /* Action Buttons */
+  .edm-modal-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    gap: 12px;
+    border-top: 1px solid #ddd;
+    padding: 15px;
+  }
+  
+  .edm-save-button,
+  .edm-cancel-button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 140px;
+    text-align: center;
+  }
+  
+  .edm-save-button {
+    background-color: #bdeac1;
+    color: #25632b;
+  }
+  
+  .edm-save-button:hover {
+    background-color: #a5e0aa;
+  }
+  
+  .edm-cancel-button {
+    background-color: #ffc2c2;
+    color: #7a3434;
+  }
+  
+  .edm-cancel-button:hover {
+    background-color: #ffaaaa;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .edm-modal-container {
+      width: 95%;
+      padding-bottom: 15px;
+      max-height: 85vh;
+    }
+  
+    .edm-modal-form {
+      flex-direction: column;
+      gap: 16px;
+    }
+  
+    .edm-image-upload-container {
+      width: 100%;
+      max-width: 250px;
+      height: 200px;
+      margin: 0 auto;
+    }
+  
+    .edm-form-fields-container {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  
+    .edm-form-group.edm-full-width {
+      grid-column: span 1;
+    }
+  
+    .edm-price-units-container {
+      grid-template-columns: 1fr;
+      grid-column: span 1;
+    }
+  
+    .edm-modal-actions {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+  
+    .edm-save-button,
+    .edm-cancel-button {
+      width: 100%;
+      max-width: 200px;
+    }
+  }

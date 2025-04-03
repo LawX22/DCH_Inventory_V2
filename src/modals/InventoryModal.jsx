@@ -96,32 +96,32 @@ const InventoryModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <h2 className="modal-title">ADD NEW ITEM</h2>
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="image-upload-container">
+    <div className="imd-modal-overlay">
+      <div className="imd-modal-container">
+        <h2 className="imd-modal-title">ADD NEW ITEM</h2>
+        <form onSubmit={handleSubmit} className="imd-modal-form">
+          <div className="imd-flex imd-flex-col imd-items-center imd-space-y-4">
+            <div className="imd-image-upload-container">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="file-input hidden"
+                className="imd-file-input imd-hidden"
                 id="imageUpload"
               />
               {imagePreview ? (
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="image-preview cursor-pointer"
+                  className="imd-image-preview imd-cursor-pointer"
                   onClick={() => document.getElementById("imageUpload").click()}
                 />
               ) : (
-                <div className="upload-placeholder">
-                  <div className="upload-text">Click to upload image</div>
+                <div className="imd-upload-placeholder">
+                  <div className="imd-upload-text">Click to upload image</div>
                   <label
                     htmlFor="imageUpload"
-                    className="upload-button cursor-pointer"
+                    className="imd-upload-button imd-cursor-pointer"
                   >
                     Browse
                   </label>
@@ -129,41 +129,41 @@ const InventoryModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            <div className="modal-actions flex flex-row justify-between w-full space-x-4">
+            <div className="imd-modal-actions imd-flex imd-flex-row imd-justify-between imd-w-full imd-space-x-4">
               <button
                 type="submit"
-                className="save-button bg-blue-500 text-white px-4 py-2 rounded"
+                className="imd-save-button imd-bg-blue-500 imd-text-white imd-px-4 imd-py-2 imd-rounded"
               >
                 SAVE
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="cancel-button bg-gray-400 text-white px-4 py-2 rounded"
+                className="imd-cancel-button imd-bg-gray-400 imd-text-white imd-px-4 imd-py-2 imd-rounded"
               >
                 CANCEL
               </button>
             </div>
           </div>
-          <div className="form-fields-container">
-            <div className="form-group full-width">
-              <label className="form-label">ITEM CODE</label>
+          <div className="imd-form-fields-container">
+            <div className="imd-form-group imd-full-width">
+              <label className="imd-form-label">ITEM CODE</label>
               <input
                 type="text"
                 name="itemCode"
                 value={formData.itemCode}
                 onChange={handleInputChange}
-                className="form-input"
+                className="imd-form-input"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">ITEM BRAND</label>
+            <div className="imd-form-group">
+              <label className="imd-form-label">ITEM BRAND</label>
               <input
                 list="brands"
                 name="itemBrand"
                 value={formData.itemBrand}
                 onChange={handleInputChange}
-                className="form-select"
+                className="imd-form-select"
               />
               <datalist id="brands">
                 {brands.map((brand, index) => (
@@ -171,14 +171,14 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 ))}
               </datalist>
             </div>
-            <div className="form-group">
-              <label className="form-label">ITEM CATEGORY</label>
+            <div className="imd-form-group">
+              <label className="imd-form-label">ITEM CATEGORY</label>
               <input
                 list="categories"
                 name="itemCategory"
                 value={formData.itemCategory}
                 onChange={handleInputChange}
-                className="form-select"
+                className="imd-form-select"
               />
               <datalist id="categories">
                 {category.map((category, index) => (
@@ -186,78 +186,78 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 ))}
               </datalist>
             </div>
-            <div className="form-group full-width">
-              <label className="form-label">DESCRIPTION 1</label>
+            <div className="imd-form-group imd-full-width">
+              <label className="imd-form-label">DESCRIPTION 1</label>
               <input
                 type="text"
                 name="description1"
                 value={formData.description1}
                 onChange={handleInputChange}
-                className="form-input"
+                className="imd-form-input"
               />
             </div>
-            <div className="form-group full-width">
-              <label className="form-label">DESCRIPTION 2</label>
+            <div className="imd-form-group imd-full-width">
+              <label className="imd-form-label">DESCRIPTION 2</label>
               <input
                 type="text"
                 name="description2"
                 value={formData.description2}
                 onChange={handleInputChange}
-                className="form-input"
+                className="imd-form-input"
               />
             </div>
-            <div className="price-units-container">
-              <div className="form-group">
-                <label className="form-label">ITEM UNITS</label>
+            <div className="imd-price-units-container">
+              <div className="imd-form-group">
+                <label className="imd-form-label">ITEM UNITS</label>
                 <input
                   type="number"
                   name="units"
                   value={formData.units}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="imd-form-input"
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">FIXED PRICE</label>
+              <div className="imd-form-group">
+                <label className="imd-form-label">FIXED PRICE</label>
                 <input
                   type="number"
                   name="fixedPrice"
                   value={formData.fixedPrice}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="imd-form-input"
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label">RETAIL PRICE</label>
+              <div className="imd-form-group">
+                <label className="imd-form-label">RETAIL PRICE</label>
                 <input
                   type="number"
                   name="retailPrice"
                   value={formData.retailPrice}
                   onChange={handleInputChange}
-                  className="form-input"
+                  className="imd-form-input"
                 />
               </div>
             </div>
-            <div className="form-group">
-              <label className="form-label">LOCATION</label>
+            <div className="imd-form-group">
+              <label className="imd-form-label">LOCATION</label>
               <select
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                className="form-select-2"
+                className="imd-form-select-2"
               >
                 <option value="">Select Location</option>
                 <option value="STORE">STORE</option>
                 <option value="WAREHOUSE">WAREHOUSE</option>
               </select>
             </div>
-            <div className="form-group">
-              <label className="form-label">STORAGE AREA</label>
+            <div className="imd-form-group">
+              <label className="imd-form-label">STORAGE AREA</label>
               <select
                 name="storageArea"
                 value={formData.storageArea}
                 onChange={handleInputChange}
-                className="form-select-2"
+                className="imd-form-select-2"
               >
                 <option value="">Select Storage Area</option>
                 <option value="Store 1st Floor">Store 1st Floor</option>
@@ -266,14 +266,14 @@ const InventoryModal = ({ isOpen, onClose }) => {
               </select>
             </div>
 
-            <div className="form-group" style={{ display: "none" }}>
-              <label className="form-label">USERNAME</label>
+            <div className="imd-form-group" style={{ display: "none" }}>
+              <label className="imd-form-label">USERNAME</label>
               <input
                 type="text"
                 name="username"
                 value={storedValue}
                 onChange={handleInputChange}
-                className="form-input"
+                className="imd-form-input"
               />
             </div>
           </div>
