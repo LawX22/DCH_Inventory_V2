@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import LogIn from "./Auth/LogIn";
+import SignUp from "./Auth/SignUp"; // Import the new SignUp component
 import ProtectedRoute from "./Auth/ProtectedRoute";
 import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";
@@ -21,6 +22,7 @@ function StaffRoute() {
         {/* Default route to login page */}
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} /> {/* Add the new SignUp route */}
 
         {/* Other routes */}
         <Route path="/inventory" element={ <ProtectedRoute><Inventory /></ProtectedRoute>} />
