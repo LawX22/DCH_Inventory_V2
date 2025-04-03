@@ -24,6 +24,8 @@ function Inventory() {
 
   const [area, setArea] = useState(localStorage.getItem("area") || "");
 
+  const [stock, setStock] = useState(localStorage.getItem("stock") || "");
+
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
@@ -59,7 +61,8 @@ function Inventory() {
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
-  }, [selectedLocation, brand, area, category]);
+    localStorage.setItem("stock", stock);
+  }, [selectedLocation, brand, area, category, stock]);
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
@@ -69,13 +72,15 @@ function Inventory() {
           category: category,
           brand: brand,
           area: area,
+          stock: stock,
+          
         },
       })
       .then((response) => {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory, brand, category, area]);
+  }, [selectedLocation, searchQuery, inventory, brand, category, area, stock]);
 
 
 
@@ -104,6 +109,12 @@ function Inventory() {
         break;
       case "brand":
         setBrand(value);
+
+        break;
+
+        
+      case "stock":
+        setStock(value);
 
         break;
       case "area":
@@ -171,10 +182,13 @@ function Inventory() {
     localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
     localStorage.setItem("area", ""); // Set area to empty string
     localStorage.setItem("category", ""); // Set category to empty string
+    localStorage.setItem("stock", ""); 
 
     setCategory('');
     setBrand('');
     setArea('');
+    setStock('');
+    
 
   
   }, []);
@@ -214,6 +228,31 @@ function Inventory() {
         console.error("Error fetching brands:", error);
       });
   }, []);
+
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [inventoryNumber, setInventoryNumber] = useState("");
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleStockChange = (e) => {
+    // Ensure only numbers are allowed
+    const value = e.target.value.replace(/\D/, "");
+    setInventoryNumber(value);
+    setStock(value)
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="inventory-container">
@@ -332,9 +371,20 @@ function Inventory() {
           <div className="header-cell with-arrow">
             <span>Price</span>
           </div>
-          <div className="header-cell with-arrow">
-            <span>Inventory</span>
-          </div>
+          <div className="header-cell with-arrow" onClick={handleEdit}>
+      {isEditing ? (
+        <input
+          type="text"
+          value={inventoryNumber}
+          onChange={handleStockChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyPress}
+          autoFocus
+        />
+      ) : (
+        <span>{inventoryNumber || "Inventory"}</span>
+      )}
+    </div>
           <div className="header-cell">Actions</div>
         </div>
 
@@ -379,21 +429,31 @@ function Inventory() {
                 </div>
               </div>
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openEditFunc(item)}
-                >
-                  <AiOutlineEye size={18} />
-                  <span>Edit</span>
-                </button>
-                <button
-                  className="action-button delete-button"
-                  onClick={() => deleteFunc(item.inventory_Id, user)}
-                >
-                  <AiOutlineDelete size={18} />
-                  <span>Delete</span>
-                </button>
-              </div>
+  <button
+    className="action-button view-button"
+    onClick={() => openEditFunc(item)}
+    disabled={
+      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
+      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
+    }
+  >
+    <AiOutlineEye size={18} />
+    <span>Edit</span>
+  </button>
+
+  <button
+    className="action-button delete-button"
+    onClick={() => deleteFunc(item.inventory_Id, user)}
+    disabled={
+      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
+      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
+    }
+  >
+    <AiOutlineDelete size={18} />
+    <span>Delete</span>
+  </button>
+</div>
+
             </div>
           ))}
         </div>

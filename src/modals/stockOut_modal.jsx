@@ -126,11 +126,11 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
   };
 
   const handleSubmit = async (e) => {
-    if(unitsAdded > units){
-      alert("Units added cannot be greater than the available units.");
-      return;
-    }
-    else{
+    // if(unitsAdded > units){
+    //   alert("Units added cannot be greater than the available units.");
+    //   return;
+    // }
+    // else{
 
 
       e.preventDefault();
@@ -160,7 +160,7 @@ const StockOutModal = ({ isOpen, onClose, data}) => {
       console.error("Error updating item:", error.response?.data || error);
     }
 
-    }
+    // }
     
   };
 

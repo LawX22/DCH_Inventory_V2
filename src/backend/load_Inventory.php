@@ -10,6 +10,8 @@ $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 $brand = isset($_GET['brand']) ? $_GET['brand'] : '';
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $area = isset($_GET['area']) ? $_GET['area'] : '';
+$stock = isset($_GET['stock']) ? $_GET['stock'] : '';
+
 
 $sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0";
 
@@ -17,6 +19,8 @@ $sql = "SELECT * FROM inventory_merge WHERE 1=1 AND isDelete=0";
 if ($location !== '' && $location !== 'All') {
     $sql .= " AND location = ?";
 }
+
+
 
 // Apply search filter on itemCode or concatenated itemDesc_1 & itemDesc_2
 if ($searchQuery !== '') {  
@@ -27,6 +31,10 @@ if ($searchQuery !== '') {
 // Filter by brand if selected
 if ($brand !== '') {
     $sql .= " AND brand = ?";
+}
+
+if ($stock !== '') {
+    $sql .= " AND units <= ?";
 }
 
 // Filter by category if selected
@@ -67,6 +75,11 @@ if ($searchQuery !== '') {
 
 if ($brand !== '') {
     $params[] = $brand;
+    $types .= 's';
+}
+
+if ($stock !== '') {
+    $params[] = $stock;
     $types .= 's';
 }
 

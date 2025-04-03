@@ -23,7 +23,7 @@ const LogIn = () => {
           navigate("/admin_dashboard"); 
           // console.log('login');
    
-        } else if (response.data.userType === "Staff") {
+        } else if (response.data.userType === "Store-Staff" || response.data.userType === "Warehouse-Staff") {
           // console.log('login');
           navigate("/Inventory");
         } else if (response.data.userType === "Salesman") {

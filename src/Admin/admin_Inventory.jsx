@@ -280,7 +280,6 @@ function Inventory() {
         onClose={() => seteditModalOpen(false)}
         data={selectedData}
       />
-
       <div className="inventory-table">
         <div className="table-header">
           <div className="header-cell">
@@ -383,7 +382,6 @@ function Inventory() {
                   <span>Details</span>
                 </button>
 
-                
                 <button
                   className="action-button delete-button"
                   onClick={() => openModal(item.inventory_Id)}
