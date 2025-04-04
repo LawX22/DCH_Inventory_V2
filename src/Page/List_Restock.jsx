@@ -2,16 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import {
   AiOutlineSearch,
-  AiOutlineEye,
-  AiOutlineDelete,
-  AiOutlinePlus,
 } from "react-icons/ai";
-import { FiDownload, FiActivity } from "react-icons/fi";
-import Header from "./Header";
+import { FiActivity } from "react-icons/fi";
 import axios from "axios";
 import { IoArrowBack } from "react-icons/io5";
 
-import SelectedItemsModal from "../modals/reviewSelected_Modal";
+import SelectedItemsModal from "../modals/Generatepdf_Modal";
 import EditModal from "../modals/edit_InventoryModal";
 
 function List_Restock() {

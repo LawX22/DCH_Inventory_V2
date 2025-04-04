@@ -381,7 +381,7 @@ function Inventory() {
                   onClick={() => openEditFunc(item)}
                 >
                   <AiOutlineEye size={18} />
-                  <span>Details</span>
+                  <span>Edit</span>
                 </button>
 
                 <button

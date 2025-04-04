@@ -10,6 +10,7 @@ import "../src/css/Modal/InventoryModal.css";
 import "../src/css/Modal/GroupModal.css";
 import "../src/css/Modal/EditModal.css";
 import "../src/css/Modal/In&OutModal.css";
+import "../src/css/Modal/FocusedStockHistoryModal.css";
 import "../src/css/activity.css";
 import "../src/css/Admindashboard.css";
 import "../src/css/404.css";
