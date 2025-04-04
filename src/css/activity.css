@@ -186,7 +186,7 @@
   cursor: pointer;
 }
 
-.search-container {
+.ac-search-container {
   flex: 1; /* Allows it to take more space */
   display: flex;
   align-items: center;

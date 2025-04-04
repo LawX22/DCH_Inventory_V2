@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 const LogIn = () => {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setError(""); // Clear error when user types
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    
     try {
       const response = await axios.post("http://localhost/DCH_Inventory_V2/src/backend/login.php", credentials);
       
@@ -31,55 +38,109 @@ const LogIn = () => {
           navigate("/Salesman_PriceList");
         }
 
-        
       } else {
-        alert("Invalid username or password");
+        setError("Invalid username or password");
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("An error occurred. Please try again.");
+      setError("An error occurred. Please try again.");
+      setIsLoading(false);
     }
   };
 
-
   return (
     <div className="login-container">
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loader-container">
+            <div className="loader-spinner"></div>
+            <p>Signing in...</p>
+          </div>
+        </div>
+      )}
+
       {/* Left Side - Login Form */}
       <div className="login-form">
-        <h1 className="welcome-text">WELCOME!</h1>
-        <h3>DCH Online Inventory System V2</h3>
-        <img src="/src/assets/DCH.png" alt="Parts Box" className="parts-image" />
-
-        <form onSubmit={handleSubmit} className="login-fields">
-          <div>
-            <label className="label">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={credentials.username}
-              onChange={handleChange}
-              className="input-field"
-              required
-            />
+        <div className="login-header">
+          <h1 className="welcome-text">WELCOME!</h1>
+          <h3 className="system-name">DCH Online Inventory System V2</h3>
+        </div>
+        
+        <div className="login-card">
+          <div className="login-card-header">
+            <h2>Sign In</h2>
+            <p>Please enter your credentials to continue</p>
           </div>
-          <div>
-            <label className="label">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={credentials.password}
-              onChange={handleChange}
-              className="input-field"
-              required
-            />
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          <form onSubmit={handleSubmit} className="login-fields">
+            <div className="input-group">
+              <label className="label">Username</label>
+              <div className="input-container">
+                <i className="input-icon user-icon"></i>
+                <input
+                  type="text"
+                  name="username"
+                  value={credentials.username}
+                  onChange={handleChange}
+                  className="input-field"
+                  placeholder="Enter your username"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div className="input-group">
+              <label className="label">Password</label>
+              <div className="input-container">
+                <i className="input-icon lock-icon"></i>
+                <input
+                  type="password"
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  className="input-field"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div className="remember-forgot">
+              <div className="remember-me">
+                <input type="checkbox" id="remember" />
+                <label htmlFor="remember">Remember me</label>
+              </div>
+              <a href="#" className="forgot-password">Forgot Password?</a>
+            </div>
+            
+            <button 
+              type="submit" 
+              className="login-button"
+              disabled={isLoading}
+            >
+              Sign In
+            </button>
+          </form>
+          
+          <div className="login-footer">
+            <p>© 2025 DCH Inventory System. All rights reserved.</p>
           </div>
-          <button type="submit" className="login-button">Login</button>
-        </form>
+        </div>
       </div>
 
       {/* Right Side - Branding Image */}
       <div className="login-banner">
-   
+        <div className="banner-content">
+          <img src="/src/assets/Logo.png" alt="DCH Logo" className="banner-logo" />
+          <div className="banner-text">
+            <h2>Streamline Your Inventory Management</h2>
+            <p>Access real-time data and manage your inventory efficiently with our comprehensive system</p>
+          </div>
+        </div>
       </div>
     </div>
   );

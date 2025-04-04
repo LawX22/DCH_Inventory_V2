@@ -1235,6 +1235,7 @@ Encoder: All, Start: , End:
 Encoder: All, Start: 2025-03-17, End: 2025-03-22
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-17, End: 2025-03-22
+
 Encoder: dhaniel, Start: 2025-03-17, End: 2025-03-22
 Encoder: dhaniel, Start: , End: 
 Encoder: dhaniel, Start: , End: 
@@ -1323,27 +1324,22 @@ Encoder: All, Start: , End:
 24, End: 2025-03-29
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-24, End: 2025-03-29
-Encoder: All, Start: , End: 
-Encoder: All, Start: 2025-03-31, End: 2025-04-05
-Encoder: All, Start: , End: 
-Encoder: All, Start: 2025-03-31, End: 2025-04-05
-Encoder: All, Start: , End: 
-Encoder: All, Start: 2025-03-31, End: 2025-04-05
-Encoder: All, Start: , End: 
-Encoder: All, Start: 2025-03-31, End: 2025-04-05
-Encoder: All, Start: , End: 
+
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
 Encoder: All, Start: , End: 
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
+
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
 Encoder: All, Start: , End: 
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
+
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
 Encoder: All, Start: , End: 
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-03-31, End: 2025-04-05
+

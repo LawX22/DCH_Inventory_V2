@@ -153,7 +153,7 @@ function ActivityReport() {
           </select>
         </div>
 
-        <div className="search-container">
+        <div className="ac-search-container">
           <AiOutlineSearch size={18} className="search-icon" />
           <input
             type="text"

@@ -204,13 +204,13 @@ const RequestBoard = () => {
   const requestToApproveData = requestsData.find((req) => req.id === requestToApprove);
 
   return (
-    <div className="request-container">
+    <div className="rqb-request-container">
       <Header />
 
       {/* Action Panel */}
-      <div className="action-panel">
+      <div className="rqb-action-panel">
         <button
-          className="add-button"
+          className="rqb-add-button"
           onClick={() =>
             window.open("/List_Restock", "_blank", "noopener,noreferrer")
           }
@@ -218,19 +218,19 @@ const RequestBoard = () => {
           <FaPlus /> New Request
         </button>
 
-        <div className="search-container">
-          <div className="search-icon">
+        <div className="rqb-search-container">
+          <div className="rqb-search-icon">
             <FaSearch />
           </div>
           <input
             type="text"
             placeholder="Search requests..."
-            className="search-input"
+            className="rqb-search-input"
           />
         </div>
 
-        <div className="warehouse-dropdown">
-          <select className="dropdown-select">
+        <div className="rqb-warehouse-dropdown">
+          <select className="rqb-dropdown-select">
             <option value="all">Status Filter</option>
             <option value="pending">Pending</option>
             <option value="approved">Approved</option>
@@ -238,8 +238,8 @@ const RequestBoard = () => {
           </select>
         </div>
 
-        <div className="warehouse-dropdown">
-          <select className="dropdown-select">
+        <div className="rqb-warehouse-dropdown">
+          <select className="rqb-dropdown-select">
             <option value="all">Date Filter</option>
             <option value="today">Today</option>
             <option value="week">This Week</option>
@@ -248,83 +248,83 @@ const RequestBoard = () => {
         </div>
 
         {/* Layout Toggle Button */}
-        <button className="layout-toggle-button" onClick={toggleLayout}>
+        <button className="rqb-layout-toggle-button" onClick={toggleLayout}>
           {layoutType === "square" ? <FaThList /> : <FaTh />}
           {layoutType === "square" ? "Rectangular" : "Square"}
         </button>
 
-        <button className="export-button">
+        <button className="rqb-export-button">
           <FaFileExport /> Export
         </button>
 
-        <button className="activity-button">
+        <button className="rqb-activity-button">
           <FaHistory /> Activity
         </button>
       </div>
 
       {/* Card-based Request Layout */}
-      <div className={`request-cards-container ${layoutType}`}>
+      <div className={`rqb-request-cards-container ${layoutType}`}>
         {requestsData.map((request) => (
-          <div className={`request-card ${layoutType}`} key={request.id}>
+          <div className={`rqb-request-card ${layoutType}`} key={request.id}>
             {/* Card Header */}
-            <div className="card-header">
-              <span className="request-id">{request.id}</span>
-              <div className="header-right">
+            <div className="rqb-card-header">
+              <span className="rqb-request-id">{request.id}</span>
+              <div className="rqb-header-right">
                 {layoutType === "square" && (
                   <button 
-                    className="view-details-icon" 
+                    className="rqb-view-details-icon" 
                     onClick={() => openDetailModal(request.id)}
                     title="View full details"
                   >
                     <FaEye />
                   </button>
                 )}
-                <div className={`status-badge ${request.status.toLowerCase()}`}>
+                <div className={`rqb-status-badge ${request.status.toLowerCase()}`}>
                   {request.status}
                 </div>
               </div>
             </div>
             
             {/* Card Content */}
-            <div className="card-content">
-              <div className="item-image-container">
-                <FaClipboardList className="item-image" />
+            <div className="rqb-card-content">
+              <div className="rqb-item-image-container">
+                <FaClipboardList className="rqb-item-image" />
               </div>
               
-              <div className="item-details">
-                <span className="item-name">{request.description}</span>
+              <div className="rqb-item-details">
+                <span className="rqb-item-name">{request.description}</span>
                 
-                <div className="item-description">
-                  <div className="item-info">
-                    <span className="info-label">Type:</span>
-                    <span className="info-value">{request.type}</span>
+                <div className="rqb-item-description">
+                  <div className="rqb-item-info">
+                    <span className="rqb-info-label">Type:</span>
+                    <span className="rqb-info-value">{request.type}</span>
                   </div>
                   
-                  <div className="item-info">
-                    <span className="info-label">Quantity:</span>
-                    <span className="info-value">{request.quantity}</span>
+                  <div className="rqb-item-info">
+                    <span className="rqb-info-label">Quantity:</span>
+                    <span className="rqb-info-value">{request.quantity}</span>
                   </div>
                   
-                  <div className="item-info">
-                    <span className="info-label">Price:</span>
-                    <span className="info-value">${request.price.toFixed(2)}</span>
+                  <div className="rqb-item-info">
+                    <span className="rqb-info-label">Price:</span>
+                    <span className="rqb-info-value">${request.price.toFixed(2)}</span>
                   </div>
                   
-                  <div className="item-info">
-                    <span className="info-label">Total:</span>
-                    <span className="info-value">${request.amountDue.toFixed(2)}</span>
+                  <div className="rqb-item-info">
+                    <span className="rqb-info-label">Total:</span>
+                    <span className="rqb-info-value">${request.amountDue.toFixed(2)}</span>
                   </div>
                   
                   {layoutType === "rectangular" && (
                     <>
-                      <div className="item-info">
-                        <span className="info-label">Item Code:</span>
-                        <span className="info-value">{request.itemCode}</span>
+                      <div className="rqb-item-info">
+                        <span className="rqb-info-label">Item Code:</span>
+                        <span className="rqb-info-value">{request.itemCode}</span>
                       </div>
                       
-                      <div className="item-info">
-                        <span className="info-label">Date:</span>
-                        <span className="info-value">{request.date}</span>
+                      <div className="rqb-item-info">
+                        <span className="rqb-info-label">Date:</span>
+                        <span className="rqb-info-value">{request.date}</span>
                       </div>
                     </>
                   )}
@@ -333,26 +333,26 @@ const RequestBoard = () => {
             </div>
             
             {/* Card Footer */}
-            <div className="card-footer">
-              <div className="requester">
+            <div className="rqb-card-footer">
+              <div className="rqb-requester">
                 <FaUser />
-                <span className="requester-name">{request.requester}</span>
+                <span className="rqb-requester-name">{request.requester}</span>
               </div>
               
-              <div className="item-actions">
+              <div className="rqb-item-actions">
                 <button 
-                  className="action-button view-button"
+                  className="rqb-action-button rqb-view-button"
                   onClick={() => openCommentModal(request.id)}
                 >
                   <FaComments />
                   Comments
                   {request.comments.length > 0 && (
-                    <span className="comment-count">{request.comments.length}</span>
+                    <span className="rqb-comment-count">{request.comments.length}</span>
                   )}
                 </button>
                 
                 <button 
-                  className="action-button approve-button"
+                  className="rqb-action-button rqb-approve-button"
                   onClick={() => openApprovalConfirm(request.id)}
                   disabled={request.status === "Approved" || request.status === "Rejected"}
                 >
@@ -383,29 +383,29 @@ const RequestBoard = () => {
 
       {/* Approval Confirmation Modal */}
       {isApprovalConfirmOpen && requestToApproveData && (
-        <div className="approval-modal-overlay">
-          <div className="approval-modal">
-            <div className="approval-modal-header">
+        <div className="rqb-approval-modal-overlay">
+          <div className="rqb-approval-modal">
+            <div className="rqb-approval-modal-header">
               <h3>Confirm Request Action</h3>
-              <button className="close-button" onClick={closeApprovalConfirm}>×</button>
+              <button className="rqb-close-button" onClick={closeApprovalConfirm}>×</button>
             </div>
-            <div className="approval-modal-content">
+            <div className="rqb-approval-modal-content">
               <p>Do you want to approve or cancel request <strong>{requestToApproveData.id}</strong>?</p>
-              <p className="request-details">
+              <p className="rqb-request-details">
                 <strong>{requestToApproveData.description}</strong> - 
                 {requestToApproveData.quantity} {requestToApproveData.quantity > 1 ? 'items' : 'item'} - 
                 Total: ${requestToApproveData.amountDue.toFixed(2)}
               </p>
             </div>
-            <div className="approval-modal-actions">
+            <div className="rqb-approval-modal-actions">
               <button 
-                className="cancel-request-button" 
+                className="rqb-cancel-request-button" 
                 onClick={handleCancelRequest}
               >
                 <FaTimes /> Cancel Request
               </button>
               <button 
-                className="approve-request-button" 
+                className="rqb-approve-request-button" 
                 onClick={handleApproveRequest}
               >
                 <FaCheck /> Approve Request

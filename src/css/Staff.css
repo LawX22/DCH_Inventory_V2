@@ -1,0 +1,550 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: auto; /* Enables scrolling if needed */
+  background-color: #f5f7f9;
+}
+
+/* Inventory Container */
+.inventory-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+}
+/* Action Panel */
+.action-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 20px;
+  background-color: #e7ecf0;
+  border-radius: 10px;
+  margin: 20px;
+  border: 1px solid #b8d6eb9a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 40px);
+  gap: 10px;
+}
+
+/* Buttons & Dropdown */
+.action-panel button,
+.warehouse-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-weight: 500;
+  cursor: pointer;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Ensures uniform size */
+  min-width: 120px;
+  max-width: 160px;
+}
+
+/* Add Button */
+.add-button {
+  background-color: #bdeac1;
+  color: #25632b;
+}
+
+.add-button:hover {
+  background-color: #a3d7a7;
+}
+.warehouse-dropdown {
+  background-color: #b8d6eb;
+  border-radius: 5px;
+  position: relative;
+  max-width: 200px; /* Increased width */
+  height: 40px; /* Set fixed height */
+  cursor: pointer; /* Ensure cursor works */
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  padding: 6px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect */
+.warehouse-dropdown:hover {
+  background-color: #a0c4dc;
+}
+
+/* Ensure cursor pointer applies */
+.dropdown-select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  color: #25632b;
+  appearance: none;
+  text-align: center;
+  font-size: 14px;
+  padding: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* Remove outline when clicked */
+.dropdown-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Custom Dropdown Arrow */
+.warehouse-dropdown::after {
+  content: "▼";
+  font-size: 14px;
+  color: #25632b;
+  position: absolute;
+  right: 10px; /* Adjusted for better alignment */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* Ensure cursor pointer applies on hover */
+.warehouse-dropdown:hover,
+.warehouse-dropdown:hover .dropdown-select {
+  cursor: pointer;
+}
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 0 15px;
+  flex: 3;
+  height: 40px;
+}
+
+.search-icon {
+  color: #888;
+  margin-right: 8px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Export & Activity Buttons */
+.export-button {
+  background-color: #ffc2c2;
+  color: #7a3434;
+}
+
+.export-button:hover {
+  background-color: #f5a7a7;
+}
+
+.activity-button {
+  background-color: #ffefc2;
+  color: #7a6034;
+}
+
+.activity-button:hover {
+  background-color: #f3db9e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .action-panel {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-panel > * {
+    width: 100%;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
+
+  .add-button,
+  .warehouse-dropdown,
+  .export-button,
+  .activity-button {
+    width: 100%;
+  }
+}
+
+/* Inventory Table */
+.inventory-table {
+  margin: 0 20px 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 40px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  width: 100%;
+  background-color: #b8d6eb;
+  position: sticky;
+  top: 0;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Scrollable Table Body */
+.table-body {
+  max-height: calc(100vh - 280px);
+  min-height: 200px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Table Row */
+.table-row {
+  display: flex;
+  border-bottom: 1px solid #f5f5f5;
+  align-items: center;
+  width: 100%;
+}
+
+.table-row:hover {
+  background-color: #f9fafc;
+}
+
+/* Header Cells */
+.header-cell {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* Container for the select dropdown and icon */
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+/* Style for the select element */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding: 8px 30px 8px 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Style for the icon */
+.select-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Styling the date input */
+.styled-date-input {
+  margin-left: 5px;
+  padding: 5px;
+  border: 1px solid #949393;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #333;
+  background-color: #b8d6eb;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.styled-date-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Optional: Add a custom arrow icon */
+.date-input-container {
+  position: relative;
+}
+
+select {
+  all: unset;
+  appearance: none;
+  width: 100%;
+  padding: 8px;
+  height: 20px;
+  overflow-y: auto;
+}
+
+select option {
+  max-height: 30px;
+}
+
+.header-cell:nth-child(1) {
+  flex: 2;
+}
+
+.header-cell:nth-child(n + 2) {
+  flex: 1;
+}
+
+.with-arrow {
+  cursor: pointer;
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+}
+
+/* Item Cells */
+.item-cell {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  flex: 2;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.item-image-container {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-image {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.item-name {
+  font-weight: 500;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-category,
+.item-id {
+  font-size: 12px;
+  color: #888;
+  margin-top: 3px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Other Table Cells */
+.header-cell,
+.brand-cell,
+.date-cell,
+.location-cell,
+.price-cell,
+.inventory-cell,
+.amount-cell,
+.Requistion-cell,
+.units-cell,
+.activity-cell,
+.actions-cell {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px;
+  flex: 1;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.amount-cell,
+.Requistion-cell,
+.actions-cell {
+  text-align: center;
+}
+
+.location-cell div:nth-child(2),
+.price-cell div:nth-child(2),
+.inventory-cell div:nth-child(2),
+.units-cell div:nth-child(2) {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Action Buttons */
+.actions-cell {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px;
+  flex: 1;
+  min-width: 80px;
+  border-left: 2px solid rgb(215, 207, 207);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .actions-cell {
+    font-size: 12px;
+    padding: 8px;
+    min-width: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions-cell {
+    font-size: 10px;
+    padding: 6px;
+    min-width: 60px;
+    gap: 2px;
+  }
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 80px;
+  height: 30px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.view-button {
+  background-color: #eef5ff;
+  color: #3a6ea7;
+}
+
+.delete-button {
+  background-color: #ffeeee;
+  color: #a73a3a;
+}
+
+.action-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+/* Space at the bottom */
+.inventory-table:after {
+  content: "";
+  flex: 1;
+}
+
+/* Custom Scrollbar */
+.table-body::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #e7ecf0; /* Track color */
+  border-radius: 5px;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #b8d6eb; /* Thumb color */
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #7a9fb8; /* Darker shade when hovered */
+}
+
+/* Scrollbar for all elements with overflow */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #b8d6eb;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #7a9fb8;
+}

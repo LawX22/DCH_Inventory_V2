@@ -1,5 +1,5 @@
 /* Modal Overlay */
-.modal-overlay {
+.imd-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,7 +14,7 @@
 }
 
 /* Modal Container */
-.modal-container {
+.imd-modal-container {
   background-color: white;
   border-radius: 10px;
   padding-bottom: 20px;
@@ -27,7 +27,7 @@
 }
 
 /* Modal Title */
-.modal-title {
+.imd-modal-title {
   font-size: 18px;
   font-weight: 600;
   text-align: center;
@@ -40,15 +40,15 @@
 }
 
 /* Modal Form Layout */
-.modal-form {
+.imd-modal-form {
   padding: 20px;
   display: flex;
   gap: 24px;
 }
 
 /* Image Upload Section */
-.image-upload-container,
-.image-upload-container-1{
+.imd-image-upload-container,
+.imd-image-upload-container-1{
   margin-top: 10px;
   width: 300px; /* Fixed width */
   height: 250px; /* Fixed height */
@@ -61,8 +61,8 @@
   position: relative; /* Added for positioning context */
 }
 
-.image-preview, 
-.image-preview  {
+.imd-image-preview, 
+.imd-image-preview {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
@@ -72,20 +72,20 @@
   transform: translate(-50%, -50%); /* Center the image */
 }
 
-.upload-placeholder {
+.imd-upload-placeholder {
   text-align: center;
   color: #888;
 }
 
-.upload-text {
+.imd-upload-text {
   margin-bottom: 10px;
 }
 
-.file-input {
+.imd-file-input {
   display: none;
 }
 
-.upload-button {
+.imd-upload-button {
   display: inline-block;
   padding: 8px 16px;
   background-color: #e7ecf0;
@@ -94,12 +94,12 @@
   transition: background-color 0.3s;
 }
 
-.upload-button:hover {
+.imd-upload-button:hover {
   background-color: #b8d6eb;
 }
 
 /* Form Fields Container */
-.form-fields-container {
+.imd-form-fields-container {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -107,27 +107,27 @@
 }
 
 /* Form Groups */
-.form-group {
+.imd-form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.form-group.full-width {
+.imd-form-group.imd-full-width {
   grid-column: span 2;
 }
 
 /* Form Labels */
-.form-label {
+.imd-form-label {
   font-size: 13px;
   font-weight: 500;
   color: #333;
 }
 
 /* Form Inputs and Selects */
-.form-input,
-.form-select,
-.form-select-2 {
+.imd-form-input,
+.imd-form-select,
+.imd-form-select-2 {
   padding: 8px;
   border: 1px solid #b8d6eb;
   border-radius: 5px;
@@ -137,19 +137,19 @@
   width: 100%;
 }
 
-.form-select-2 {
+.imd-form-select-2 {
   padding: 8px;
   width: 94%;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-select-2:focus  {
+.imd-form-input:focus,
+.imd-form-select:focus,
+.imd-form-select-2:focus {
   border-color: #7a9fb8;
 }
 
 /* Price and Units Section */
-.price-units-container {
+.imd-price-units-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
@@ -157,7 +157,7 @@
 }
 
 /* Action Buttons */
-.modal-actions {
+.imd-modal-actions {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -167,8 +167,8 @@
   padding: 15px;
 }
 
-.save-button,
-.cancel-button {
+.imd-save-button,
+.imd-cancel-button {
   padding: 10px 24px;
   border: none;
   border-radius: 5px;
@@ -179,66 +179,66 @@
   text-align: center;
 }
 
-.save-button {
+.imd-save-button {
   background-color: #bdeac1;
   color: #25632b;
 }
 
-.save-button:hover {
+.imd-save-button:hover {
   background-color: #a5e0aa;
 }
 
-.cancel-button {
+.imd-cancel-button {
   background-color: #ffc2c2;
   color: #7a3434;
 }
 
-.cancel-button:hover {
+.imd-cancel-button:hover {
   background-color: #ffaaaa;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .modal-container {
+  .imd-modal-container {
     width: 95%;
     padding-bottom: 15px;
     max-height: 85vh;
   }
 
-  .modal-form {
+  .imd-modal-form {
     flex-direction: column;
     gap: 16px;
   }
 
-  .image-upload-container {
+  .imd-image-upload-container {
     width: 100%;
     max-width: 250px;
     height: 200px;
     margin: 0 auto;
   }
 
-  .form-fields-container {
+  .imd-form-fields-container {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
-  .form-group.full-width {
+  .imd-form-group.imd-full-width {
     grid-column: span 1;
   }
 
-  .price-units-container {
+  .imd-price-units-container {
     grid-template-columns: 1fr;
     grid-column: span 1;
   }
 
-  .modal-actions {
+  .imd-modal-actions {
     flex-direction: column;
     align-items: center;
     gap: 8px;
   }
 
-  .save-button,
-  .cancel-button {
+  .imd-save-button,
+  .imd-cancel-button {
     width: 100%;
     max-width: 200px;
   }

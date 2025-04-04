@@ -221,18 +221,18 @@ function Inventory() {
   }, []);
 
   return (
-    <div className="inventory-container">
+    <div className="adm-inventory-container">
       <Header />
 
-      <div className="action-panel">
-        <button className="add-button" onClick={() => setIsModalOpen(true)}>
+      <div className="adm-action-panel">
+        <button className="adm-add-button" onClick={() => setIsModalOpen(true)}>
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
         </button>
 
-        <div className="warehouse-dropdown">
+        <div className="adm-warehouse-dropdown">
           <select
-            className="dropdown-select"
+            className="adm-dropdown-select"
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
           >
@@ -242,24 +242,24 @@ function Inventory() {
           </select>
         </div>
 
-        <div className="search-container">
-          <AiOutlineSearch size={18} className="search-icon" />
+        <div className="adm-search-container">
+          <AiOutlineSearch size={18} className="adm-search-icon" />
           <input
             type="text"
-            className="search-input"
+            className="adm-search-input"
             placeholder="Search something..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <button className="export-button" onClick={handleExport}>
+        <button className="adm-export-button" onClick={handleExport}>
           <FiDownload size={18} />
           <span>Export</span>
         </button>
 
         <button
-          className="activity-button"
+          className="adm-activity-button"
           onClick={() =>
             window.open("/activity", "_blank", "noopener,noreferrer")
           }
@@ -280,10 +280,12 @@ function Inventory() {
         onClose={() => seteditModalOpen(false)}
         data={selectedData}
       />
-      <div className="inventory-table">
-        <div className="table-header">
-          <div className="header-cell">
-            <div className="select-container">
+
+      <div className="adm-inventory-table">
+        <div className="adm-table-header">
+          <div className="adm-header-cell">
+            <div className="adm-select-container">
+
               <select
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
@@ -295,11 +297,11 @@ function Inventory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />
+              <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
-            <div className="select-container">
+          <div className="adm-header-cell adm-with-arrow">
+            <div className="adm-select-container">
               <select name="brand" onChange={(e) => setBrand(e.target.value)}>
                 <option value="">Brand</option>
                 {brandList.map((option) => (
@@ -308,11 +310,11 @@ function Inventory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
-            <div className="select-container">
+          <div className="adm-header-cell adm-with-arrow">
+            <div className="adm-select-container">
               <select name="area" onChange={(e) => setArea(e.target.value)}>
                 <option value="">Area</option>
                 {areaList.map((option) => (
@@ -321,61 +323,61 @@ function Inventory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             <span>Price</span>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="adm-header-cell adm-with-arrow">
             <span>Inventory</span>
           </div>
-          <div className="header-cell">Actions</div>
+          <div className="adm-header-cell">Actions</div>
         </div>
 
-        <div className="table-body">
+        <div className="adm-table-body">
           {filteredInventory.map((item, key) => (
-            <div className="table-row" key={item.inventory_id}>
-              <div className="item-cell">
-                <div className="item-image-container">
+            <div className="adm-table-row" key={item.inventory_id}>
+              <div className="adm-item-cell">
+                <div className="adm-item-image-container">
                   <img
                     src={`/src/backend/${item.image}`}
                     alt={item.name}
-                    className="item-image"
+                    className="adm-item-image"
                   />
                 </div>
-                <div className="item-details">
-                  <div className="item-name">
+                <div className="adm-item-details">
+                  <div className="adm-item-name">
                     {item.itemDesc_1 + " " + item.itemDesc_2}
                   </div>
-                  <div className="item-category">{item.category}</div>
-                  <div className="item-id">{item.itemCode}</div>
+                  <div className="adm-item-category">{item.category}</div>
+                  <div className="adm-item-id">{item.itemCode}</div>
                 </div>
               </div>
-              <div className="brand-cell">
-                <div className="item">{item.brand}</div>
+              <div className="adm-brand-cell">
+                <div className="adm-item">{item.brand}</div>
               </div>
-              <div className="location-cell">
-                <div className="item">
+              <div className="adm-location-cell">
+                <div className="adm-item">
                   <div>{item.location}</div>
                   <div>{item.storage_area}</div>
                 </div>
               </div>
-              <div className="price-cell">
-                <div className="item">
+              <div className="adm-price-cell">
+                <div className="adm-item">
                   <div>Price - ₱ {item.price}</div>
                   <div>Retail - ₱ {item.retail_price}</div>
                 </div>
               </div>
-              <div className="inventory-cell">
-                <div className="item">
+              <div className="adm-inventory-cell">
+                <div className="adm-item">
                   <div>Stock - {item.units}</div>
                   <div>TSV - ₱ {item.totalstockValue}</div>
                 </div>
               </div>
-              <div className="actions-cell">
+              <div className="adm-actions-cell">
                 <button
-                  className="action-button view-button"
+                  className="adm-action-button adm-view-button"
                   onClick={() => openEditFunc(item)}
                 >
                   <AiOutlineEye size={18} />
@@ -383,7 +385,7 @@ function Inventory() {
                 </button>
 
                 <button
-                  className="action-button delete-button"
+                  className="adm-action-button adm-delete-button"
                   onClick={() => openModal(item.inventory_Id)}
                  
                 >
