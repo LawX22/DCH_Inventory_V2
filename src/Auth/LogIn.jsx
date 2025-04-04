@@ -25,17 +25,19 @@ const LogIn = () => {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("userType", response.data.userType);
 
-        // Adding a delay to show the loading animation
-        setTimeout(() => {
-          // Redirect based on userType
-          if (response.data.userType === "Admin") {
-            navigate("/admin_dashboard");
-          } else if (response.data.userType === "Staff") {
-            navigate("/Inventory");
-          } else if (response.data.userType === "Salesman") {
-            navigate("/Salesman_PriceList");
-          }
-        }, 1000);
+        // Redirect based on userType
+        if (response.data.userType === "Admin") {
+          navigate("/admin_dashboard"); 
+          // console.log('login');
+   
+        } else if (response.data.userType === "Store-Staff" || response.data.userType === "Warehouse-Staff") {
+          // console.log('login');
+          navigate("/Inventory");
+        } else if (response.data.userType === "Salesman") {
+          // console.log('login');
+          navigate("/Salesman_PriceList");
+        }
+
       } else {
         setError("Invalid username or password");
         setIsLoading(false);

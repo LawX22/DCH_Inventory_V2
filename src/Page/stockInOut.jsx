@@ -152,6 +152,69 @@ function StockInOut() {
     }
   };
 
+
+  const addToGroup = async (inventoryId) => {
+    const username = localStorage.getItem("username");
+    console.log(username);
+
+    try {
+      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/selected_stock_group.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          username: username, 
+          inventory_Id: inventoryId 
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert("Added to group successfully!");
+      } else {
+        alert("Failed to add to group.");
+      }
+    } catch (error) {
+      console.error("Error adding to group:", error);
+    }
+  };
+
+
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [groupData, setGroupData] = useState([]);
+
+  const fetchGroupData = async () => {
+    const username = localStorage.getItem("username");
+    try {
+      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/getStockGroup.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
+      const data = await response.json();
+      setGroupData(data);
+    } catch (error) {
+      console.error("Error fetching group data:", error);
+    }
+  };
+
+  const openModal = () => {
+    fetchGroupData();
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+
+
+
+
   return (
     <div className="inventory-container">
       <Header />
@@ -162,7 +225,6 @@ function StockInOut() {
 
 
       <div className="action-panel">
-
 
 
 
@@ -195,6 +257,10 @@ function StockInOut() {
           <span>Export</span>
         </button>
 
+        <button className="showGroupModal-button" onClick={openModal}>
+        <span>See Group</span>
+      </button>
+
         {/* Activity Button */}
         <button
           className="activity-button"
@@ -218,6 +284,46 @@ function StockInOut() {
         onClose={() => setStockOutModalOpen(false)}
         data={selectedData}
       />
+
+
+{isOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <button className="close-button" onClick={closeModal}>×</button>
+              <h2>Group Details</h2>
+              <input type="date" />
+              <select name="stockType" id="stockType">
+                <option value="Stock In">Stock In</option>
+                <option value="Stock Out">Stock Out</option>
+              </select>
+              {groupData.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item Description</th>
+                      <th>Units</th>
+                      <th>Brand</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {groupData.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.itemDesc_1}</td>
+                        <td>{item.units}</td>
+                        <td>{item.brand}</td>
+                        <td><input type="number" /></td>
+                        <button>Remove</button>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No group data found.</p>
+              )}
+            </div>
+          </div>
+      )}
+    
 
       {/* Inventory Table */}
       <div className="inventory-table">
@@ -315,25 +421,51 @@ function StockInOut() {
               </div>
 
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openStockinFunc(item)}
-                >
-                  <span className="action-icon">
-                    <AiOutlineInbox size={18} />
-                  </span>
-                  <span>Stock In</span>
-                </button>
-                <button
-                  className="action-button delete-button"
-                  onClick={() => openStockoutFunc(item)}
-                >
-                  <span className="action-icon">
-                    <AiOutlineExport size={18} />
-                  </span>
-                  <span>Stock out</span>
-                </button>
-              </div>
+  <button
+    className="action-button view-button"
+    onClick={() => openStockinFunc(item)}
+    disabled={
+      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
+      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
+    }
+  >
+    <span className="action-icon">
+      <AiOutlineInbox size={18} />
+    </span>
+    <span>Stock In</span>
+  </button>
+
+  <button
+    className="action-button delete-button"
+    onClick={() => openStockoutFunc(item)}
+    disabled={
+      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
+      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
+    }
+  >
+    <span className="action-icon">
+      <AiOutlineExport size={18} />
+    </span>
+    <span>Stock Out</span>
+  </button>
+
+
+  <label className="action-button view-button">
+      <button
+        onClick={() => addToGroup(item.inventory_Id)}
+        disabled={
+          (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
+          (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
+        }
+        className="checkbox-input"
+      >
+        Add to Group
+      </button>
+    </label>
+
+
+</div>
+
             </div>
           ))}
         </div>

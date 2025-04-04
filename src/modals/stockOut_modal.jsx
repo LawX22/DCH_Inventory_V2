@@ -72,12 +72,11 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (Number(unitsAdded) > Number(units)) {
-      alert("Units removed cannot be greater than the available units.");
-      return;
-    }
+    // if(unitsAdded > units){
+    //   alert("Units added cannot be greater than the available units.");
+    //   return;
+    // }
+    // else{
   
     const formDataToSend = new FormData();
     formDataToSend.append("itemId", itemId);

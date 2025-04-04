@@ -285,6 +285,7 @@ function Inventory() {
         <div className="adm-table-header">
           <div className="adm-header-cell">
             <div className="adm-select-container">
+
               <select
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
@@ -383,7 +384,6 @@ function Inventory() {
                   <span>Details</span>
                 </button>
 
-                
                 <button
                   className="adm-action-button adm-delete-button"
                   onClick={() => openModal(item.inventory_Id)}
