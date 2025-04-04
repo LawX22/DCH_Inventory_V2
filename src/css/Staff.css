@@ -170,6 +170,24 @@ body {
   background-color: #f3db9e;
 }
 
+.list-button {
+  background-color: #f8e7b1;
+  color: #95750a;
+}
+
+.list-button:hover {
+  background-color: #f5d97b;
+}
+
+.showGroupModal-button {
+  background-color: #bdeac1;
+  color: #25632b;
+}
+
+.showGroupModal-button:hover {
+  background-color: #80da88;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .action-panel {
@@ -470,37 +488,88 @@ select option {
     gap: 2px;
   }
 }
+/* Action Buttons Container */
+.actions-cell {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
+/* Base Button Styles */
 .action-button {
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
+  border-radius: 6px;
+  padding: 6px 12px;
   font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  width: 80px;
-  height: 30px;
+  width: 90px;
+  height: 32px;
   flex-shrink: 0;
   text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+/* Blue Button (Stock In) */
 .view-button {
   background-color: #eef5ff;
   color: #3a6ea7;
 }
 
+.view-button:hover:not(:disabled) {
+  background-color: #dceafd;
+  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
+}
+
+/* Red Button (Stock Out) */
 .delete-button {
   background-color: #ffeeee;
   color: #a73a3a;
 }
 
+.delete-button:hover:not(:disabled) {
+  background-color: #fde2e2;
+  box-shadow: 0 2px 4px rgba(167, 58, 58, 0.1);
+}
+
+/* Icon Styling */
 .action-icon {
   display: flex;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 6px;
+}
+
+/* Disabled State */
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Checkbox Button (Add to Group) */
+label.action-button {
+  cursor: pointer;
+}
+
+.checkbox-input {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.checkbox-input:disabled {
+  cursor: not-allowed;
 }
 
 /* Space at the bottom */

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import LogIn from "./Auth/LogIn";
-import SignUp from "./Auth/SignUp"; // Import the new SignUp component
+import SignUp from "./Auth/SignUp"; 
 import ProtectedRoute from "./Auth/ProtectedRoute";
 import Inventory from "./Page/Inventory";
 import StockInOut from "./Page/stockInOut";

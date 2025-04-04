@@ -4,13 +4,15 @@ import {
   AiOutlineSearch,
   AiOutlineInbox,
   AiOutlineExport,
-  AiOutlineDown,
+  AiOutlinePlus,
+  AiOutlineTeam
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 import StockInModal from "../modals/stockIn_modal";
 import StockOutModal from "../modals/stockOut_modal";
+import GroupModal from "../modals/GroupModal"; // Import the new GroupModal component
 
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +21,7 @@ function StockInOut() {
 
   const [stockInModalOpen, setStockInModalOpen] = useState(false);
   const [stockOutModalOpen, setStockOutModalOpen] = useState(false);
+  const [groupModalOpen, setGroupModalOpen] = useState(false); // New state for GroupModal
 
   const [category, setCategory] = useState(
     localStorage.getItem("category") || ""
@@ -31,6 +34,7 @@ function StockInOut() {
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
+  const [groupData, setGroupData] = useState([]); // State to store group data
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -43,18 +47,15 @@ function StockInOut() {
     localStorage.setItem("category", category);
   }, [selectedLocation, brand, area, category]);
 
+  useEffect(() => {
+    localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
+    localStorage.setItem("area", ""); // Set area to empty string
+    localStorage.setItem("category", ""); // Set category to empty string
 
-    useEffect(() => {
-      localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
-      localStorage.setItem("area", ""); // Set area to empty string
-      localStorage.setItem("category", ""); // Set category to empty string
-  
-      setCategory('');
-      setBrand('');
-      setArea('');
-  
-    
-    }, []);
+    setCategory("");
+    setBrand("");
+    setArea("");
+  }, []);
 
   useEffect(() => {
     axios
@@ -72,9 +73,7 @@ function StockInOut() {
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area, inventory]); // Fixed dependency array
-   // Re-run when searchQuery changes
-  // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, category, brand, area]); // Removed inventory dependency to prevent infinite loop
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -100,10 +99,10 @@ function StockInOut() {
         "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
       )
       .then((response) => {
-        setCategoryList(response.data); // Store fetched brands in state
+        setCategoryList(response.data); // Store fetched categories in state
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching categories:", error);
       });
   }, []);
 
@@ -124,50 +123,31 @@ function StockInOut() {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
       .then((response) => {
-        setAreaList(response.data); // Store fetched brands in state
+        setAreaList(response.data); // Store fetched areas in state
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching areas:", error);
       });
   }, []);
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "category":
-        setCategory(value);
-
-        break;
-      case "brand":
-        setBrand(value);
-
-        break;
-      case "area":
-        setArea(value);
-
-        break;
-      default:
-        console.warn("Unknown filter:", name);
-    }
-  };
-
 
   const addToGroup = async (inventoryId) => {
     const username = localStorage.getItem("username");
     console.log(username);
 
     try {
-      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/selected_stock_group.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          username: username, 
-          inventory_Id: inventoryId 
-        }),
-      });
+      const response = await fetch(
+        "http://localhost/DCH_Inventory_V2/src/backend/selected_stock_group.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            inventory_Id: inventoryId,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -180,21 +160,19 @@ function StockInOut() {
     }
   };
 
-
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [groupData, setGroupData] = useState([]);
-
   const fetchGroupData = async () => {
     const username = localStorage.getItem("username");
     try {
-      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/getStockGroup.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-      });
+      const response = await fetch(
+        "http://localhost/DCH_Inventory_V2/src/backend/getStockGroup.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        }
+      );
       const data = await response.json();
       setGroupData(data);
     } catch (error) {
@@ -202,32 +180,21 @@ function StockInOut() {
     }
   };
 
-  const openModal = () => {
+  const openGroupModal = () => {
     fetchGroupData();
-    setIsOpen(true);
+    setGroupModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const closeGroupModal = () => {
+    setGroupModalOpen(false);
   };
-
-
-
-
 
   return (
     <div className="inventory-container">
       <Header />
 
       {/* Action Panel */}
-
-     
-
-
       <div className="action-panel">
-
-
-
         <div className="warehouse-dropdown">
           <select
             className="dropdown-select"
@@ -257,9 +224,12 @@ function StockInOut() {
           <span>Export</span>
         </button>
 
-        <button className="showGroupModal-button" onClick={openModal}>
-        <span>See Group</span>
-      </button>
+        <button className="showGroupModal-button" onClick={openGroupModal}>
+          <span className="action-icon">
+            <AiOutlineTeam size={18} />
+          </span>
+          <span>See Group</span>
+        </button>
 
         {/* Activity Button */}
         <button
@@ -273,6 +243,7 @@ function StockInOut() {
         </button>
       </div>
 
+      {/* Modals */}
       <StockInModal
         isOpen={stockInModalOpen}
         onClose={() => setStockInModalOpen(false)}
@@ -285,45 +256,12 @@ function StockInOut() {
         data={selectedData}
       />
 
-
-{isOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <button className="close-button" onClick={closeModal}>×</button>
-              <h2>Group Details</h2>
-              <input type="date" />
-              <select name="stockType" id="stockType">
-                <option value="Stock In">Stock In</option>
-                <option value="Stock Out">Stock Out</option>
-              </select>
-              {groupData.length > 0 ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Item Description</th>
-                      <th>Units</th>
-                      <th>Brand</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {groupData.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.itemDesc_1}</td>
-                        <td>{item.units}</td>
-                        <td>{item.brand}</td>
-                        <td><input type="number" /></td>
-                        <button>Remove</button>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p>No group data found.</p>
-              )}
-            </div>
-          </div>
-      )}
-    
+      {/* New Group Modal */}
+      <GroupModal 
+        isOpen={groupModalOpen}
+        onClose={closeGroupModal}
+        groupData={groupData}
+      />
 
       {/* Inventory Table */}
       <div className="inventory-table">
@@ -333,6 +271,7 @@ function StockInOut() {
               <select
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
+                value={category}
               >
                 <option value="">Select Category</option>
                 {categoryList.map((option) => (
@@ -346,7 +285,11 @@ function StockInOut() {
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+              <select 
+                name="brand" 
+                onChange={(e) => setBrand(e.target.value)}
+                value={brand}
+              >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
                   <option key={option.inventory_Id} value={option.brand}>
@@ -354,12 +297,16 @@ function StockInOut() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select name="area" onChange={(e) => setArea(e.target.value)}>
+              <select 
+                name="area" 
+                onChange={(e) => setArea(e.target.value)}
+                value={area}
+              >
                 <option value="">Area</option>
                 {areaList.map((option) => (
                   <option key={option.inventory_Id} value={option.storage_area}>
@@ -367,7 +314,7 @@ function StockInOut() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
           <div className="header-cell with-arrow">
@@ -421,51 +368,54 @@ function StockInOut() {
               </div>
 
               <div className="actions-cell">
-  <button
-    className="action-button view-button"
-    onClick={() => openStockinFunc(item)}
-    disabled={
-      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
-      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
-    }
-  >
-    <span className="action-icon">
-      <AiOutlineInbox size={18} />
-    </span>
-    <span>Stock In</span>
-  </button>
+                <button
+                  className="action-button view-button"
+                  onClick={() => openStockinFunc(item)}
+                  disabled={
+                    (localStorage.getItem("userType") === "Store-Staff" &&
+                      item.location !== "Store") ||
+                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                      item.location === "Store")
+                  }
+                >
+                  <span className="action-icon">
+                    <AiOutlineInbox size={16} />
+                  </span>
+                  <span>Stock In</span>
+                </button>
 
-  <button
-    className="action-button delete-button"
-    onClick={() => openStockoutFunc(item)}
-    disabled={
-      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
-      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
-    }
-  >
-    <span className="action-icon">
-      <AiOutlineExport size={18} />
-    </span>
-    <span>Stock Out</span>
-  </button>
+                <button
+                  className="action-button delete-button"
+                  onClick={() => openStockoutFunc(item)}
+                  disabled={
+                    (localStorage.getItem("userType") === "Store-Staff" &&
+                      item.location !== "Store") ||
+                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                      item.location === "Store")
+                  }
+                >
+                  <span className="action-icon">
+                    <AiOutlineExport size={16} />
+                  </span>
+                  <span>Stock Out</span>
+                </button>
 
-
-  <label className="action-button view-button">
-      <button
-        onClick={() => addToGroup(item.inventory_Id)}
-        disabled={
-          (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
-          (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
-        }
-        className="checkbox-input"
-      >
-        Add to Group
-      </button>
-    </label>
-
-
-</div>
-
+                <button
+                  className="action-button add-button"
+                  onClick={() => addToGroup(item.inventory_Id)}
+                  disabled={
+                    (localStorage.getItem("userType") === "Store-Staff" &&
+                      item.location !== "Store") ||
+                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                      item.location === "Store")
+                  }
+                >
+                  <span className="action-icon">
+                    <AiOutlinePlus size={16} />
+                  </span>
+                  <span>Add Group</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

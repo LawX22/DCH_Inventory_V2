@@ -6,7 +6,7 @@ import {
   AiOutlineDelete,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { FiDownload, FiActivity } from "react-icons/fi";
+import { FiDownload, FiActivity, FiList } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 
@@ -73,7 +73,6 @@ function Inventory() {
           brand: brand,
           area: area,
           stock: stock,
-          
         },
       })
       .then((response) => {
@@ -82,14 +81,11 @@ function Inventory() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery, inventory, brand, category, area, stock]);
 
-
-
   // Update localStorage when the location changes
- 
 
   //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
- // Re-run when searchQuery changes
+  // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -112,7 +108,6 @@ function Inventory() {
 
         break;
 
-        
       case "stock":
         setStock(value);
 
@@ -182,15 +177,12 @@ function Inventory() {
     localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
     localStorage.setItem("area", ""); // Set area to empty string
     localStorage.setItem("category", ""); // Set category to empty string
-    localStorage.setItem("stock", ""); 
+    localStorage.setItem("stock", "");
 
-    setCategory('');
-    setBrand('');
-    setArea('');
-    setStock('');
-    
-
-  
+    setCategory("");
+    setBrand("");
+    setArea("");
+    setStock("");
   }, []);
 
   useEffect(() => {
@@ -229,7 +221,6 @@ function Inventory() {
       });
   }, []);
 
-
   const [isEditing, setIsEditing] = useState(false);
   const [inventoryNumber, setInventoryNumber] = useState("");
 
@@ -245,7 +236,7 @@ function Inventory() {
     // Ensure only numbers are allowed
     const value = e.target.value.replace(/\D/, "");
     setInventoryNumber(value);
-    setStock(value)
+    setStock(value);
   };
 
   const handleKeyPress = (e) => {
@@ -288,12 +279,12 @@ function Inventory() {
         </div>
 
         <button
-          className="activity-button"
+          className="list-button"
           onClick={() =>
             window.open("/List_Restock", "_blank", "noopener,noreferrer")
           }
         >
-          <FiActivity size={18} />
+         <FiList size={18} />
           <span>List Stocks</span>
         </button>
 
@@ -372,19 +363,19 @@ function Inventory() {
             <span>Price</span>
           </div>
           <div className="header-cell with-arrow" onClick={handleEdit}>
-      {isEditing ? (
-        <input
-          type="text"
-          value={inventoryNumber}
-          onChange={handleStockChange}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyPress}
-          autoFocus
-        />
-      ) : (
-        <span>{inventoryNumber || "Inventory"}</span>
-      )}
-    </div>
+            {isEditing ? (
+              <input
+                type="text"
+                value={inventoryNumber}
+                onChange={handleStockChange}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyPress}
+                autoFocus
+              />
+            ) : (
+              <span>{inventoryNumber || "Inventory"}</span>
+            )}
+          </div>
           <div className="header-cell">Actions</div>
         </div>
 
@@ -429,31 +420,34 @@ function Inventory() {
                 </div>
               </div>
               <div className="actions-cell">
-  <button
-    className="action-button view-button"
-    onClick={() => openEditFunc(item)}
-    disabled={
-      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
-      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
-    }
-  >
-    <AiOutlineEye size={18} />
-    <span>Edit</span>
-  </button>
+                <button
+                  className="action-button view-button"
+                  onClick={() => openEditFunc(item)}
+                  disabled={
+                    (localStorage.getItem("userType") === "Store-Staff" &&
+                      item.location !== "Store") ||
+                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                      item.location === "Store")
+                  }
+                >
+                  <AiOutlineEye size={18} />
+                  <span>Edit</span>
+                </button>
 
-  <button
-    className="action-button delete-button"
-    onClick={() => deleteFunc(item.inventory_Id, user)}
-    disabled={
-      (localStorage.getItem("userType") === "Store-Staff" && item.location !== "Store") ||
-      (localStorage.getItem("userType") === "Warehouse-Staff" && item.location === "Store")
-    }
-  >
-    <AiOutlineDelete size={18} />
-    <span>Delete</span>
-  </button>
-</div>
-
+                <button
+                  className="action-button delete-button"
+                  onClick={() => deleteFunc(item.inventory_Id, user)}
+                  disabled={
+                    (localStorage.getItem("userType") === "Store-Staff" &&
+                      item.location !== "Store") ||
+                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                      item.location === "Store")
+                  }
+                >
+                  <AiOutlineDelete size={18} />
+                  <span>Delete</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -7,6 +7,7 @@ import "../src/css/Admin.css";
 import "../src/css/LogIn.css";
 import "../src/css/SignUp.css";
 import "../src/css/Modal/InventoryModal.css";
+import "../src/css/Modal/GroupModal.css";
 import "../src/css/Modal/EditModal.css";
 import "../src/css/Modal/In&OutModal.css";
 import "../src/css/activity.css";
