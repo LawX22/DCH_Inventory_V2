@@ -258,13 +258,19 @@ body {
 
 /* Header Cells */
 .header-cell {
-  padding: 15px;
+  padding: 10px 10px 10px 15px; /* Added left padding */
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
+  text-align: left; /* Changed from center to left */
   font-weight: 500;
+  font-size: 12px;
   flex: 1;
+}
+
+/* Special case for first header cell */
+.header-cell:nth-child(1) {
+  flex: 2;
 }
 
 /* Container for the select dropdown and icon */
@@ -272,6 +278,7 @@ body {
   position: relative;
   display: inline-block;
   width: 200px;
+  text-align: left;
 }
 
 /* Style for the select element */
@@ -287,6 +294,7 @@ select {
   font-size: 16px;
   cursor: pointer;
   outline: none;
+  text-align: left;
 }
 
 /* Style for the icon */
@@ -357,7 +365,7 @@ select option {
   margin-left: 5px;
 }
 
-/* Item Cells */
+/* Item Cells - already left aligned in original */
 .item-cell {
   display: flex;
   align-items: center;
@@ -411,40 +419,40 @@ select option {
   text-overflow: ellipsis;
 }
 
-/* Other Table Cells */
-.header-cell,
-.brand-cell,
-.date-cell,
-.location-cell,
-.price-cell,
-.inventory-cell,
-.amount-cell,
-.Requistion-cell,
-.units-cell,
-.activity-cell,
-.actions-cell {
-  font-size: 14px;
+/* Table Body Cells - MODIFIED TO BE LEFT-ALIGNED */
+.table-body .brand-cell,
+.table-body .date-cell,
+.table-body .location-cell,
+.table-body .price-cell,
+.table-body .inventory-cell,
+.table-body .amount-cell,
+.table-body .Requistion-cell,
+.table-body .units-cell,
+.table-body .activity-cell {
+  font-size: 12px;
   font-weight: 400;
-  padding: 10px;
+  padding: 10px 10px 10px 15px; /* Added left padding */
   flex: 1;
   min-width: 80px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
 }
 
-.item {
+
+/* Item container inside cells - MODIFIED TO BE LEFT-ALIGNED */
+.table-body .item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
 }
 
 .amount-cell,
-.Requistion-cell,
-.actions-cell {
-  text-align: center;
+.Requistion-cell {
+  text-align: left; /* Changed from center to left */
 }
 
 .location-cell div:nth-child(2),
@@ -456,7 +464,7 @@ select option {
   margin-top: 5px;
 }
 
-/* Action Buttons */
+/* Action Buttons - KEEPING THE SAME */
 .actions-cell {
   font-size: 14px;
   font-weight: 400;
