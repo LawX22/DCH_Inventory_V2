@@ -6,14 +6,12 @@ import Header from "./Header";
 import axios from "axios";
 import StockHistoryFixModal from "../modals/stockHistory_Fix_Modal";
 
-
 function StockHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
 
   const [historyFixIsOpen, setHistoryFixIsOpen] = useState(false);
-
 
   const [category, setCategory] = useState(
     localStorage.getItem("categorySH") || ""
@@ -29,19 +27,16 @@ function StockHistory() {
     localStorage.getItem("activitySH") || ""
   );
 
-
   useEffect(() => {
     localStorage.setItem("brandSH", ""); // Set brand to empty string (or any value you want)
     localStorage.setItem("areaSH", ""); // Set area to empty string
     localStorage.setItem("dateSH", ""); // Set category to empty string
-     localStorage.getItem("categorySH", "");
+    localStorage.getItem("categorySH", "");
 
-    setBrand('');
-    setArea('');
-    setDate('');
-    setCategory('');
-
-  
+    setBrand("");
+    setArea("");
+    setDate("");
+    setCategory("");
   }, []);
 
   const [categoryList, setCategoryList] = useState([]);
@@ -125,14 +120,7 @@ function StockHistory() {
     localStorage.setItem("categorySH", category);
     localStorage.setItem("dateSH", date);
     localStorage.setItem("activitySH", activity);
-
-
-
   }, [selectedLocation, brand, area, category, date, activity]);
-
-
- 
-
 
   useEffect(() => {
     axios
@@ -154,7 +142,6 @@ function StockHistory() {
       .catch((error) => console.error("Error fetching inventory:", error));
     console.log(activity);
   }, [selectedLocation, activity, category, brand, area, date, searchQuery]);
-
 
   function openHistoryFixFunc(data) {
     setSelectedData(data);
@@ -351,15 +338,22 @@ function StockHistory() {
                   <div>Stock - {item.requisition_number}</div>
                 </div>
               </div>
-              
+
               <div className="actions-cell">
-                <button className="action-button view-button" onClick={() => openHistoryFixFunc(item)}>
-                  <span className="action-icon">
-                    <AiOutlineUndo size={18} />
-                  </span>
-                  <span>Fix</span>
-                </button>
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openHistoryFixFunc(item)}
+                    title="Fix"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineUndo size={16} />
+                    </span>
+                    <span className="action-text">Fix</span>
+                  </button>
+                </div>
               </div>
+              
             </div>
           ))}
         </div>

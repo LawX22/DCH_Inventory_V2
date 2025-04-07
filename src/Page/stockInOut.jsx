@@ -5,7 +5,7 @@ import {
   AiOutlineInbox,
   AiOutlineExport,
   AiOutlinePlus,
-  AiOutlineTeam
+  AiOutlineTeam,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
@@ -257,7 +257,7 @@ function StockInOut() {
       />
 
       {/* New Group Modal */}
-      <GroupModal 
+      <GroupModal
         isOpen={groupModalOpen}
         onClose={closeGroupModal}
         groupData={groupData}
@@ -285,8 +285,8 @@ function StockInOut() {
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="brand" 
+              <select
+                name="brand"
                 onChange={(e) => setBrand(e.target.value)}
                 value={brand}
               >
@@ -302,8 +302,8 @@ function StockInOut() {
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="area" 
+              <select
+                name="area"
                 onChange={(e) => setArea(e.target.value)}
                 value={area}
               >
@@ -368,54 +368,60 @@ function StockInOut() {
               </div>
 
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openStockinFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlineInbox size={16} />
-                  </span>
-                  <span>Stock In</span>
-                </button>
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openStockinFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Stock In"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineInbox size={16} />
+                    </span>
+                    <span className="action-text">Stock In</span>
+                  </button>
 
-                <button
-                  className="action-button delete-button"
-                  onClick={() => openStockoutFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlineExport size={16} />
-                  </span>
-                  <span>Stock Out</span>
-                </button>
+                  <button
+                    className="action-button delete-button"
+                    onClick={() => openStockoutFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Stock Out"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineExport size={16} />
+                    </span>
+                    <span className="action-text">Stock Out</span>
+                  </button>
 
-                <button
-                  className="action-button add-button"
-                  onClick={() => addToGroup(item.inventory_Id)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlinePlus size={16} />
-                  </span>
-                  <span>Add Group</span>
-                </button>
+                  <button
+                    className="action-button add-button"
+                    onClick={() => addToGroup(item.inventory_Id)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Add Group"
+                  >
+                    <span className="action-icon">
+                      <AiOutlinePlus size={16} />
+                    </span>
+                    <span className="action-text">Add Group</span>
+                  </button>
+                </div>
               </div>
+              
             </div>
           ))}
         </div>

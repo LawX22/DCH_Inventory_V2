@@ -376,23 +376,23 @@ function Inventory() {
                 </div>
               </div>
               <div className="adm-actions-cell">
-                <button
-                  className="adm-action-button adm-view-button"
-                  onClick={() => openEditFunc(item)}
-                >
-                  <AiOutlineEye size={18} />
-                  <span>Edit</span>
-                </button>
+  <button
+    className="adm-action-button adm-view-button"
+    onClick={() => openEditFunc(item)}
+  >
+    <AiOutlineEye size={18} />
+    <span>Edit</span>
+  </button>
 
-                <button
-                  className="adm-action-button adm-delete-button"
-                  onClick={() => openModal(item.inventory_Id)}
-                 
-                >
-                  <AiOutlineDelete size={18} />
-                  <span>History</span>
-                </button>
-              </div>
+  <button
+    className="adm-action-button adm-delete-button"
+    onClick={() => openModal(item.inventory_Id)}
+  >
+    <AiOutlineDelete size={18} />
+    <span>History</span>
+  </button>
+</div>
+              
             </div>
           ))}
         </div>

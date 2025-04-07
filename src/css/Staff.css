@@ -497,45 +497,220 @@ select option {
 }
 
 /* Base Button Styles */
-.action-button {
+/* Action Cell Container */
+.actions-cell {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
+  border-left: 2px solid rgb(215, 207, 207);
+  flex: 1;
+  min-width: 130px;
+}
+
+/* Container for all action buttons */
+.action-buttons-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+/* Base Button Styles */
+.action-button {
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 6px;
-  padding: 6px 12px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  white-space: nowrap;
-  width: 90px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  min-width: 36px;
+  max-width: 36px;
 }
 
-/* Blue Button (Stock In) */
+/* Button types */
 .view-button {
   background-color: #eef5ff;
   color: #3a6ea7;
 }
 
-.view-button:hover:not(:disabled) {
-  background-color: #dceafd;
-  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
-}
-
-/* Red Button (Stock Out) */
 .delete-button {
   background-color: #ffeeee;
   color: #a73a3a;
 }
 
+.add-button {
+  background-color: #f0ffe0;
+  color: #5a9a00;
+}
+
+/* Icon styling */
+.action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Text styling */
+.action-text {
+  opacity: 0;
+  max-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s ease, max-width 0.3s ease;
+  margin-left: 26px; /* Space for icon */
+}
+
+/* Show text on hover and expand button */
+.action-button:hover:not(:disabled) {
+  min-width: 90px;
+  max-width: 110px; /* Increased for longer text */
+  width: auto;
+  z-index: 2;
+  justify-content: flex-start;
+}
+
+/* When any button is hovered, shrink other buttons */
+.action-buttons-container:hover .action-button:not(:hover) {
+  width: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  opacity: 0.7;
+}
+
+/* Show text when button is hovered */
+.action-button:hover:not(:disabled) .action-text {
+  opacity: 1;
+  max-width: 80px; /* Increased for longer text */
+  display: block;
+}
+
+/* Improve hover effects */
+.view-button:hover:not(:disabled) {
+  background-color: #dceafd;
+  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
+}
+
 .delete-button:hover:not(:disabled) {
   background-color: #fde2e2;
   box-shadow: 0 2px 4px rgba(167, 58, 58, 0.1);
+}
+
+.add-button:hover:not(:disabled) {
+  background-color: #e4ffc7;
+  box-shadow: 0 2px 4px rgba(90, 154, 0, 0.1);
+}
+
+/* Disabled State */
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actions-cell {
+    padding: 6px;
+    min-width: 110px;
+  }
+  
+  .action-buttons-container {
+    gap: 4px;
+  }
+  
+  .action-button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    max-width: 32px;
+  }
+  
+  .action-button:hover:not(:disabled) {
+    min-width: 75px;
+    max-width: 95px;
+  }
+  
+  .action-button:hover:not(:disabled) .action-text {
+    max-width: 65px;
+  }
+  
+  .action-buttons-container:hover .action-button:not(:hover) {
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions-cell {
+    padding: 4px;
+    min-width: 100px;
+  }
+  
+  .action-buttons-container {
+    gap: 3px;
+  }
+  
+  .action-button {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+  }
+  
+  .action-buttons-container:hover .action-button:not(:hover) {
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+  }
+  
+  .action-button:hover:not(:disabled) {
+    min-width: 70px;
+    max-width: 85px;
+  }
+  
+  .action-button:hover:not(:disabled) .action-text {
+    max-width: 55px;
+  }
+}
+
+/* Focus styles for accessibility */
+.action-button:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+/* Fix for touch devices */
+@media (hover: none) {
+  .action-button {
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+  }
+  
+  .action-buttons-container:hover .action-button:not(:hover) {
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    opacity: 1;
+  }
 }
 
 /* Icon Styling */

@@ -77,14 +77,11 @@ function SalesmanPriceList() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery, inventory, brand, category, area]);
 
-
-
   // Update localStorage when the location changes
- 
 
   //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
 
- // Re-run when searchQuery changes
+  // Re-run when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -172,11 +169,9 @@ function SalesmanPriceList() {
     localStorage.setItem("area", ""); // Set area to empty string
     localStorage.setItem("category", ""); // Set category to empty string
 
-    setCategory('');
-    setBrand('');
-    setArea('');
-
-  
+    setCategory("");
+    setBrand("");
+    setArea("");
   }, []);
 
   useEffect(() => {
@@ -220,8 +215,6 @@ function SalesmanPriceList() {
       <Header />
 
       <div className="action-panel">
-     
-
         <div className="warehouse-dropdown">
           <select
             className="dropdown-select"
@@ -244,15 +237,7 @@ function SalesmanPriceList() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-
-        
-
-       
-
-       
       </div>
-
-
 
       <ViewModal
         isOpen={editModalOpen}
@@ -354,15 +339,20 @@ function SalesmanPriceList() {
                 </div>
               </div>
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openEditFunc(item)}
-                >
-                  <AiOutlineEye size={18} />
-                  <span>View</span>
-                </button>
-               
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openEditFunc(item)}
+                    title="View"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineEye size={16} />
+                    </span>
+                    <span className="action-text">View</span>
+                  </button>
+                </div>
               </div>
+              
             </div>
           ))}
         </div>

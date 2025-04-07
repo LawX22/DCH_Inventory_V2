@@ -12,7 +12,7 @@ import {
   FaUser,
   FaBell,
   FaCog,
-  FaUserCircle
+  FaUserCircle,
 } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -32,22 +32,22 @@ function Header() {
     function handleClickOutside(event) {
       if (showNotifications || showUserMenu) {
         // Check if click is outside dropdown areas
-        const isOutsideClick = 
-          !event.target.closest('.notifications-dropdown') && 
-          !event.target.closest('.notification-icon-container') &&
-          !event.target.closest('.user-dropdown') && 
-          !event.target.closest('.user-info');
-        
+        const isOutsideClick =
+          !event.target.closest(".notifications-dropdown") &&
+          !event.target.closest(".notification-icon-container") &&
+          !event.target.closest(".user-dropdown") &&
+          !event.target.closest(".user-info");
+
         if (isOutsideClick) {
           setShowNotifications(false);
           setShowUserMenu(false);
         }
       }
     }
-    
-    document.addEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showNotifications, showUserMenu]);
 

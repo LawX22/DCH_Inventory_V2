@@ -284,7 +284,7 @@ function Inventory() {
             window.open("/List_Restock", "_blank", "noopener,noreferrer")
           }
         >
-         <FiList size={18} />
+          <FiList size={18} />
           <span>List Stocks</span>
         </button>
 
@@ -420,33 +420,41 @@ function Inventory() {
                 </div>
               </div>
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openEditFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <AiOutlineEye size={18} />
-                  <span>Edit</span>
-                </button>
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openEditFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Edit"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineEye size={16} />
+                    </span>
+                    <span className="action-text">Edit</span>
+                  </button>
 
-                <button
-                  className="action-button delete-button"
-                  onClick={() => deleteFunc(item.inventory_Id, user)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <AiOutlineDelete size={18} />
-                  <span>Delete</span>
-                </button>
+                  <button
+                    className="action-button delete-button"
+                    onClick={() => deleteFunc(item.inventory_Id, user)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Delete"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineDelete size={16} />
+                    </span>
+                    <span className="action-text">Delete</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

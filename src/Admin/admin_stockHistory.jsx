@@ -321,6 +321,8 @@ function StockHistory() {
                   <span>Undo</span>
                 </button>
               </div>
+
+              
             </div>
           ))}
         </div>

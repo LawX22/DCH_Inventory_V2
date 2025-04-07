@@ -1,5 +1,3 @@
-/* Dashboard.css - External stylesheet for Dashboard component */
-
 /* Base layout */
 .dashboard-wrapper {
   display: flex;
@@ -21,27 +19,29 @@
 /* Main content area */
 .dashboard-content {
   padding: 1.5rem;
-  max-width: 1600px;
-  margin: 0 auto;
   width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-/* Dashboard cards grid */
+/* Dashboard cards grid - improved for better space utilization */
 .dashboard-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .dashboard-card {
   background-color: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
 }
 
 .dashboard-card:hover {
@@ -50,61 +50,66 @@
 }
 
 .card-icon {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   background-color: rgba(0, 0, 0, 0.04);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .card-details {
   flex-grow: 1;
+  min-width: 0; /* Prevent flex item from growing beyond container */
 }
 
 .card-title {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: #6b7280;
-  margin: 0;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.4rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-value-container {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
 }
 
 .card-value {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #1f2937;
-  margin-right: 0.75rem;
+  margin-right: 0.5rem;
 }
 
 .card-change {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
-/* Original Action Panel Styling with Yellow */
-
+/* Action Panel - Improved */
 .action-panel-1 {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e7eb;
 }
 
 .left-panel {
   flex: 1;
+  min-width: 0; /* Prevent overflow */
 }
 
 .date-time-display {
@@ -113,22 +118,29 @@
 }
 
 .date {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
   color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .time {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #666;
-  margin: 0.25rem 0 0 0;
+  margin: 0.2rem 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .right-panel {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
 }
 
 .staffs-dropdown-2 {
@@ -140,33 +152,35 @@
 }
 
 .warehouse-dropdown-2 select {
-  padding: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   border-radius: 6px;
   border: 1px solid #ddd;
   background-color: #f9fafb;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   appearance: none;
-  min-width: 120px;
+  min-width: 100px;
+  max-width: 150px;
 }
 
 .select-icon-1 {
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   color: #666;
   pointer-events: none;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .select-date-container-1 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .select-date-container-1 label {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #333;
 }
 
@@ -175,19 +189,20 @@
   border-radius: 6px;
   border: 1px solid #ddd;
   background-color: #f9fafb;
+  width: 140px;
 }
 
 .export-button-1, .activity-button-1 {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  color: white;
+  white-space: nowrap;
 }
 
 .export-button-1 {
@@ -208,67 +223,44 @@
   background-color: #f3db9e;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .action-panel-1 {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .right-panel {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-  
-  .warehouse-dropdown-2 select,
-  .select-date-container-1,
-  .export-button-1,
-  .activity-button-1 {
-    width: 100%;
-  }
-  
-  .select-date-container-1 {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* Activity table */
+/* Activity table - modified to avoid scrolling */
 .activity-table-card {
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow: visible;
+  margin-bottom: 1.5rem;
 }
 
 .table-header-1 {
-  padding: 1.25rem;
+  padding: 1rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
-.table-header h2 {
-  font-size: 1.25rem;
+.table-header-1 h2 {
+  font-size: 1.15rem;
   font-weight: 600;
   color: #1f2937;
   margin: 0;
 }
 
 .activity-table-container {
-  padding: 0;
-  overflow-x: auto;
+  width: 100%;
+  /* Removed overflow properties to ensure table isn't scrollable */
 }
 
 .activity-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto; /* Allows the table to adjust column widths based on content */
 }
 
 .activity-table th,
 .activity-table td {
-  padding: 1rem;
+  padding: 0.75rem 0.5rem; /* Reduced padding for better fit */
   text-align: left;
   border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem; /* Slightly smaller font size */
 }
 
 .activity-table th {
@@ -279,13 +271,18 @@
 }
 
 .activity-table td {
-  font-size: 0.95rem;
   color: #4b5563;
+  white-space: nowrap; /* Prevent wrapping within cells */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cell-header {
   font-weight: 600;
   color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .value-highlight {
@@ -309,24 +306,32 @@
 
 .footer-row td {
   border-bottom: none;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 /* Responsive adjustments */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .dashboard-cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .action-panel {
-    flex-direction: column;
-    align-items: flex-start;
+  .activity-table th,
+  .activity-table td {
+    padding: 0.75rem 0.4rem; /* Further reduce padding */
+    font-size: 0.85rem; /* Reduce font size slightly */
+  }
+}
+
+@media (max-width: 992px) {
+  .right-panel {
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
   }
   
-  .controls {
-    width: 100%;
-    justify-content: flex-start;
+  /* Adjust table for better fit on medium screens */
+  .activity-table {
+    font-size: 0.8rem;
   }
 }
 
@@ -337,16 +342,47 @@
   
   .dashboard-cards-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .action-panel-1 {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
   }
   
-  .controls {
-    flex-direction: column;
-    align-items: flex-start;
+  .right-panel {
+    width: 100%;
+    justify-content: flex-start;
   }
   
-  .select-wrapper, .week-select-container, .action-button {
+  .warehouse-dropdown-2 select {
+    max-width: none;
     width: 100%;
+  }
+  
+  .select-date-container-1 {
+    width: 100%;
+  }
+  
+  .select-date-container-1 input {
+    flex-grow: 1;
+    width: auto;
+  }
+  
+  .export-button-1, .activity-button-1 {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  /* At this breakpoint, allow horizontal scrolling only when absolutely necessary */
+  .activity-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .activity-table {
+    min-width: 600px; /* Ensures the table has a minimum width */
   }
 }
 
@@ -355,8 +391,27 @@
     grid-template-columns: 1fr;
   }
   
-  .action-button {
+  .right-panel {
+    flex-direction: column;
     width: 100%;
-    justify-content: center;
+  }
+  
+  .staffs-dropdown-2,
+  .select-container,
+  .warehouse-dropdown-2,
+  .select-date-container-1,
+  .export-button-1, 
+  .activity-button-1 {
+    width: 100%;
+  }
+  
+  .warehouse-dropdown-2 select {
+    width: 100%;
+  }
+  
+  .select-date-container-1 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
   }
 }
