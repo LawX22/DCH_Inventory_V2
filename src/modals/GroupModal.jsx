@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineDelete, AiOutlineClear } from "react-icons/ai";
 
 function GroupModal({ isOpen, onClose, groupData }) {
-  const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
+  const [date, setDate] = useState("");
   const [stockType, setStockType] = useState("Stock In");
   const [quantities, setQuantities] = useState({});
   const [localGroupData, setLocalGroupData] = useState([]);
@@ -12,29 +12,35 @@ function GroupModal({ isOpen, onClose, groupData }) {
       setLocalGroupData(groupData);
       const initialQuantities = {};
       groupData.forEach(item => {
-        initialQuantities[item.inventory_Id] = 1;
+        if (!initialQuantities[item.stock_group_id]) {
+          initialQuantities[item.stock_group_id] = 1;
+        }
       });
       setQuantities(initialQuantities);
     }
   }, [groupData]);
 
-  const handleQuantityChange = (inventoryId, value) => {
+  const handleQuantityChange = (stock_group_id, value) => {
     setQuantities(prev => ({
       ...prev,
-      [inventoryId]: value
+      [stock_group_id]: value
     }));
   };
 
-  const handleRemoveItem = (inventoryId) => {
-    setLocalGroupData(prev => prev.filter(item => item.inventory_Id !== inventoryId));
-    
-    setQuantities(prev => {
-      const newQuantities = { ...prev };
-      delete newQuantities[inventoryId];
-      return newQuantities;
-    });
-    
-    console.log("Removing item:", inventoryId);
+  const handleRemoveItem = (inventory_Id, stock_group_id) => {
+    const updatedGroupData = localGroupData.filter(item => item.inventory_Id !== inventory_Id);
+    setLocalGroupData(updatedGroupData);
+
+    const stillExists = updatedGroupData.some(item => item.stock_group_id === stock_group_id);
+    if (!stillExists) {
+      setQuantities(prev => {
+        const newQuantities = { ...prev };
+        delete newQuantities[stock_group_id];
+        return newQuantities;
+      });
+    }
+
+    console.log("Removing item:", inventory_Id);
   };
 
   const handleClearAll = () => {
@@ -45,18 +51,42 @@ function GroupModal({ isOpen, onClose, groupData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const formData = {
-      date,
-      stockType,
-      items: localGroupData.map(item => ({
-        inventory_Id: item.inventory_Id,
-        quantity: quantities[item.inventory_Id] || 1
-      }))
-    };
-    
-    console.log("Submitting form data:", formData);
-    onClose();
+
+    const encoder = localStorage.getItem("username");
+    const date_updated = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    const itemsToSend = localGroupData.map(item => ({
+      stock_group_id: item.stock_group_id,
+      itemDesc_1: item.itemDesc_1,
+      brand: item.brand,
+      category: item.category,
+      units: item.units,
+      units_added: quantities[item.stock_group_id] || 1,
+      transaction_date: date,
+      transaction_type: stockType,
+      date_updated: date_updated,
+      encoder: encoder
+    }));
+
+    fetch("http://localhost/DCH_Inventory_V2/src/backend/groupStock.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(itemsToSend)
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("Response from server:", res);
+        if (res.status === "success") {
+          alert("Transaction processed successfully!");
+          onClose();
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting transaction:", error);
+        alert("An error occurred while processing the transaction.");
+      });
   };
 
   if (!isOpen) return null;
@@ -67,25 +97,25 @@ function GroupModal({ isOpen, onClose, groupData }) {
         <h2 className={`modal-title-group ${stockType === "Stock In" ? "stock-in" : "stock-out"}`}>
           Group Transaction
         </h2>
-        
+
         <form className="modal-form-group" onSubmit={handleSubmit}>
           <div className="group-header-section">
             <div className="form-group-group">
               <label className="form-label-group">Transaction Date</label>
-              <input 
-                type="date" 
-                className="form-input-group" 
-                value={date} 
+              <input
+                type="date"
+                className="form-input-group"
+                value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required
               />
             </div>
-            
+
             <div className="form-group-group">
               <label className="form-label-group">Transaction Type</label>
-              <select 
-                className="form-select-group" 
-                value={stockType} 
+              <select
+                className="form-select-group"
+                value={stockType}
                 onChange={(e) => setStockType(e.target.value)}
               >
                 <option value="Stock In">Stock In</option>
@@ -93,13 +123,13 @@ function GroupModal({ isOpen, onClose, groupData }) {
               </select>
             </div>
           </div>
-          
+
           {localGroupData.length > 0 ? (
             <>
               <div className="group-table-header">
                 <h3 className="items-count">Items in transaction: {localGroupData.length}</h3>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="clear-all-button"
                   onClick={handleClearAll}
                 >
@@ -107,14 +137,15 @@ function GroupModal({ isOpen, onClose, groupData }) {
                   <span>Clear All</span>
                 </button>
               </div>
-              
+
               <div className="group-table-container">
                 <table className="group-table">
                   <thead>
                     <tr>
-                      <th>Item Description</th>
-                      <th>Units Available</th>
+                      <th>Item Group</th>
+                      <th>Description</th>
                       <th>Brand</th>
+                      <th>Units</th>
                       <th>Quantity</th>
                       <th>Actions</th>
                     </tr>
@@ -122,24 +153,29 @@ function GroupModal({ isOpen, onClose, groupData }) {
                   <tbody>
                     {localGroupData.map((item) => (
                       <tr key={item.inventory_Id}>
-                        <td className="item-desc-cell">{item.itemDesc_1}</td>
-                        <td className="item-units-cell">{item.units}</td>
-                        <td className="item-brand-cell">{item.brand}</td>
+                        <td className="item-desc-cell">{item.stock_group_id}</td>
+                        <td className="item-desc-cell">{item.itemDesc_1 + item.itemDesc_2}</td>
+                        <td className="item-units-cell">{item.brand}</td>
+                        <td className="item-brand-cell">{item.units}</td>
                         <td className="item-quantity-cell">
-                          <input 
-                            type="number" 
+                          <input
+                            type="number"
                             className="quantity-input"
                             min="1"
                             max={item.units}
-                            value={quantities[item.inventory_Id] || 1}
-                            onChange={(e) => handleQuantityChange(item.inventory_Id, parseInt(e.target.value))}
+                            value={quantities[item.stock_group_id] || 1}
+                            onChange={(e) =>
+                              handleQuantityChange(item.stock_group_id, parseInt(e.target.value))
+                            }
                           />
                         </td>
                         <td className="item-actions-cell">
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             className="remove-button"
-                            onClick={() => handleRemoveItem(item.inventory_Id)}
+                            onClick={() =>
+                              handleRemoveItem(item.inventory_Id, item.stock_group_id)
+                            }
                           >
                             <AiOutlineDelete size={16} />
                             <span>Remove</span>
@@ -156,17 +192,17 @@ function GroupModal({ isOpen, onClose, groupData }) {
               <p>No items added to this group yet.</p>
             </div>
           )}
-          
+
           <div className="modal-actions-group">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="save-button-group"
               disabled={localGroupData.length === 0}
             >
               Process Transaction
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="cancel-button-group"
               onClick={onClose}
             >

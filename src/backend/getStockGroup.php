@@ -33,7 +33,7 @@ try {
 
     // Prepare and execute the SQL query with INNER JOIN and username filtering
     $stmt = $pdo->prepare("
-        SELECT sg.username, sg.inventory_Id, inv.itemDesc_1, inv.units, inv.brand
+        SELECT sg.username, sg.inventory_Id,sg.stock_group_id,inv.itemDesc_1, inv.units, inv.brand
         FROM stock_group sg
         JOIN inventory_merge inv ON sg.inventory_Id = inv.inventory_Id
         WHERE sg.username = :username
