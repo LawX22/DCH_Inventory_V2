@@ -9,7 +9,7 @@
 body {
   width: 100%;
   height: 100vh;
-  overflow: auto; /* Enables scrolling if needed */
+  overflow: auto;
   background-color: #f5f7f9;
 }
 
@@ -21,6 +21,7 @@ body {
   width: 100%;
   max-width: 100%;
 }
+
 /* Action Panel */
 .action-panel {
   display: flex;
@@ -50,7 +51,7 @@ body {
   cursor: pointer;
   gap: 8px;
   transition: background-color 0.3s ease;
-  flex: 1; /* Ensures uniform size */
+  flex: 1;
   min-width: 120px;
   max-width: 160px;
 }
@@ -64,67 +65,63 @@ body {
 .add-button:hover {
   background-color: #a3d7a7;
 }
+
+/* Enhanced Warehouse Dropdown */
 .warehouse-dropdown {
-  background-color: #b8d6eb;
-  border-radius: 5px;
+  background-color: #f0f7ff;
+  border-radius: 6px;
   position: relative;
-  max-width: 200px; /* Increased width */
-  height: 40px; /* Set fixed height */
-  cursor: pointer; /* Ensure cursor works */
-  transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
-  padding: 6px;
+  max-width: 200px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #d1e0f6;
 }
 
-/* Hover effect */
 .warehouse-dropdown:hover {
-  background-color: #a0c4dc;
+  background-color: #e1eeff;
+  border-color: #a4c2f4;
 }
 
-/* Ensure cursor pointer applies */
 .dropdown-select {
   width: 100%;
   height: 100%;
   border: none;
   background-color: transparent;
   font-weight: 500;
-  color: #25632b;
+  color: #2563eb;
   appearance: none;
-  text-align: center;
   font-size: 14px;
-  padding: 2px;
+  padding: 0 30px 0 12px;
   box-sizing: border-box;
   cursor: pointer;
+  outline: none;
 }
 
-/* Remove outline when clicked */
 .dropdown-select:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* Custom Dropdown Arrow */
 .warehouse-dropdown::after {
   content: "▼";
-  font-size: 14px;
-  color: #25632b;
+  font-size: 10px;
+  color: #2563eb;
   position: absolute;
-  right: 10px; /* Adjusted for better alignment */
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  transition: color 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-/* Ensure cursor pointer applies on hover */
-.warehouse-dropdown:hover,
-.warehouse-dropdown:hover .dropdown-select {
-  cursor: pointer;
+.warehouse-dropdown:focus-within::after {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 /* Search Bar */
@@ -188,7 +185,7 @@ body {
   background-color: #80da88;
 }
 
-/* Responsive Design */
+/* Responsive Design for Action Panel */
 @media (max-width: 768px) {
   .action-panel {
     flex-direction: column;
@@ -197,199 +194,302 @@ body {
 
   .action-panel > * {
     width: 100%;
+    max-width: 100%;
   }
 
   .search-container {
     max-width: 100%;
   }
-
-  .add-button,
-  .warehouse-dropdown,
-  .export-button,
-  .activity-button {
-    width: 100%;
-  }
 }
 
-/* Inventory Table */
+/* Enhanced Inventory Table Styles */
 .inventory-table {
   margin: 0 20px 20px;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   width: calc(100% - 40px);
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e6f0f9;
 }
 
-/* Table Header */
+/* Table Header - Improved styling */
 .table-header {
   display: flex;
-  border-bottom: 1px solid #eee;
-  font-weight: 500;
+  border-bottom: 2px solid #e6f0f9;
+  font-weight: 600;
   width: 100%;
-  background-color: #b8d6eb;
+  background: linear-gradient(135deg, #c9e0f8, #b8d6eb);
   position: sticky;
   top: 0;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  padding: 4px 0;
+  height: 60px;
 }
 
-/* Scrollable Table Body */
+/* Scrollable Table Body with smooth shadow effect */
 .table-body {
   max-height: calc(100vh - 280px);
   min-height: 200px;
   overflow-y: auto;
   flex: 1;
+  background: linear-gradient(to bottom, #ffffff, #fcfdff);
+  position: relative;
 }
 
-/* Table Row */
+.table-body::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(to top, rgba(255,255,255,0.9), transparent);
+  pointer-events: none;
+}
+
+/* Table Row with improved hover effects */
 .table-row {
   display: flex;
-  border-bottom: 1px solid #f5f5f5;
-  align-items: center;
+  border-bottom: 1px solid #f0f5fa;
+  align-items: stretch;
   width: 100%;
+  transition: all 0.25s ease;
 }
 
 .table-row:hover {
-  background-color: #f9fafc;
+  background-color: #f5faff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #2563eb;
 }
 
-/* Header Cells */
-.header-cell {
-  padding: 10px 10px 10px 15px; /* Added left padding */
-  display: flex;
+.table-row:last-child {
+  border-bottom: none;
+}
+
+/* Base Cell Properties with better alignment and spacing */
+.header-cell,
+.item-cell,
+.brand-cell,
+.location-cell,
+.price-cell,
+.inventory-cell,
+.actions-cell {
+  padding: 12px 16px;
   align-items: center;
-  justify-content: flex-start; /* Changed from center to flex-start */
-  text-align: left; /* Changed from center to left */
-  font-weight: 500;
-  font-size: 12px;
-  flex: 1;
+  text-align: left;
+  overflow: hidden;
 }
 
-/* Special case for first header cell */
-.header-cell:nth-child(1) {
+/* Define specific widths for each column with better proportions */
+/* First column - item with image */
+.header-cell:nth-child(1),
+.item-cell {
   flex: 2;
+  min-width: 200px;
 }
 
-/* Container for the select dropdown and icon */
+/* Description columns */
+.header-cell:nth-child(2),
+.header-cell:nth-child(3),
+.brand-cell {
+  flex: 1.5;
+  min-width: 150px;
+}
+
+/* Brand column */
+.header-cell:nth-child(4),
+.brand-cell:nth-child(4) {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* Area column */
+.header-cell:nth-child(5),
+.location-cell {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* Price column */
+.header-cell:nth-child(6),
+.price-cell {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Inventory column */
+.header-cell:nth-child(7),
+.inventory-cell {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Actions column */
+.header-cell:nth-child(8),
+.actions-cell {
+  flex: 0.8;
+  min-width: 130px;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Header cell styling */
+.header-cell {
+  display: flex;
+  justify-content: flex-start;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1e3a8a;
+  letter-spacing: 0.3px;
+}
+
+/* Enhanced Select Container Styling */
 .select-container {
   position: relative;
   display: inline-block;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   text-align: left;
 }
 
-/* Style for the select element */
+/* Enhanced Base Select Styling */
 select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 100%;
-  padding: 8px 30px 8px 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #344054;
   cursor: pointer;
   outline: none;
   text-align: left;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
 }
 
-/* Style for the icon */
+/* Hover state for selects */
+select:hover {
+  border-color: #98a2b3;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(16, 24, 40, 0.1);
+}
+
+/* Focus state for selects */
+select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Custom dropdown icon */
 .select-icon {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #666;
-  font-size: 14px;
-}
-
-/* Styling the date input */
-.styled-date-input {
-  margin-left: 5px;
-  padding: 5px;
-  border: 1px solid #949393;
-  border-radius: 4px;
+  color: #667085;
   font-size: 12px;
-  color: #333;
-  background-color: #b8d6eb;
-  cursor: pointer;
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-.styled-date-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none;
+/* Rotate icon when select is focused or active */
+select:focus + .select-icon,
+select:active + .select-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: #3b82f6;
 }
 
-/* Optional: Add a custom arrow icon */
-.date-input-container {
-  position: relative;
+/* Table header dropdowns - more polished style */
+.table-header .select-container {
+  max-width: 100%;
 }
 
-select {
-  all: unset;
-  appearance: none;
-  width: 100%;
-  padding: 8px;
-  height: 20px;
-  overflow-y: auto;
+.table-header select {
+  font-size: 13px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #1e3a8a;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.table-header select:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border-color: #cbd5e1;
+}
+
+.table-header .select-icon {
+  right: 10px;
+  font-size: 10px;
+}
+
+/* Improved select options (for webkit browsers) */
 select option {
-  max-height: 30px;
+  padding: 10px 14px;
+  background-color: white;
+  color: #344054;
+  border-radius: 4px;
 }
 
-.header-cell:nth-child(1) {
-  flex: 2;
+/* Custom inventory input */
+.inventory-input {
+  width: 100%;
+  max-width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
 }
 
-.header-cell:nth-child(n + 2) {
-  flex: 1;
+.inventory-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-.with-arrow {
-  cursor: pointer;
-}
-
-.arrow-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
-}
-
-/* Item Cells - already left aligned in original */
+/* Item Cell Styling - Enhanced */
 .item-cell {
   display: flex;
   align-items: center;
-  padding: 15px;
-  flex: 2;
-  min-width: 0;
-  overflow: hidden;
 }
 
 .item-image-container {
   flex-shrink: 0;
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
-  border: 1px solid #eee;
-  border-radius: 5px;
+  width: 56px;
+  height: 56px;
+  margin-right: 16px;
+  border: 1px solid #eaeef6;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9fafb;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
 .item-image {
-  max-width: 40px;
-  max-height: 40px;
+  max-width: 45px;
+  max-height: 45px;
+  transition: transform 0.3s ease;
+}
+
+.table-row:hover .item-image {
+  transform: scale(1.05);
 }
 
 .item-details {
@@ -400,126 +500,108 @@ select option {
   overflow: hidden;
 }
 
-.item-name {
-  font-weight: 500;
+.item-category {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 4px;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.item-category,
 .item-id {
   font-size: 12px;
-  color: #888;
-  margin-top: 3px;
+  color: #64748b;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.3px;
 }
 
-/* Table Body Cells - MODIFIED TO BE LEFT-ALIGNED */
+/* Body Cell Styling with improved typography */
 .table-body .brand-cell,
-.table-body .date-cell,
-.table-body .location-cell,
+.table-body .location-cell, 
 .table-body .price-cell,
-.table-body .inventory-cell,
-.table-body .amount-cell,
-.table-body .Requistion-cell,
-.table-body .units-cell,
-.table-body .activity-cell {
-  font-size: 12px;
-  font-weight: 400;
-  padding: 10px 10px 10px 15px; /* Added left padding */
-  flex: 1;
-  min-width: 80px;
+.table-body .inventory-cell {
   display: flex;
+  font-size: 13px;
+  font-weight: 400;
   align-items: center;
   justify-content: flex-start;
-  text-align: left;
+  color: #334155;
 }
 
-
-/* Item container inside cells - MODIFIED TO BE LEFT-ALIGNED */
+/* Item container inside cells with better spacing */
 .table-body .item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
   width: 100%;
+  gap: 4px;
 }
 
-.amount-cell,
-.Requistion-cell {
-  text-align: left; /* Changed from center to left */
+.table-body .item > div:first-child {
+  font-weight: 500;
+  color: #0f172a;
 }
 
 .location-cell div:nth-child(2),
 .price-cell div:nth-child(2),
-.inventory-cell div:nth-child(2),
-.units-cell div:nth-child(2) {
+.inventory-cell div:nth-child(2) {
   font-size: 12px;
-  color: #888;
-  margin-top: 5px;
+  color: #64748b;
+  margin-top: 4px;
 }
 
-/* Action Buttons - KEEPING THE SAME */
-.actions-cell {
-  font-size: 14px;
-  font-weight: 400;
-  padding: 10px;
-  flex: 1;
-  min-width: 80px;
-  border-left: 2px solid rgb(215, 207, 207);
+/* Price styling */
+.price-cell .item div:first-child,
+.inventory-cell .item div:first-child {
+  font-weight: 600;
+}
+
+.price-cell .item div:nth-child(2) {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+/* Inventory stock styling */
+.inventory-cell .item div:first-child {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 6px;
-  flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
-  .actions-cell {
-    font-size: 12px;
-    padding: 8px;
-    min-width: 70px;
-  }
+.inventory-cell .item div:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  margin-right: 6px;
 }
 
-@media (max-width: 480px) {
-  .actions-cell {
-    font-size: 10px;
-    padding: 6px;
-    min-width: 60px;
-    gap: 2px;
-  }
-}
-/* Action Buttons Container */
-.actions-cell {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Base Button Styles */
-/* Action Cell Container */
+/* Action Buttons Container with better styling */
 .actions-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  border-left: 2px solid rgb(215, 207, 207);
-  flex: 1;
-  min-width: 130px;
+  border-left: 2px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.table-row:hover .actions-cell {
+  border-left-color: rgba(37, 99, 235, 0.1);
+  background-color: rgba(245, 249, 255, 0.8);
 }
 
 /* Container for all action buttons */
 .action-buttons-container {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -527,51 +609,56 @@ select option {
   position: relative;
 }
 
-/* Base Button Styles */
+/* Base Button Styles - More polished look */
 .action-button {
   display: flex;
   align-items: center;
   border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
+  border-radius: 8px;
+  padding: 0;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
-  min-width: 36px;
-  max-width: 36px;
+  min-width: 38px;
+  max-width: 38px;
 }
 
-/* Button types */
+/* Button types with improved colors */
 .view-button {
-  background-color: #eef5ff;
-  color: #3a6ea7;
+  background-color: #eef7ff;
+  color: #0369a1;
+  border: 1px solid #dbeafe;
 }
 
 .delete-button {
-  background-color: #ffeeee;
-  color: #a73a3a;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fee2e2;
 }
 
-.add-button {
-  background-color: #f0ffe0;
-  color: #5a9a00;
+.action-button.add-button {
+  background-color: #f0fff4;
+  color: #15803d;
+  border: 1px solid #dcfce7;
 }
 
-/* Icon styling */
+/* Icon styling with better positioning */
 .action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  left: 10px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   transition: all 0.3s ease;
 }
 
@@ -583,61 +670,140 @@ select option {
   overflow: hidden;
   text-overflow: ellipsis;
   transition: opacity 0.3s ease, max-width 0.3s ease;
-  margin-left: 26px; /* Space for icon */
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 /* Show text on hover and expand button */
 .action-button:hover:not(:disabled) {
-  min-width: 90px;
-  max-width: 110px; /* Increased for longer text */
+  min-width: 100px;
+  max-width: 120px;
   width: auto;
   z-index: 2;
-  justify-content: flex-start;
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.action-button:hover:not(:disabled) .action-icon {
+  left: 16px;
+  transform: translateY(-50%);
 }
 
 /* When any button is hovered, shrink other buttons */
 .action-buttons-container:hover .action-button:not(:hover) {
-  width: 28px;
-  min-width: 28px;
-  max-width: 28px;
-  opacity: 0.7;
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  opacity: 0.75;
+  transform: scale(0.95);
 }
 
 /* Show text when button is hovered */
 .action-button:hover:not(:disabled) .action-text {
   opacity: 1;
-  max-width: 80px; /* Increased for longer text */
+  max-width: 80px;
   display: block;
+  margin-left: 26px;
 }
 
 /* Improve hover effects */
 .view-button:hover:not(:disabled) {
-  background-color: #dceafd;
-  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
+  background-color: #dbeafe;
+  box-shadow: 0 3px 6px rgba(3, 105, 161, 0.15);
+  border-color: #bfdbfe;
 }
 
 .delete-button:hover:not(:disabled) {
-  background-color: #fde2e2;
-  box-shadow: 0 2px 4px rgba(167, 58, 58, 0.1);
+  background-color: #fee2e2;
+  box-shadow: 0 3px 6px rgba(185, 28, 28, 0.15);
+  border-color: #fecaca;
 }
 
-.add-button:hover:not(:disabled) {
-  background-color: #e4ffc7;
-  box-shadow: 0 2px 4px rgba(90, 154, 0, 0.1);
+.action-button.add-button:hover:not(:disabled) {
+  background-color: #dcfce7;
+  box-shadow: 0 3px 6px rgba(21, 128, 61, 0.15);
+  border-color: #bbf7d0;
 }
 
-/* Disabled State */
+/* Disabled State with better visual indication */
 .action-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
 }
 
-/* Responsive adjustments */
+/* Custom Scrollbar - More modern look */
+.table-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+  border: 2px solid #f1f5f9;
+  transition: background 0.3s ease;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Empty state styling */
+.table-body:empty::before {
+  content: 'No items found';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* Responsive Design for better mobile experience */
+@media (max-width: 1200px) {
+  .header-cell:nth-child(1), .item-cell { flex: 1.5; min-width: 180px; }
+  .header-cell:nth-child(2), .header-cell:nth-child(3), .brand-cell { flex: 1.2; min-width: 120px; }
+  .header-cell:nth-child(4), .brand-cell:nth-child(4) { flex: 0.8; min-width: 80px; }
+  .header-cell:nth-child(5), .location-cell { flex: 0.8; min-width: 80px; }
+  .header-cell:nth-child(6), .price-cell { flex: 0.8; min-width: 100px; }
+  .header-cell:nth-child(7), .inventory-cell { flex: 0.8; min-width: 100px; }
+  .header-cell:nth-child(8), .actions-cell { flex: 0.7; min-width: 120px; }
+}
+
+@media (max-width: 992px) {
+  .header-cell:nth-child(1), .item-cell { flex: 1.2; min-width: 150px; }
+  .header-cell:nth-child(2), .header-cell:nth-child(3), .brand-cell { flex: 1; min-width: 100px; }
+}
+
 @media (max-width: 768px) {
-  .actions-cell {
-    padding: 6px;
-    min-width: 110px;
+  /* Adjusted column sizes for smaller screens */
+  .table-header, .table-row {
+    font-size: 11px;
   }
+  
+  .header-cell, 
+  .item-cell, 
+  .brand-cell, 
+  .location-cell, 
+  .price-cell, 
+  .inventory-cell,
+  .actions-cell {
+    padding: 8px 10px;
+  }
+  
+  .header-cell:nth-child(1), .item-cell { flex: 1; min-width: 120px; }
+  .header-cell:nth-child(2), .header-cell:nth-child(3), .brand-cell { min-width: 90px; }
   
   .action-buttons-container {
     gap: 4px;
@@ -664,9 +830,52 @@ select option {
     min-width: 24px;
     max-width: 24px;
   }
+  
+  /* Responsive dropdown adjustments */
+  select, .dropdown-select {
+    font-size: 13px;
+    padding-left: 8px;
+  }
+  
+  .warehouse-dropdown::after,
+  .select-icon {
+    right: 8px;
+    font-size: 9px;
+  }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
+  /* For very small screens, we make more adjustments */
+  .inventory-table {
+    margin: 0 10px 10px;
+    width: calc(100% - 20px);
+  }
+  
+  .table-header, .table-row {
+    font-size: 10px;
+  }
+  
+  .header-cell, 
+  .item-cell, 
+  .brand-cell, 
+  .location-cell, 
+  .price-cell, 
+  .inventory-cell,
+  .actions-cell {
+    padding: 6px 8px;
+  }
+  
+  .item-image-container {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .item-image {
+    max-width: 30px;
+    max-height: 30px;
+  }
+  
   .actions-cell {
     padding: 4px;
     min-width: 100px;
@@ -699,86 +908,25 @@ select option {
   }
 }
 
-/* Focus styles for accessibility */
-.action-button:focus {
-  outline: 2px solid #4a90e2;
-  outline-offset: 2px;
-}
-
-/* Fix for touch devices */
-@media (hover: none) {
-  .action-button {
-    width: 36px;
-    min-width: 36px;
-    max-width: 36px;
-  }
-  
-  .action-buttons-container:hover .action-button:not(:hover) {
-    width: 36px;
-    min-width: 36px;
-    max-width: 36px;
-    opacity: 1;
-  }
-}
-
-/* Icon Styling */
-.action-icon {
-  display: flex;
-  align-items: center;
-  margin-right: 6px;
-}
-
-/* Disabled State */
-.action-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Checkbox Button (Add to Group) */
-label.action-button {
-  cursor: pointer;
-}
-
-.checkbox-input {
-  background: transparent;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font-size: inherit;
-  font-weight: inherit;
-  padding: 0;
-  text-align: center;
-  width: 100%;
-}
-
-.checkbox-input:disabled {
-  cursor: not-allowed;
-}
-
-/* Space at the bottom */
-.inventory-table:after {
-  content: "";
-  flex: 1;
-}
-
 /* Custom Scrollbar */
 .table-body::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
+  width: 10px;
 }
 
 .table-body::-webkit-scrollbar-track {
-  background: #e7ecf0; /* Track color */
-  border-radius: 5px;
+  background: #f1f5f9;
+  border-radius: 8px;
 }
 
 .table-body::-webkit-scrollbar-thumb {
-  background: #b8d6eb; /* Thumb color */
-  border-radius: 5px;
+  background: #cbd5e1;
+  border-radius: 8px;
+  border: 2px solid #f1f5f9;
   transition: background 0.3s ease;
 }
 
 .table-body::-webkit-scrollbar-thumb:hover {
-  background: #7a9fb8; /* Darker shade when hovered */
+  background: #94a3b8;
 }
 
 /* Scrollbar for all elements with overflow */
@@ -799,4 +947,228 @@ label.action-button {
 
 *::-webkit-scrollbar-thumb:hover {
   background: #7a9fb8;
+}
+
+/* StockHistory-specific styles */
+
+/* Date cell customization */
+.date-cell {
+  flex: 1;
+  min-width: 140px;
+  position: relative;
+}
+
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.styled-date-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+  color: #344054;
+  cursor: pointer;
+}
+
+.styled-date-input:hover {
+  border-color: #98a2b3;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(16, 24, 40, 0.1);
+}
+
+.styled-date-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Date display in table rows */
+.date-display {
+  font-weight: 500;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Activity cell styling */
+.activity-cell {
+  flex: 1;
+  min-width: 110px;
+}
+
+/* Activity tag styling */
+.activity-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.activity-in {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.activity-out {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* Amount cell styling */
+.amount-cell {
+  flex: 0.8;
+  min-width: 80px;
+}
+
+.amount-value {
+  font-weight: 600;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+/* Units cell styling */
+.units-cell {
+  flex: 1;
+  min-width: 130px;
+}
+
+.units-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.units-info div:first-child {
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.units-info div:last-child {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Requisition cell styling */
+.requisition-cell {
+  flex: 1;
+  min-width: 120px;
+}
+
+.requisition-number {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 500;
+  color: #334155;
+  background-color: #f8fafc;
+  border-radius: 4px;
+  padding: 2px 6px;
+  border: 1px solid #e2e8f0;
+  display: inline-block;
+}
+
+/* No data message styling */
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  margin: 16px;
+}
+
+/* Responsive adjustments specific to StockHistory */
+@media (max-width: 1200px) {
+  .date-cell { flex: 0.9; min-width: 120px; }
+  .activity-cell { flex: 0.9; min-width: 100px; }
+  .amount-cell { flex: 0.7; min-width: 70px; }
+  .units-cell { flex: 0.9; min-width: 110px; }
+  .requisition-cell { flex: 0.9; min-width: 100px; }
+}
+
+@media (max-width: 992px) {
+  .date-cell { flex: 0.8; min-width: 100px; }
+  .activity-cell { flex: 0.8; min-width: 90px; }
+  .amount-cell { flex: 0.6; min-width: 60px; }
+  .units-cell { flex: 0.8; min-width: 100px; }
+  .requisition-cell { flex: 0.8; min-width: 90px; }
+  
+  .activity-tag {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .date-cell { min-width: 90px; }
+  .activity-cell { min-width: 80px; }
+  .amount-cell { min-width: 50px; }
+  .units-cell { min-width: 90px; }
+  .requisition-cell { min-width: 80px; }
+  
+  .activity-tag {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+  
+  .units-info div:first-child,
+  .units-info div:last-child {
+    font-size: 11px;
+  }
+  
+  .requisition-number {
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 576px) {
+  .date-cell,
+  .activity-cell,
+  .amount-cell,
+  .units-cell,
+  .requisition-cell {
+    padding: 6px 6px;
+  }
+  
+  .date-display {
+    font-size: 10px;
+  }
+  
+  .activity-tag {
+    padding: 2px 4px;
+    font-size: 9px;
+  }
+  
+  .amount-value {
+    font-size: 12px;
+  }
+  
+  .units-info div:first-child,
+  .units-info div:last-child {
+    font-size: 10px;
+  }
+  
+  .requisition-number {
+    font-size: 9px;
+    padding: 1px 3px;
+  }
 }

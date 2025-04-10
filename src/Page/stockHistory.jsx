@@ -1,118 +1,94 @@
 import React, { useState, useEffect } from "react";
-import { FaChevronDown } from "react-icons/fa";
 import { AiOutlineSearch, AiOutlineUndo } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
+import { FaChevronDown } from "react-icons/fa";
 import Header from "./Header";
 import axios from "axios";
 import StockHistoryFixModal from "../modals/stockHistory_Fix_Modal";
 
 function StockHistory() {
+  // Search and data states
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
-
   const [historyFixIsOpen, setHistoryFixIsOpen] = useState(false);
 
-  const [category, setCategory] = useState(
-    localStorage.getItem("categorySH") || ""
-  );
-
+  // Filter states - initialize from localStorage
+  const [category, setCategory] = useState(localStorage.getItem("categorySH") || "");
   const [brand, setBrand] = useState(localStorage.getItem("brandSH") || "");
-
   const [area, setArea] = useState(localStorage.getItem("areaSH") || "");
-
   const [date, setDate] = useState(localStorage.getItem("dateSH") || "");
+  const [activity, setActivity] = useState(localStorage.getItem("activitySH") || "");
+  const [selectedLocation, setSelectedLocation] = useState(localStorage.getItem("selectedLocation") || "All");
 
-  const [activity, setActivity] = useState(
-    localStorage.getItem("activitySH") || ""
-  );
+  // Option lists for filters
+  const [categoryList, setCategoryList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
+  const [areaList, setAreaList] = useState([]);
 
+  // Clear localStorage on component mount
   useEffect(() => {
-    localStorage.setItem("brandSH", ""); // Set brand to empty string (or any value you want)
-    localStorage.setItem("areaSH", ""); // Set area to empty string
-    localStorage.setItem("dateSH", ""); // Set category to empty string
-    localStorage.getItem("categorySH", "");
+    localStorage.setItem("brandSH", "");
+    localStorage.setItem("areaSH", "");
+    localStorage.setItem("dateSH", "");
+    localStorage.setItem("categorySH", "");
+    localStorage.setItem("activitySH", "");
 
     setBrand("");
     setArea("");
     setDate("");
     setCategory("");
+    setActivity("");
   }, []);
 
-  const [categoryList, setCategoryList] = useState([]);
-  const [brandList, setBrandList] = useState([]);
-  const [areaList, setAreaList] = useState([]);
-
+  // Handler for filter changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
 
     switch (name) {
       case "category":
         setCategory(value);
-
         break;
       case "brand":
         setBrand(value);
-
         break;
       case "area":
         setArea(value);
-
         break;
-
       case "date":
         setDate(value);
-
         break;
-
       case "activity":
         setActivity(value);
-
         break;
       default:
         console.warn("Unknown filter:", name);
     }
   };
 
+  // Fetch filter options
   useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
-      )
-      .then((response) => {
-        setCategoryList(response.data); // Store fetched brands in state
-      })
-      .catch((error) => {
-        console.error("Error fetching brands:", error);
-      });
+    // Using Promise.all to fetch all data in parallel
+    const fetchFilters = async () => {
+      try {
+        const [categoryData, brandData, areaData] = await Promise.all([
+          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"),
+          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"),
+          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+        ]);
+        
+        setCategoryList(categoryData.data);
+        setBrandList(brandData.data);
+        setAreaList(areaData.data);
+      } catch (error) {
+        console.error("Error fetching filter data:", error);
+      }
+    };
+
+    fetchFilters();
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
-      )
-      .then((response) => {
-        setBrandList(response.data); // Store fetched brands in state
-      })
-      .catch((error) => {
-        console.error("Error fetching brands:", error);
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
-      .then((response) => {
-        setAreaList(response.data); // Store fetched brands in state
-      })
-      .catch((error) => {
-        console.error("Error fetching brands:", error);
-      });
-  }, []);
-
-  const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || "All"
-  );
+  // Update localStorage when filters change
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
     localStorage.setItem("brandSH", brand);
@@ -122,31 +98,53 @@ function StockHistory() {
     localStorage.setItem("activitySH", activity);
   }, [selectedLocation, brand, area, category, date, activity]);
 
+  // Fetch inventory data when filters change
   useEffect(() => {
-    axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
-        {
-          params: {
-            location: selectedLocation,
-            search: searchQuery,
-            category: category,
-            brand: brand,
-            area: area,
-            date: date,
-            activity: activity,
-          },
-        }
-      )
-      .then((response) => setInventory(response.data))
-      .catch((error) => console.error("Error fetching inventory:", error));
-    console.log(activity);
+    const fetchInventory = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+          {
+            params: {
+              location: selectedLocation,
+              search: searchQuery,
+              category: category,
+              brand: brand,
+              area: area,
+              date: date,
+              activity: activity,
+            },
+          }
+        );
+        setInventory(response.data);
+      } catch (error) {
+        console.error("Error fetching inventory:", error);
+      }
+    };
+
+    fetchInventory();
   }, [selectedLocation, activity, category, brand, area, date, searchQuery]);
 
+  // Open fix modal with selected data
   function openHistoryFixFunc(data) {
     setSelectedData(data);
     setHistoryFixIsOpen(true);
   }
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // Get activity class based on transaction type
+  const getActivityClass = (type) => {
+    return type === "Stock In" ? "activity-in" : "activity-out";
+  };
 
   return (
     <div className="inventory-container">
@@ -157,6 +155,7 @@ function StockHistory() {
         onClose={() => setHistoryFixIsOpen(false)}
         data={selectedData}
       />
+
       {/* Action Panel */}
       <div className="action-panel">
         <div className="warehouse-dropdown">
@@ -191,9 +190,7 @@ function StockHistory() {
         {/* Activity Button */}
         <button
           className="activity-button"
-          onClick={() =>
-            window.open("/activity", "_blank", "noopener,noreferrer")
-          }
+          onClick={() => window.open("/activity", "_blank", "noopener,noreferrer")}
         >
           <FiActivity size={18} />
           <span>Activity</span>
@@ -207,7 +204,8 @@ function StockHistory() {
             <div className="select-container">
               <select
                 name="category"
-                onChange={(e) => setCategory(e.target.value)}
+                value={category}
+                onChange={handleFilterChange}
               >
                 <option value="">Select Category</option>
                 {categoryList.map((option) => (
@@ -219,20 +217,24 @@ function StockHistory() {
               <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
-            Date
-            <span className="date-input-container">
+          <div className="header-cell date-cell">
+            <div className="date-input-wrapper">
               <input
                 type="date"
                 name="date"
-                onChange={(e) => setDate(e.target.value)}
+                value={date}
+                onChange={handleFilterChange}
                 className="styled-date-input"
               />
-            </span>
+            </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="header-cell brand-cell">
             <div className="select-container">
-              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+              <select 
+                name="brand" 
+                value={brand}
+                onChange={handleFilterChange}
+              >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
                   <option key={option.inventory_Id} value={option.brand}>
@@ -240,12 +242,16 @@ function StockHistory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="header-cell location-cell">
             <div className="select-container">
-              <select name="area" onChange={(e) => setArea(e.target.value)}>
+              <select 
+                name="area" 
+                value={area}
+                onChange={handleFilterChange}
+              >
                 <option value="">Area</option>
                 {areaList.map((option) => (
                   <option key={option.inventory_Id} value={option.storage_area}>
@@ -253,109 +259,114 @@ function StockHistory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
 
           {/* Activity Dropdown */}
-          <div className="header-cell with-arrow">
+          <div className="header-cell activity-cell">
             <div className="select-container">
               <select
                 name="activity"
-                onChange={(e) => setActivity(e.target.value)}
+                value={activity}
+                onChange={handleFilterChange}
               >
                 <option value="">Activity</option>
                 <option value="Stock In">Stock In</option>
                 <option value="Stock Out">Stock Out</option>
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
 
-          <div className="header-cell with-arrow">
+          <div className="header-cell amount-cell">
             <span>Amount</span>
           </div>
 
-          <div className="header-cell with-arrow">
+          <div className="header-cell units-cell">
             <span>Units</span>
           </div>
 
-          <div className="header-cell with-arrow">
-            <span>Requistion #</span>
+          <div className="header-cell requisition-cell">
+            <span>Requisition #</span>
           </div>
 
           <div className="header-cell">Actions</div>
         </div>
 
         <div className="table-body">
-          {inventory.map((item) => (
-            <div className="table-row" key={item.stock_history_id}>
-              <div className="item-cell">
-                <div className="item-image-container">
-                  <img
-                    src={"/src/assets/" + item.image}
-                    alt={item.name}
-                    className="item-image"
-                  />
+          {inventory.length > 0 ? (
+            inventory.map((item) => (
+              <div className="table-row" key={item.stock_history_id}>
+                <div className="item-cell">
+                  <div className="item-image-container">
+                    <img
+                      src={"/src/backend/" + item.image}
+                      alt={item.name}
+                      className="item-image"
+                    />
+                  </div>
+                  <div className="item-details">
+                    <div className="item-name">{item.stock_name}</div>
+                    <div className="item-category">{item.category}</div>
+                    <div className="item-id">{item.itemCode}</div>
+                  </div>
                 </div>
-                <div className="item-details">
-                  <div className="item-name">{item.stock_name}</div>
-                  <div className="item-category">{item.category}</div>
-                  <div className="item-id">{item.itemCode}</div>
+
+                <div className="date-cell">
+                  <div className="date-display">{formatDate(item.transaction_date)}</div>
+                </div>
+
+                <div className="brand-cell">
+                  <div>{item.brand}</div>
+                </div>
+                
+                <div className="location-cell">
+                  <div>{item.location}</div>
+                </div>
+                
+                <div className="activity-cell">
+                  <div className={`activity-tag ${getActivityClass(item.transaction_type)}`}>
+                    {item.transaction_type}
+                  </div>
+                </div>
+
+                <div className="amount-cell">
+                  <div className="amount-value">{item.units_added}</div>
+                </div>
+
+                <div className="units-cell">
+                  <div className="item units-info">
+                    <div>Current: {item.current_stock}</div>
+                    <div>Previous: {item.previous_units}</div>
+                  </div>
+                </div>
+                
+                <div className="requisition-cell">
+                  <div className="requisition-number">
+                    Stock - {item.requisition_number}
+                  </div>
+                </div>
+
+                <div className="actions-cell">
+                  <div className="action-buttons-container">
+                    <button
+                      className="action-button view-button"
+                      onClick={() => openHistoryFixFunc(item)}
+                      title="Fix"
+                    >
+                      <span className="action-icon">
+                        <AiOutlineUndo size={16} />
+                      </span>
+                      <span className="action-text">Fix</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <div className="date-cell">
-                {new Date(item.transaction_date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
-
-              <div className="brand-cell">
-                <div>{item.brand}</div>
-              </div>
-              <div className="location-cell">
-                <div>{item.location}</div>
-              </div>
-              <div className="activity-cell">
-                <div>{item.transaction_type}</div>
-              </div>
-
-              <div className="amount-cell">
-                <div>{item.units_added}</div>
-              </div>
-
-              <div className="units-cell">
-                <div className="item">
-                  <div>Current - {item.current_stock}</div>
-                  <div>Previous - {item.previous_units}</div>
-                </div>
-              </div>
-              <div className="Requistion-cell">
-                <div className="item">
-                  <div>Stock - {item.requisition_number}</div>
-                </div>
-              </div>
-
-              <div className="actions-cell">
-                <div className="action-buttons-container">
-                  <button
-                    className="action-button view-button"
-                    onClick={() => openHistoryFixFunc(item)}
-                    title="Fix"
-                  >
-                    <span className="action-icon">
-                      <AiOutlineUndo size={16} />
-                    </span>
-                    <span className="action-text">Fix</span>
-                  </button>
-                </div>
-              </div>
-              
-            </div>
-          ))}
+            ))  
+          ) : (
+            <div className="no-data-message">No stock history found.</div>
+          )}
         </div>
       </div>
     </div>

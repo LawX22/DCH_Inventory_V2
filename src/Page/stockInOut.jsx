@@ -272,8 +272,9 @@ function StockInOut() {
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
                 value={category}
+                className="enhanced-select"
               >
-                <option value="">Select Category</option>
+                <option value="">Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}
@@ -283,12 +284,19 @@ function StockInOut() {
               <FaChevronDown className="select-icon" />
             </div>
           </div>
+          <div className="header-cell">
+            <span>Description 1 & 2</span>
+          </div>
+          <div className="header-cell">
+            <span>Description 3 & 4</span>
+          </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
               <select
                 name="brand"
                 onChange={(e) => setBrand(e.target.value)}
                 value={brand}
+                className="enhanced-select"
               >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
@@ -306,6 +314,7 @@ function StockInOut() {
                 name="area"
                 onChange={(e) => setArea(e.target.value)}
                 value={area}
+                className="enhanced-select"
               >
                 <option value="">Area</option>
                 {areaList.map((option) => (
@@ -323,7 +332,7 @@ function StockInOut() {
           <div className="header-cell with-arrow">
             <span>Inventory</span>
           </div>
-          <div className="header-cell">Actions</div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>Actions</div>
         </div>
 
         <div className="table-body">
@@ -338,11 +347,20 @@ function StockInOut() {
                   />
                 </div>
                 <div className="item-details">
-                  <div className="item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
-                  </div>
                   <div className="item-category">{item.category}</div>
                   <div className="item-id">{item.itemCode}</div>
+                </div>
+              </div>
+              <div className="brand-cell">
+                <div className="item">
+                  <div>{item.itemDesc_1 || "-"}</div>
+                  <div>{item.itemDesc_2 || "-"}</div>
+                </div>
+              </div>
+              <div className="brand-cell">
+                <div className="item">
+                  <div>{item.itemDesc_3 || "-"}</div>
+                  <div>{item.itemDesc_4 || "-"}</div>
                 </div>
               </div>
               <div className="brand-cell">

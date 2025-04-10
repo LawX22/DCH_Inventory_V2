@@ -313,6 +313,7 @@ function Inventory() {
                 name="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                className="enhanced-select"
               >
                 <option value="">Category & Item Code</option>
                 {categoryList.map((option) => (
@@ -332,7 +333,12 @@ function Inventory() {
           </div>
           <div className="header-cell">
             <div className="select-container">
-              <select name="brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
+              <select 
+                name="brand" 
+                value={brand} 
+                onChange={(e) => setBrand(e.target.value)}
+                className="enhanced-select"
+              >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
                   <option key={option.inventory_Id} value={option.brand}>
@@ -345,7 +351,12 @@ function Inventory() {
           </div>
           <div className="header-cell">
             <div className="select-container">
-              <select name="area" value={area} onChange={(e) => setArea(e.target.value)}>
+              <select 
+                name="area" 
+                value={area} 
+                onChange={(e) => setArea(e.target.value)}
+                className="enhanced-select"
+              >
                 <option value="">Area</option>
                 {areaList.map((option) => (
                   <option key={option.inventory_Id} value={option.storage_area}>
@@ -368,6 +379,7 @@ function Inventory() {
                 onBlur={handleBlur}
                 onKeyDown={handleKeyPress}
                 autoFocus
+                className="inventory-input"
               />
             ) : (
               <span>{inventoryNumber || "Inventory"}</span>
