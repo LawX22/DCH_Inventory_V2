@@ -1503,6 +1503,7 @@ Encoder: dhaniel, Start: , End:
 Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
 Encoder: dhaniel, Start: , End: 
 Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+<<<<<<< HEAD
 >>>>>>> 067a911b44641a42eb0a753d4f9dc377cc4c5943
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-04-07, End: 2025-04-12
@@ -1610,3 +1611,51 @@ Encoder: All, Start: , End:
 07, End: 2025-04-12
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-04-07, End: 2025-04-12
+=======
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+Encoder: dhaniel, Start: , End: 
+Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
+>>>>>>> 4f0ccb015bd966f2a73afb32b09c30a0d95f1f9a

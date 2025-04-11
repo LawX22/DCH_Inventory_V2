@@ -9,7 +9,7 @@
 body {
   width: 100%;
   height: 100vh;
-  overflow: auto; /* Enables scrolling if needed */
+  overflow: auto;
   background-color: #f5f7f9;
 }
 
@@ -38,7 +38,7 @@ body {
   gap: 10px;
 }
 
-/* Buttons & Dropdown - common styles */
+/* Buttons & Dropdown */
 .adm-action-panel button,
 .adm-warehouse-dropdown {
   display: flex;
@@ -51,7 +51,7 @@ body {
   cursor: pointer;
   gap: 8px;
   transition: background-color 0.3s ease;
-  flex: 1; /* Ensures uniform size */
+  flex: 1;
   min-width: 120px;
   max-width: 160px;
 }
@@ -66,59 +66,62 @@ body {
   background-color: #a3d7a7;
 }
 
-/* Warehouse Dropdown */
+/* Enhanced Warehouse Dropdown */
 .adm-warehouse-dropdown {
-  background-color: #b8d6eb;
-  border-radius: 5px;
+  background-color: #f0f7ff;
+  border-radius: 6px;
   position: relative;
   max-width: 200px;
   height: 40px;
-  cursor: pointer; 
-  transition:
-  background-color 0.3s ease,
-  box-shadow 0.3s ease;
-  padding: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #d1e0f6;
 }
 
-/* Hover effect */
 .adm-warehouse-dropdown:hover {
-  background-color: #a0c4dc;
+  background-color: #e1eeff;
+  border-color: #a4c2f4;
 }
 
-/* Dropdown select element */
 .adm-dropdown-select {
   width: 100%;
   height: 100%;
   border: none;
   background-color: transparent;
   font-weight: 500;
-  color: #25632b;
+  color: #2563eb;
   appearance: none;
-  text-align: center; 
   font-size: 14px;
-  padding-top: 13px;
+  padding: 0 30px 0 12px;
+  box-sizing: border-box;
   cursor: pointer;
-}
-
-/* Remove outline when clicked */
-.adm-dropdown-select:focus {
   outline: none;
 }
 
-/* Custom Dropdown Arrow */
+.adm-dropdown-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .adm-warehouse-dropdown::after {
   content: "▼";
-  font-size: 12px;
-  color: #25632b;
-  position: absolute; /* Position absolute to not affect the centering */
-  right: 10px; 
+  font-size: 10px;
+  color: #2563eb;
+  position: absolute;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.adm-warehouse-dropdown:focus-within::after {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 /* Search Bar */
@@ -140,7 +143,7 @@ body {
 .adm-search-input {
   border: none;
   outline: none;
-  height: 100%;
+  flex: 1;
   font-size: 14px;
   width: 100%;
 }
@@ -164,552 +167,334 @@ body {
   background-color: #f3db9e;
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .adm-search-container {
-    flex: 2;
-    order: 1;
-    width: 100%;
-  }
-  
-  .adm-warehouse-dropdown {
-    order: 2;
-  }
-  
-  .adm-add-button {
-    order: 3;
-  }
-  
-  .adm-export-button {
-    order: 4;
-  }
-  
-  .adm-activity-button {
-    order: 5;
-  }
+.adm-list-button {
+  background-color: #f8e7b1;
+  color: #95750a;
 }
 
-@media (max-width: 768px) {
-  .adm-action-panel {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .adm-action-panel > * {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .adm-warehouse-dropdown,
-  .adm-add-button,
-  .adm-export-button,
-  .adm-activity-button {
-    justify-content: center;
-  }
+.adm-list-button:hover {
+  background-color: #f5d97b;
 }
 
-/* Inventory Table */
-.adm-inventory-table {
-  margin: 0 20px 20px;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  width: calc(100% - 40px);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.adm-showGroupModal-button {
+  background-color: #bdeac1;
+  color: #25632b;
 }
 
-/* Table Header */
-.adm-table-header {
-  display: flex;
-  border-bottom: 1px solid #eee;
-  font-weight: 500;
-  width: 100%;
-  background-color: #b8d6eb;
-  position: sticky;
-  top: 0;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+.adm-showGroupModal-button:hover {
+  background-color: #80da88;
 }
 
-/* Scrollable Table Body */
-.adm-table-body {
-  max-height: calc(100vh - 280px);
-  min-height: 200px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-/* Table Row */
-.adm-table-row {
-  display: flex;
-  border-bottom: 1px solid #f5f5f5;
-  align-items: center;
-  width: 100%;
-}
-
-.adm-table-row:hover {
-  background-color: #f9fafc;
-}
-
-/* Header Cells */
-.adm-header-cell {
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: 500;
-  flex: 1;
-}
-
-/* Container for the select dropdown and icon */
+/* Enhanced Select Container Styling */
 .adm-select-container {
   position: relative;
   display: inline-block;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
+  text-align: left;
 }
 
-/* Style for the select element */
-.adm-select {
+/* Enhanced Base Select Styling */
+select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 100%;
-  padding: 8px 30px 8px 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #344054;
   cursor: pointer;
   outline: none;
+  text-align: left;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
 }
 
-/* Style for the icon */
+/* Hover state for selects */
+select:hover {
+  border-color: #98a2b3;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(16, 24, 40, 0.1);
+}
+
+/* Focus state for selects */
+select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Custom dropdown icon */
 .adm-select-icon {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #666;
+  color: #667085;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate icon when select is focused or active */
+select:focus + .adm-select-icon,
+select:active + .adm-select-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: #3b82f6;
+}
+
+/* Table header dropdowns */
+.adm-table-header .adm-select-container {
+  max-width: 100%;
+}
+
+.adm-table-header select {
+  font-size: 13px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #1e3a8a;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.adm-table-header select:hover {
+  background-color: rgba(255, 255, 255, 1);
+  border-color: #cbd5e1;
+}
+
+.adm-table-header .adm-select-icon {
+  right: 10px;
+  font-size: 10px;
+}
+
+/* Improved select options (for webkit browsers) */
+select option {
+  padding: 10px 14px;
+  background-color: white;
+  color: #344054;
+  border-radius: 4px;
+}
+
+/* Custom inventory input */
+.adm-inventory-input {
+  width: 100%;
+  max-width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #344054;
+  background-color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.adm-inventory-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.adm-inventory-input:hover {
+  border-color: #98a2b3;
+}
+    
+/* Inventory Table */
+.adm-inventory-table-container {
+  margin: 0 20px 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 14px;
 }
 
-/* Styling the date input */
-.adm-styled-date-input {
-  margin-left: 5px;
-  padding: 5px;
-  border: 1px solid #949393;
-  border-radius: 4px;
-  font-size: 12px;
-  color: #333;
-  background-color: #b8d6eb;
-  cursor: pointer;
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+thead {
+  background-color: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.adm-styled-date-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none;
-}
-
-/* Optional: Add a custom arrow icon */
-.adm-date-input-container {
+th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
   position: relative;
 }
 
-.adm-select {
-  all: unset;
-  appearance: none;
-  width: 100%;
-  padding: 8px;
-  height: 20px;
-  overflow-y: auto;
+th:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: #e2e8f0;
 }
 
-.adm-select option {
-  max-height: 30px;
+th:last-child:after {
+  display: none;
 }
 
-.adm-header-cell:nth-child(1) {
-  flex: 2;
+tr {
+  transition: background-color 0.2s ease;
 }
 
-.adm-header-cell:nth-child(n + 2) {
-  flex: 1;
+tr:hover {
+  background-color: #f8fafc;
 }
 
-.adm-with-arrow {
+td {
+  padding: 14px 20px;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.adm-table-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm-sort-icon {
   cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s ease;
 }
 
-.adm-arrow-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 5px;
+.adm-sort-icon:hover {
+  color: #3b82f6;
 }
 
-/* Item Cells */
-.adm-item-cell {
-  display: flex;
+/* Status badges */
+.adm-status-badge {
+  display: inline-flex;
   align-items: center;
-  padding: 15px;
-  flex: 2;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.adm-item-image-container {
-  flex-shrink: 0;
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
-  border: 1px solid #eee;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.adm-item-image {
-  max-width: 40px;
-  max-height: 40px;
-}
-
-.adm-item-details {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.adm-item-name {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
   font-weight: 500;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: 4px;
 }
 
-.adm-item-category,
-.adm-item-id {
-  font-size: 12px;
-  color: #888;
-  margin-top: 3px;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.adm-status-in-stock {
+  background-color: #dcfce7;
+  color: #15803d;
 }
 
-/* Other Table Cells */
-.adm-header-cell,
-.adm-brand-cell,
-.adm-date-cell,
-.adm-location-cell,
-.adm-price-cell,
-.adm-inventory-cell,
-.adm-amount-cell,
-.adm-Requistion-cell,
-.adm-units-cell,
-.adm-activity-cell,
-.adm-actions-cell {
+.adm-status-low-stock {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.adm-status-out-of-stock {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.adm-status-on-order {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* Pagination */
+.adm-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.adm-pagination-info {
+  color: #64748b;
   font-size: 14px;
-  font-weight: 400;
-  padding: 10px;
-  flex: 1;
-  min-width: 80px;
+}
+
+.adm-pagination-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.adm-pagination-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.adm-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.adm-pagination-button:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
-.adm-amount-cell,
-.adm-Requistion-cell,
-.adm-actions-cell {
-  text-align: center;
+.adm-pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f8fafc;
 }
 
-.adm-location-cell div:nth-child(2),
-.adm-price-cell div:nth-child(2),
-.adm-inventory-cell div:nth-child(2),
-.adm-units-cell div:nth-child(2) {
-  font-size: 12px;
-  color: #888;
-  margin-top: 5px;
+.adm-pagination-button.active {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
 }
 
-/* Action Buttons */
-.adm-actions-cell {
-  font-size: 14px;
-  font-weight: 400;
-  padding: 10px;
-  flex: 1;
-  min-width: 80px;
-  border-left: 2px solid rgb(215, 207, 207);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 6px;
-  flex-wrap: wrap;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .adm-action-panel {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .adm-action-panel button,
+  .adm-warehouse-dropdown,
+  .adm-search-container {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
-  .adm-actions-cell {
-    font-size: 12px;
-    padding: 8px;
-    min-width: 70px;
+  
+  .adm-inventory-table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 700px;
   }
 }
 
 @media (max-width: 480px) {
-  .adm-actions-cell {
-    font-size: 10px;
-    padding: 6px;
-    min-width: 60px;
-    gap: 2px;
-  }
-}
-
-/* Admin Action Cell Container */
-.adm-actions-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border-left: 2px solid rgb(215, 207, 207);
-  flex: 1;
-  min-width: 130px;
-  gap: 6px;
-}
-
-/* Base Admin Button Styles */
-.adm-action-button {
-  display: flex;
-  align-items: center;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-  min-width: 36px;
-  max-width: 36px;
-  justify-content: center;
-}
-
-/* Button types */
-.adm-view-button {
-  background-color: #eef5ff;
-  color: #3a6ea7;
-}
-
-.adm-delete-button {
-  background-color: #ffeeee;
-  color: #a73a3a;
-}
-
-.adm-fix-button {
-  background-color: #f0ffe0;
-  color: #5a9a00;
-}
-
-/* Icon styling */
-.adm-action-button svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 10px;
-  transition: all 0.3s ease;
-}
-
-/* Text styling */
-.adm-action-button span {
-  opacity: 0;
-  max-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: opacity 0.3s ease, max-width 0.3s ease;
-  margin-left: 26px; /* Space for icon */
-}
-
-/* Show text on hover and expand button */
-.adm-action-button:hover:not(:disabled) {
-  min-width: 80px;
-  max-width: 100px;
-  width: auto;
-  z-index: 2;
-  justify-content: flex-start;
-}
-
-/* When any button is hovered, shrink other buttons */
-.adm-actions-cell:hover .adm-action-button:not(:hover) {
-  width: 28px;
-  min-width: 28px;
-  max-width: 28px;
-  opacity: 0.7;
-}
-
-/* Show text when button is hovered */
-.adm-action-button:hover:not(:disabled) span {
-  opacity: 1;
-  max-width: 70px;
-  display: block;
-}
-
-/* Improve hover effects */
-.adm-view-button:hover:not(:disabled) {
-  background-color: #dceafd;
-  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
-}
-
-.adm-delete-button:hover:not(:disabled) {
-  background-color: #fde2e2;
-  box-shadow: 0 2px 4px rgba(167, 58, 58, 0.1);
-}
-
-.adm-fix-button:hover:not(:disabled) {
-  background-color: #e4ffc7;
-  box-shadow: 0 2px 4px rgba(90, 154, 0, 0.1);
-}
-
-/* Disabled State */
-.adm-action-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .adm-actions-cell {
-    padding: 6px;
-    min-width: 110px;
-    gap: 4px;
+  .adm-modal {
+    max-width: 95%;
   }
   
-  .adm-action-button {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    max-width: 32px;
+  .adm-pagination {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  .adm-action-button:hover:not(:disabled) {
-    min-width: 75px;
-    max-width: 95px;
-  }
-  
-  .adm-action-button:hover:not(:disabled) span {
-    max-width: 65px;
-  }
-  
-  .adm-actions-cell:hover .adm-action-button:not(:hover) {
-    width: 24px;
-    min-width: 24px;
-    max-width: 24px;
-  }
-}
-
-/* Focus styles for accessibility */
-.adm-action-button:focus {
-  outline: 2px solid #4a90e2;
-  outline-offset: 2px;
-}
-
-/* Fix for touch devices */
-@media (hover: none) {
-  .adm-action-button {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-  }
-  
-  .adm-action-button span {
-    opacity: 1;
-    max-width: 70px;
-    display: block;
-    margin-left: 5px;
-  }
-  
-  .adm-action-button svg {
-    position: static;
-  }
-  
-  .adm-actions-cell:hover .adm-action-button:not(:hover) {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-    opacity: 1;
-  }
-}
-
-/* Space at the bottom */
-.adm-inventory-table:after {
-  content: "";
-  flex: 1;
-}
-
-/* Custom Scrollbar */
-.adm-table-body::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
-}
-
-.adm-table-body::-webkit-scrollbar-track {
-  background: #e7ecf0; /* Track color */
-  border-radius: 5px;
-}
-
-.adm-table-body::-webkit-scrollbar-thumb {
-  background: #b8d6eb; /* Thumb color */
-  border-radius: 5px;
-  transition: background 0.3s ease;
-}
-
-.adm-table-body::-webkit-scrollbar-thumb:hover {
-  background: #7a9fb8; /* Darker shade when hovered */
-}
-
-/* Scrollbar for all elements with overflow */
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-*::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 5px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #b8d6eb;
-  border-radius: 5px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #7a9fb8;
 }

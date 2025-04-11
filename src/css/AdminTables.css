@@ -1,0 +1,1229 @@
+/* === IMPROVED TABLE STRUCTURE WITH BETTER VISUAL DESIGN === */
+.adm-inventory-table {
+    margin: 0 20px 20px;
+    background-color: #fcfcfd;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    width: calc(100% - 40px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e9eef6;
+    max-width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  /* Table wrapper with shared structure for header and body */
+  .adm-table-header,
+  .adm-table-body .adm-table-row {
+    display: grid;
+    /* Modified grid template columns to make actions column auto-sized */
+    grid-template-columns:
+      minmax(140px, 2fr) /* Item column */
+      minmax(100px, 1.5fr) /* Date column */
+      minmax(80px, 1fr) /* Brand column */
+      minmax(80px, 1fr) /* Location/Area column */
+      minmax(90px, 1fr) /* Activity column */
+      minmax(70px, 0.8fr) /* Amount column */
+      minmax(90px, 1fr) /* Units column */
+      minmax(100px, 1fr) /* Requisition column */
+      auto; /* Actions column - AUTO SIZED */
+    width: 100%;
+    align-items: stretch;
+    margin-right: 0;
+    padding-right: 0;
+  }
+  
+  /* Table Header */
+  .adm-table-header {
+    font-weight: 600;
+    background: linear-gradient(135deg, #d0e3fc, #c2dcf8);
+    position: sticky;
+    top: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 0; /* Remove padding from container, only on cells */
+    height: 56px; /* Fixed header height */
+    border-bottom: 2px solid #deebfa;
+  }
+  
+  /* Scrollable Table Body */
+  .adm-table-body {
+    max-height: calc(100vh - 280px);
+    min-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    flex: 1;
+    background: linear-gradient(to bottom, #ffffff, #fcfdff);
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+    color: #1f2937;
+  }
+  
+  .adm-table-body::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent);
+    pointer-events: none;
+  }
+  
+  /* Table Row */
+  .adm-table-row {
+    border-bottom: 1px solid #eef3fa;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+    min-height: 68px; /* Ensure minimum row height */
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  /* Row alternation for better readability */
+  .adm-table-row:nth-child(even) {
+    background-color: #f9fbfe;
+  }
+  
+  .adm-table-row:hover {
+    background-color: #f0f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #3b82f6;
+  }
+  
+  .adm-table-row:last-child {
+    border-bottom: none;
+  }
+  
+  /* Base Cell Properties */
+  .adm-header-cell,
+  .adm-item-cell,
+  .adm-brand-cell,
+  .adm-location-cell,
+  .adm-price-cell,
+  .adm-inventory-cell,
+  .adm-requisition-cell,
+  .adm-activity-cell,
+  .adm-date-cell,
+  .adm-actions-cell,
+  .adm-amount-cell,
+  .adm-units-cell {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Text truncation */
+    white-space: nowrap; /* Prevent wrapping by default */
+  }
+  
+  /* Specific layout for header cells */
+  .adm-header-cell {
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1e40af;
+    letter-spacing: 0.2px;
+    height: 100%; /* Full height */
+    box-sizing: border-box;
+  }
+  
+  /* Item Cell Styling */
+  .adm-item-cell {
+    display: flex;
+    align-items: center;
+  }
+  
+  .adm-item-image-container {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    margin-right: 18px;
+    border: 1px solid #eaeef6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    overflow: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .adm-item-image {
+    max-width: 42px;
+    max-height: 42px;
+    transition: transform 0.3s ease;
+    will-change: transform;
+  }
+  
+  .adm-table-row:hover .adm-item-image {
+    transform: scale(1.08);
+  }
+  
+  .adm-item-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .adm-item-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 2px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .adm-item-category {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4f46e5;
+    margin-bottom: 4px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .adm-item-id {
+    font-size: 12px;
+    color: #475569;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.3px;
+  }
+  
+  /* Body Cell Styling */
+  .adm-table-body .adm-brand-cell,
+  .adm-table-body .adm-location-cell,
+  .adm-table-body .adm-price-cell,
+  .adm-table-body .adm-inventory-cell {
+    display: flex;
+    font-size: 13px;
+    font-weight: 400;
+    align-items: center;
+    justify-content: flex-start;
+    color: #334155;
+  }
+  
+  /* Item container inside cells */
+  .adm-table-body .adm-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    gap: 4px;
+    overflow: hidden; /* Contain content */
+  }
+  
+  .adm-table-body .adm-item > div:first-child {
+    font-weight: 500;
+    color: #0f172a;
+    width: 100%; /* Allow content to fill width */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .adm-location-cell div:nth-child(2),
+  .adm-price-cell div:nth-child(2),
+  .adm-inventory-cell div:nth-child(2) {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+    width: 100%; /* Allow content to fill width */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Price styling */
+  .adm-price-cell .adm-item div:first-child,
+  .adm-inventory-cell .adm-item div:first-child {
+    font-weight: 600;
+  }
+  
+  .adm-price-cell .adm-item div:nth-child(2) {
+    color: #15803d;
+    font-weight: 500;
+  }
+  
+  /* Inventory stock styling */
+  .adm-inventory-cell .adm-item div:first-child {
+    display: flex;
+    align-items: center;
+  }
+  
+  .adm-inventory-cell .adm-item div:first-child::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+    margin-right: 8px;
+    flex-shrink: 0; /* Prevent dot from shrinking */
+  }
+  
+  /* MODIFIED - Action Cell & Buttons - Adaptive width */
+  .adm-actions-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid #eef3fa;
+    transition: all 0.2s ease;
+    padding: 8px 16px;
+    height: 100%;
+    min-height: 60px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 100px; /* Minimum width for actions column */
+  }
+  
+  .adm-table-header .adm-actions-cell {
+    justify-content: center;
+    text-align: center;
+    padding: 12px 16px;
+  }
+  
+  .adm-table-body .adm-actions-cell {
+    justify-content: center;
+  }
+  
+  .adm-table-row:hover .adm-actions-cell {
+    border-left-color: rgba(59, 130, 246, 0.2);
+    background-color: rgba(240, 247, 255, 0.8);
+  }
+  
+  /* Activity tag styling */
+  .adm-activity-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .adm-activity-in {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+  }
+  
+  .adm-activity-out {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+  }
+  
+  /* Hover effect for tags */
+  .adm-activity-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Requisition cell styling */
+  .adm-requisition-cell .adm-item div {
+    font-family: "SF Mono", "Roboto Mono", Consolas, monospace;
+    font-weight: 500;
+    color: #334155;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Custom Scrollbar for Table */
+  .adm-table-body::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .adm-table-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 8px;
+  }
+  
+  .adm-table-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+    border: 2px solid #f1f5f9;
+    transition: background 0.3s ease;
+  }
+  
+  .adm-table-body::-webkit-scrollbar-thumb:hover,
+  .adm-table-body:hover::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+  }
+  
+  /* Empty state styling */
+  .adm-no-data-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    margin: 16px;
+  }
+  
+  /* Animation for new items */
+  @keyframes adm-highlightRow {
+    0% {
+      background-color: rgba(59, 130, 246, 0.12);
+    }
+    50% {
+      background-color: rgba(59, 130, 246, 0.08);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  
+  .adm-highlight-new {
+    animation: adm-highlightRow 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Optional container to ensure table is properly confined */
+  .adm-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* Allow horizontal scroll if needed */
+    padding-right: 0;
+    margin-right: 0;
+  }
+  
+  /* Allow text wrapping for very small screens */
+  @media (max-width: 800px) {
+    .adm-header-cell,
+    .adm-item-cell,
+    .adm-brand-cell,
+    .adm-location-cell,
+    .adm-price-cell,
+    .adm-inventory-cell,
+    .adm-activity-cell,
+    .adm-date-cell,
+    .adm-amount-cell,
+    .adm-units-cell,
+    .adm-requisition-cell {
+      white-space: normal; /* Allow wrapping on small screens */
+    }
+  }
+  
+  /* Responsive Design - Large Screens */
+  @media (max-width: 1400px) {
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      grid-template-columns:
+        minmax(130px, 2fr) /* Item column */
+        minmax(100px, 1fr) /* Date column */
+        minmax(80px, 0.8fr) /* Brand column */
+        minmax(80px, 0.8fr) /* Location/Area column */
+        minmax(90px, 0.9fr) /* Activity column */
+        minmax(60px, 0.7fr) /* Amount column */
+        minmax(80px, 0.8fr) /* Units column */
+        minmax(90px, 0.9fr) /* Requisition column */
+        auto; /* Actions column - AUTO SIZED */
+    }
+  
+    .adm-actions-cell {
+      min-width: 110px; /* Minimum width for actions column */
+    }
+  }
+  
+  /* Responsive Design - Medium Screens */
+  @media (max-width: 1200px) {
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      grid-template-columns:
+        minmax(120px, 1.5fr) /* Item column */
+        minmax(90px, 0.9fr) /* Date column */
+        minmax(70px, 0.8fr) /* Brand column */
+        minmax(70px, 0.8fr) /* Location/Area column */
+        minmax(80px, 0.8fr) /* Activity column */
+        minmax(60px, 0.6fr) /* Amount column */
+        minmax(70px, 0.7fr) /* Units column */
+        minmax(80px, 0.8fr) /* Requisition column */
+        auto; /* Actions column - AUTO SIZED */
+    }
+  
+    .adm-header-cell,
+    .adm-item-cell,
+    .adm-brand-cell,
+    .adm-location-cell,
+    .adm-price-cell,
+    .adm-inventory-cell,
+    .adm-activity-cell,
+    .adm-date-cell,
+    .adm-amount-cell,
+    .adm-units-cell,
+    .adm-requisition-cell {
+      padding: 10px 14px;
+    }
+  
+    /* Spacing and padding for actions cell */
+    .adm-actions-cell {
+      padding: 8px 14px;
+      min-width: 100px; /* Minimum width for actions column */
+    }
+  
+    .adm-table-body .adm-actions-cell {
+      min-height: 50px;
+    }
+  }
+  
+  /* Responsive Design - Small Screens */
+  @media (max-width: 992px) {
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      grid-template-columns:
+        minmax(110px, 1.2fr) /* Item column */
+        minmax(80px, 0.8fr) /* Date column */
+        minmax(60px, 0.7fr) /* Brand column */
+        minmax(60px, 0.7fr) /* Location/Area column */
+        minmax(70px, 0.7fr) /* Activity column */
+        minmax(50px, 0.6fr) /* Amount column */
+        minmax(60px, 0.7fr) /* Units column */
+        minmax(70px, 0.7fr) /* Requisition column */
+        auto; /* Actions column - AUTO SIZED */
+    }
+  
+    .adm-table-header,
+    .adm-table-row {
+      font-size: 12px;
+    }
+  
+    .adm-activity-tag {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+  
+    .adm-item-image-container {
+      width: 48px;
+      height: 48px;
+      margin-right: 12px;
+    }
+  
+    .adm-item-image {
+      max-width: 38px;
+      max-height: 38px;
+    }
+  
+    /* Spacing and padding for actions cell */
+    .adm-actions-cell {
+      padding: 6px 12px;
+      min-width: 95px; /* Minimum width for actions column */
+    }
+  
+    .adm-table-body .adm-actions-cell {
+      min-height: 45px;
+    }
+  }
+  
+  /* Responsive Design - Smaller Screens */
+  @media (max-width: 768px) {
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      grid-template-columns:
+        minmax(100px, 1fr) /* Item column */
+        minmax(80px, 0.8fr) /* Date column */
+        minmax(60px, 0.7fr) /* Brand column */
+        minmax(60px, 0.7fr) /* Location/Area column */
+        minmax(70px, 0.7fr) /* Activity column */
+        minmax(50px, 0.6fr) /* Amount column */
+        minmax(70px, 0.7fr) /* Units column */
+        minmax(70px, 0.7fr) /* Requisition column */
+        auto; /* Actions column - AUTO SIZED */
+      font-size: 11px;
+    }
+  
+    .adm-header-cell,
+    .adm-item-cell,
+    .adm-brand-cell,
+    .adm-location-cell,
+    .adm-price-cell,
+    .adm-inventory-cell,
+    .adm-activity-cell,
+    .adm-date-cell,
+    .adm-amount-cell,
+    .adm-units-cell,
+    .adm-requisition-cell {
+      padding: 8px 10px;
+    }
+  
+    /* Spacing and padding for actions cell */
+    .adm-actions-cell {
+      padding: 4px 10px;
+      min-width: 90px; /* Minimum width for actions column */
+    }
+  
+    .adm-item-image-container {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+  
+    .adm-item-image {
+      max-width: 32px;
+      max-height: 32px;
+    }
+  
+    .adm-item-name {
+      font-size: 12px;
+    }
+  
+    .adm-item-category {
+      font-size: 11px;
+    }
+  
+    .adm-item-id {
+      font-size: 10px;
+    }
+  
+    .adm-table-body .adm-actions-cell {
+      min-height: 40px;
+    }
+  }
+  
+  /* Responsive Design - Mobile Screens with horizontal scroll */
+  @media (max-width: 576px) {
+    /* Table container gets horizontal scroll */
+    .adm-table-container {
+      overflow-x: auto;
+    }
+  
+    /* Fixed minimum widths to prevent excessive squishing */
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      grid-template-columns:
+        minmax(90px, 1fr) /* Item column */
+        minmax(70px, 0.7fr) /* Date column */
+        minmax(60px, 0.6fr) /* Brand column */
+        minmax(60px, 0.6fr) /* Location/Area column */
+        minmax(60px, 0.6fr) /* Activity column */
+        minmax(40px, 0.5fr) /* Amount column */
+        minmax(60px, 0.6fr) /* Units column */
+        minmax(60px, 0.6fr) /* Requisition column */
+        auto; /* Actions column - AUTO SIZED */
+      min-width: 550px; /* Prevent excessive squishing */
+      font-size: 10px;
+    }
+  
+    .adm-header-cell,
+    .adm-item-cell,
+    .adm-brand-cell,
+    .adm-location-cell,
+    .adm-price-cell,
+    .adm-inventory-cell,
+    .adm-activity-cell,
+    .adm-date-cell,
+    .adm-amount-cell,
+    .adm-units-cell,
+    .adm-requisition-cell {
+      padding: 6px 8px;
+    }
+  
+    /* Spacing and padding for actions cell */
+    .adm-actions-cell {
+      padding: 4px 8px;
+      min-width: 90px; /* Minimum width for actions column */
+    }
+  
+    .adm-item-image-container {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+  
+    .adm-item-image {
+      max-width: 24px;
+      max-height: 24px;
+    }
+  
+    .adm-activity-tag {
+      padding: 2px 8px;
+      font-size: 9px;
+    }
+  
+    .adm-table-body .adm-actions-cell {
+      min-height: 32px;
+      padding: 2px 6px;
+    }
+  }
+  
+  /* Print Styles for Table */
+  @media print {
+    .adm-inventory-table {
+      margin: 0;
+      width: 100%;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+    }
+  
+    .adm-table-header {
+      background: white;
+      color: black;
+      border-bottom: 1px solid #aaa;
+    }
+  
+    .adm-table-body {
+      max-height: none;
+      overflow: visible;
+    }
+  
+    .adm-table-row {
+      page-break-inside: avoid;
+      border-bottom: 1px solid #eee;
+    }
+  
+    .adm-table-row:hover {
+      background-color: white;
+      transform: none;
+      box-shadow: none;
+      border-left: none;
+    }
+  
+    .adm-actions-cell {
+      display: none;
+    }
+  
+    .adm-table-body::after {
+      display: none;
+    }
+  }
+  
+  /* Action Buttons Container - MODIFIED to support variable number of buttons */
+  .adm-action-buttons-container {
+    display: flex;
+    gap: 8px; /* Increased gap between buttons */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap; /* Changed from nowrap to wrap to support more buttons */
+    position: relative;
+    padding: 0;
+    border: none;
+    box-sizing: border-box; /* Ensure padding is included in width calculations */
+  }
+  
+  /* Base Button Styles */
+  .adm-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 34px; /* Increased button width */
+    height: 34px; /* Increased button height */
+    flex-shrink: 0;
+    text-align: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+    min-width: 34px;
+    max-width: 34px;
+    margin: 2px 0; /* Added vertical margin for when buttons wrap */
+    will-change: transform;
+  }
+  
+  /* Focus state for keyboard navigation */
+  .adm-action-button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  /* Button types with improved colors */
+  .adm-view-button {
+    background-color: #eef7ff;
+    color: #0369a1;
+    border: 1px solid #dbeafe;
+  }
+  
+  .adm-delete-button {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fee2e2;
+  }
+  
+  .adm-action-button.adm-add-button {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+  }
+  
+  /* Edit Button */
+  .adm-edit-button {
+    background-color: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fef3c7;
+  }
+  
+  /* Download Button */
+  .adm-download-button {
+    background-color: #f3f4f6;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+  }
+  
+  /* Share Button */
+  .adm-share-button {
+    background-color: #eef7ff;
+    color: #0369a1;
+    border: 1px solid #dbeafe;
+  }
+  
+  /* Print Button */
+  .adm-print-button {
+    background-color: #f5f3ff;
+    color: #6d28d9;
+    border: 1px solid #ede9fe;
+  }
+  
+  /* Archive Button */
+  .adm-archive-button {
+    background-color: #faf5ff;
+    color: #7e22ce;
+    border: 1px solid #f3e8ff;
+  }
+  
+  /* Icon styling */
+  .adm-action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 14px; /* Standard icon size */
+  }
+  
+  /* Text styling - completely removed display functionality */
+  .adm-action-text {
+    display: none; /* Never display the text */
+  }
+  
+  /* Modified hover effects - improved with cubic-bezier timing */
+  .adm-view-button:hover:not(:disabled) {
+    background-color: #dbeafe;
+    box-shadow: 0 4px 12px rgba(3, 105, 161, 0.15);
+    border-color: #bfdbfe;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-edit-button:hover:not(:disabled) {
+    background-color: #fef3c7;
+    box-shadow: 0 4px 12px rgba(146, 64, 14, 0.15);
+    border-color: #fde68a;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-delete-button:hover:not(:disabled) {
+    background-color: #fee2e2;
+    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.15);
+    border-color: #fecaca;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-action-button.adm-add-button:hover:not(:disabled) {
+    background-color: #d1fae5;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
+    border-color: #a7f3d0;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-download-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.15);
+    border-color: #d1d5db;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-share-button:hover:not(:disabled) {
+    background-color: #dbeafe;
+    box-shadow: 0 4px 12px rgba(3, 105, 161, 0.15);
+    border-color: #bfdbfe;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-print-button:hover:not(:disabled) {
+    background-color: #ede9fe;
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.15);
+    border-color: #ddd6fe;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  .adm-archive-button:hover:not(:disabled) {
+    background-color: #f3e8ff;
+    box-shadow: 0 4px 12px rgba(126, 34, 206, 0.15);
+    border-color: #e9d5ff;
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  /* Active states for buttons */
+  .adm-action-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Disabled state */
+  .adm-action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* Ripple effect for buttons */
+  .adm-action-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 0 0;
+  }
+  
+  .adm-action-button:focus:not(:active)::after {
+    animation: ripple 0.5s ease-out;
+  }
+  
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0) translate(-50%, -50%);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(20, 20) translate(-50%, -50%);
+      opacity: 0;
+    }
+  }
+  
+  /* Tooltip for action buttons */
+  .adm-action-button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background-color: #1f2937;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 11px;
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    max-width: 150px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    z-index: 10;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+  }
+  
+  .adm-action-button:hover::before {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  
+  /* Additional responsive adjustments for action buttons */
+  @media (max-width: 1200px) {
+    .adm-action-button {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      max-width: 32px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .adm-action-button {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      max-width: 30px;
+    }
+    
+    .adm-action-icon {
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .adm-action-button {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      max-width: 28px;
+    }
+    
+    .adm-action-buttons-container {
+      gap: 6px;
+    }
+    
+    .adm-action-icon {
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .adm-action-button {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      max-width: 26px;
+    }
+    
+    .adm-action-buttons-container {
+      gap: 4px;
+    }
+    
+    .adm-action-icon {
+      font-size: 11px;
+    }
+    
+    /* Hide tooltips on very small screens */
+    .adm-action-button::before {
+      display: none;
+    }
+  }
+  
+  /* Print styles for action buttons */
+  @media print {
+    .adm-action-buttons-container,
+    .adm-action-button {
+      display: none;
+    }
+  }
+  
+  /* Animations for button interactions */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Accessibility enhancements */
+  .adm-action-button:focus-visible {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  /* Legacy browser fallbacks */
+  @supports not (display: grid) {
+    .adm-table-header,
+    .adm-table-body .adm-table-row {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    
+    .adm-header-cell,
+    .adm-item-cell,
+    .adm-brand-cell,
+    .adm-location-cell,
+    .adm-price-cell,
+    .adm-inventory-cell,
+    .adm-activity-cell,
+    .adm-date-cell,
+    .adm-amount-cell,
+    .adm-units-cell,
+    .adm-requisition-cell,
+    .adm-actions-cell {
+      flex: 1;
+      min-width: 80px;
+    }
+    
+    .adm-item-cell {
+      flex: 2;
+    }
+    
+    .adm-actions-cell {
+      flex: 0 0 auto;
+    }
+  }
+
+  /* === DATE INPUT FIELD STYLING === */
+.adm-date-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .adm-styled-date-input {
+    width: 100%;
+    height: 36px;
+    background-color: #f9fafc;
+    border: 1px solid #dce3f1;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1e40af;
+    font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  }
+  
+  .adm-styled-date-input:hover {
+    border-color: #bfd1ef;
+    background-color: #f0f7ff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .adm-styled-date-input:focus {
+    border-color: #3b82f6;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+  
+  /* Calendar Icon Styling */
+  .adm-date-input-wrapper::after {
+    content: "📅";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6b7280;
+    font-size: 14px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  
+  .adm-date-input-wrapper:hover::after {
+    opacity: 1;
+  }
+  
+  /* Enhanced Select Styling for Date Inputs */
+  .adm-enhanced-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  
+  /* Hide default date picker icon in Chrome */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+  }
+  
+  /* Style placeholder text */
+  .adm-styled-date-input::placeholder {
+    color: #94a3b8;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 1200px) {
+    .adm-styled-date-input {
+      height: 34px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+    
+    .adm-date-input-wrapper::after {
+      right: 10px;
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .adm-styled-date-input {
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 8px;
+    }
+    
+    .adm-date-input-wrapper::after {
+      right: 8px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .adm-styled-date-input {
+      height: 30px;
+      font-size: 11px;
+      border-radius: 6px;
+    }
+    
+    .adm-date-input-wrapper::after {
+      font-size: 11px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .adm-styled-date-input {
+      height: 28px;
+      padding: 0 6px;
+      font-size: 10px;
+    }
+    
+    .adm-date-input-wrapper::after {
+      right: 6px;
+      font-size: 10px;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .adm-styled-date-input {
+      border: 1px solid #ddd;
+      background: white;
+      box-shadow: none;
+    }
+    
+    .adm-date-input-wrapper::after {
+      display: none;
+    }
+  }

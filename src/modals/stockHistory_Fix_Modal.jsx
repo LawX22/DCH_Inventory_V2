@@ -3,8 +3,7 @@ import axios from "axios";
 import SelectFixOpModal from "../modals/stockHistory_Select_Option";
 import ManualFixModal from "../modals/stockHistory_ManualFix_Modal";
 
-
-const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
+const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
   const [formData, setFormData] = useState({
     itemCode: "",
     itemBrand: "",
@@ -16,86 +15,82 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
     retailPrice: "",
     location: "",
     storageArea: "",
-    username: localStorage.getItem("username") || "", 
+    username: localStorage.getItem("username") || "",
     image: null,
-    itemId: ""
+    itemId: "",
   });
 
-  const [itemId, setItemId] = useState('');
-  const [Id, setId] = useState('');
+  const [itemId, setItemId] = useState("");
+  const [Id, setId] = useState("");
 
-  const [itemCode, setItemCode] = useState('');
-  const [itemBrand, setItemBrand] = useState('');
-  const [itemCategory, setItemCategory] = useState('');
-  const [itemDesc1, setItemDesc1] = useState('');
-  const [itemDesc2, setItemDesc2] = useState('');
-  const [units, setUnits] = useState('');
-  const [fixedPrice, setFixedPrice] = useState('');
-  const [retailPrice, setRetailPrice] = useState('');
-  const [location, setLocation] = useState('');
-  const [storageArea, setStorageArea] = useState('');
+  const [itemCode, setItemCode] = useState("");
+  const [itemBrand, setItemBrand] = useState("");
+  const [itemCategory, setItemCategory] = useState("");
+  const [itemDesc1, setItemDesc1] = useState("");
+  const [itemDesc2, setItemDesc2] = useState("");
+  const [units, setUnits] = useState("");
+  const [fixedPrice, setFixedPrice] = useState("");
+  const [retailPrice, setRetailPrice] = useState("");
+  const [location, setLocation] = useState("");
+  const [storageArea, setStorageArea] = useState("");
   const user = localStorage.getItem("username");
   const [username, setusername] = useState(user);
 
   const [imagePreview, setImagePreview] = useState(null);
   const [requisitionNum, setrequisitionNum] = useState([]);
-  const [requisitionDate, setrequisitionDate] = useState([]); 
-  const [unitsAdded, setunitsAdded] = useState('');
+  const [requisitionDate, setrequisitionDate] = useState([]);
+  const [unitsAdded, setunitsAdded] = useState("");
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
 
-  const [transactionDate, setTransactionDate] = useState('');
-  const [unitsInputted, setUnitsInputted] = useState('');
-  const [reqNum, setReqNum] = useState('');
-  const [stockType, setStockType] = useState('');
-  const [prevUnits, setPrevUnits] = useState('');
-  const [latestUnits, setLatestUnits] = useState('');  
-  const [oldCurrentUnits, setOldCurrentUnits] = useState('');  
-  const [stock_name, setStockName] = useState('');  
-  const [inputChanged, setInputChanged] = useState(false);  
-  const [selectOpModalOpen, setSelectOpModalOpen] = useState('');  
-  const [manualFixModalOpen, setManualFixModalOpen] = useState(false);  
+  const [transactionDate, setTransactionDate] = useState("");
+  const [unitsInputted, setUnitsInputted] = useState("");
+  const [reqNum, setReqNum] = useState("");
+  const [stockType, setStockType] = useState("");
+  const [prevUnits, setPrevUnits] = useState("");
+  const [latestUnits, setLatestUnits] = useState("");
+  const [oldCurrentUnits, setOldCurrentUnits] = useState("");
+  const [stock_name, setStockName] = useState("");
+  const [inputChanged, setInputChanged] = useState(false);
+  const [selectOpModalOpen, setSelectOpModalOpen] = useState("");
+  const [manualFixModalOpen, setManualFixModalOpen] = useState(false);
 
-  const [selectedData, setSelectedData] = useState([]);  
+  const [selectedData, setSelectedData] = useState([]);
 
-  function openFixOptionFunc(data){
+  function openFixOptionFunc(data) {
     setSelectedData(data);
     setSelectOpModalOpen(true);
-
   }
 
-  
-  function openManualFixFunc(){
-    
+  function openManualFixFunc() {
     setManualFixModalOpen(true);
   }
-  // Fetch brand data from backend when component mounts
+  
+  // Fetch data when component mounts
   useEffect(() => {
     if (data) {
-      setItemId(data.inventory_Id || '');
-      setId(data.stock_history_id  || '');
-      setItemCode(data.itemCode || '');
-      setItemBrand(data.brand || '');
-      setItemCategory(data.category || '');
-      setItemDesc1(data.itemDesc_1 || '');
-      setItemDesc2(data.itemDesc_2 || '');
-      setUnits(data.units || '');
-      setFixedPrice(data.price || '');
-      setRetailPrice(data.retail_price || '');
-      setLocation(data.location || '');
-      setStorageArea(data.storage_area || '');
-      setImagePreview(data.image || '');
-      setTransactionDate(data.transaction_date || '');
-      setUnitsInputted(data.units_added || '');
-      setReqNum(data.requisition_number || '');
-      setStockType(data.transaction_type || '');
-      setPrevUnits(data.previous_units || '');
-      setOldCurrentUnits(data.current_stock || '');
-      setStockName(data.stock_name || '');
-      
+      setItemId(data.inventory_Id || "");
+      setId(data.stock_history_id || "");
+      setItemCode(data.itemCode || "");
+      setItemBrand(data.brand || "");
+      setItemCategory(data.category || "");
+      setItemDesc1(data.itemDesc_1 || "");
+      setItemDesc2(data.itemDesc_2 || "");
+      setUnits(data.units || "");
+      setFixedPrice(data.price || "");
+      setRetailPrice(data.retail_price || "");
+      setLocation(data.location || "");
+      setStorageArea(data.storage_area || "");
+      setImagePreview(data.image || "");
+      setTransactionDate(data.transaction_date || "");
+      setUnitsInputted(data.units_added || "");
+      setReqNum(data.requisition_number || "");
+      setStockType(data.transaction_type || "");
+      setPrevUnits(data.previous_units || "");
+      setOldCurrentUnits(data.current_stock || "");
+      setStockName(data.stock_name || "");
     }
-  }, [data]); // Add dependency to ensure it runs when `data` changes
-  
+  }, [data]);
 
   useEffect(() => {
     axios
@@ -134,24 +129,33 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
         setCategory(response.data); // Store fetched brands in state
       })
       .catch(error => {
+
         console.error("Error fetching brands:", error);
       });
   }, []);
 
   useEffect(() => {
+    axios
+      .get("http://localhost/DCH_Inventory_V2/src/backend/list_category.php")
+      .then((response) => {
+        setCategory(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
 
-   
+  useEffect(() => {
     return () => {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
     };
   }, [imagePreview]);
 
   const storedValue = localStorage.getItem("username");
- 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     switch (name) {
       case "itemId":
         setItemId(value);
@@ -160,7 +164,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
         setId(value);
         break;
       case "requisitionNum":
-        setReqNum(value);  // ✅ FIXED
+        setReqNum(value);
         break;
       case "requisitionDate":
         setTransactionDate(value);
@@ -168,30 +172,24 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
       case "stockInputed":
         setUnitsInputted(value);
         setInputChanged(true);
-
         break;
       case "stockType":
         setStockType(value);
         setInputChanged(true);
-
         break;
       default:
         break;
     }
   };
-  
+
   const handleSubmit = async (e) => {
-    if(inputChanged === true){
-      alert("You changed.");
+    e.preventDefault();
+    
+    if (inputChanged === true) {
+      alert("You changed values. Please confirm your changes.");
       return;
     }
-    else{
 
-
-      e.preventDefault();
-  
-    console.log("Date before sending:", requisitionDate); // Debugging
-  
     const formDataToSend = new FormData();
     formDataToSend.append("itemId", itemId);
     formDataToSend.append("Id", Id);
@@ -201,6 +199,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
     formDataToSend.append("username", username);
     formDataToSend.append("inputChanged", inputChanged);
     formDataToSend.append("stockType", stockType);
+    
     try {
       const response = await axios.post(
         "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockOut_inventory.php",
@@ -209,151 +208,149 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-  
+
       console.log("API Response:", response.data);
       alert(response.data.message);
       onClose();
     } catch (error) {
       console.error("Error updating item:", error.response?.data || error);
     }
-
-    }
-    
   };
-
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-1">
+    <div className="modal-overlay-shm">
+      <div className="modal-container-shm">
+        <SelectFixOpModal
+          isOpen={selectOpModalOpen}
+          onClose={() => setSelectOpModalOpen(false)}
+          data={selectedData}
+        />
 
-      
-      
-
-      <div className="modal-container-1">
-
-
-
- 
-
-          <SelectFixOpModal
-        isOpen={selectOpModalOpen}
-        onClose={() => setSelectOpModalOpen(false)}
-        data={selectedData}
-      />
-
-        <h2 className="modal-title-2">Stock History Fix</h2>
-        <form onSubmit={handleSubmit} className="modal-form-1">
-          {/* Image Upload Section */}
-          <div className="image-upload-container-1">
-            {imagePreview ? (
-              <img
-                src={`/src/backend/${imagePreview}`}
-                alt="Preview"
-                className="image-preview-1"
-              />
-            ) : (
-              <div className="upload-placeholder-1">
-                <label htmlFor="imageUpload" className="upload-button-1">
-                  Click to upload image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="file-input-1"
-                  id="imageUpload"
+        <div className="modal-title-shm">
+          <h2>Stock History Fix</h2>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="modal-form-shm">
+          <div className="sidebar-section-shm">
+            {/* Image Upload Section */}
+            <div className="image-upload-container-shm">
+              {imagePreview ? (
+                <img
+                  src={`/src/backend/${imagePreview}`}
+                  alt="Preview"
+                  className="image-preview-shm"
                 />
+              ) : (
+                <div className="upload-placeholder-shm">
+                  <div className="upload-icon-shm">
+                    <i className="fas fa-cloud-upload-alt"></i>
+                  </div>
+                  <div className="upload-text-shm">No image available</div>
+                  <label htmlFor="imageUpload" className="upload-button-shm">
+                    Upload image
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="file-input-shm"
+                    id="imageUpload"
+                  />
+                </div>
+              )}
+            </div>
+            
+            <div className="item-summary-container-shm">
+              <div className="item-summary-header-shm">
+                <h3>Item Summary</h3>
               </div>
-            )}
+              <div className="item-summary-content-shm">
+                <div className="summary-row-shm">
+                  <span className="summary-label-shm">Item:</span>
+                  <span className="summary-value-shm">{stock_name}</span>
+                </div>
+                <div className="summary-row-shm">
+                  <span className="summary-label-shm">Brand:</span>
+                  <span className="summary-value-shm">{itemBrand}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Form Fields Section */}
-          <div className="form-fields-container-1">
-            {/* Item Details */}
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Item Description</label>
-              <p className="item-desc-1">{stock_name}</p>
-            </div>
-
-            
-        
-
-            <div className="form-group-1">
-              <label className="form-label-1">Brand</label>
-              <p className="item-brand-1">{itemBrand}</p>
-
+          <div className="form-fields-container-shm">
+            <div className="form-section-shm">
+              <h3 className="section-title-shm">Units Information</h3>
               
+              <div className="units-grid-shm">
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Current Units</label>
+                  <div className="units-display-shm">{latestUnits}</div>
+                </div>
+                
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Units Before Change</label>
+                  <div className="units-display-shm">{prevUnits}</div>
+                </div>
+                
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Units After Change</label>
+                  <div className="units-display-shm">{oldCurrentUnits}</div>
+                </div>
+              </div>
             </div>
 
-
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Current Units</label>
-              <p className="item-desc-1">{latestUnits}</p>
-            </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units Before Change</label>
-              <p className="item-desc-1">{prevUnits}</p>
-            </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units After Change</label>
-              <p className="item-desc-1">{oldCurrentUnits}</p>
-            </div>
-
-            {/* Units Added */}
-
-            {/* Date Input */}
-            <div className="form-group-1">
-              <label className="form-label-1">Date</label>
-              <input
-                type="date"
-                name="requisitionDate"
-                onChange={handleInputChange}
-                value={transactionDate}
-                className="form-input-1"
-              />
-            </div>
-            {/* Requisition Number */}
-            <div className="form-group-1">
-              <label className="form-label-1">Requisition #</label>
-              <input
-                type="number"
-                name="requisitionNum"
-                value={reqNum}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                    {/* Requisition Number */}
-                    <div className="form-group-1">
-              <label className="form-label-1">Stock Inputed</label>
-              <input
-                type="number"
-                name="stockInputed"
-                value={unitsInputted}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                {/* Stock Type */}
-                <div className="form-group-1">
-              <label className="form-label-1">Stock Type</label>
-              <select  type="text"
-                name="stockType"
-                value={stockType}
-                onChange={handleInputChange}
-                className="form-input-1">
-
-<option value="Stock Out">Stock Out</option>
-<option value="Stock In">Stock In</option>
-
-                </select>
-             
-
-        
-               
+            <div className="form-section-shm">
+              <h3 className="section-title-shm">Transaction Details</h3>
+              
+              <div className="transaction-grid-shm">
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Date</label>
+                  <input
+                    type="date"
+                    name="requisitionDate"
+                    onChange={handleInputChange}
+                    value={transactionDate}
+                    className="form-input-shm"
+                  />
+                </div>
+                
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Requisition #</label>
+                  <input
+                    type="number"
+                    name="requisitionNum"
+                    value={reqNum}
+                    onChange={handleInputChange}
+                    className="form-input-shm"
+                  />
+                </div>
+                
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Stock Inputed</label>
+                  <input
+                    type="number"
+                    name="stockInputed"
+                    value={unitsInputted}
+                    onChange={handleInputChange}
+                    className="form-input-shm"
+                  />
+                </div>
+                
+                <div className="form-group-shm">
+                  <label className="form-label-shm">Stock Type</label>
+                  <select
+                    name="stockType"
+                    value={stockType}
+                    onChange={handleInputChange}
+                    className="form-select-shm"
+                  >
+                    <option value="Stock Out">Stock Out</option>
+                    <option value="Stock In">Stock In</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             {/* Hidden Fields */}
@@ -361,25 +358,20 @@ const StockHistoryFixModal = ({ isOpen, onClose, data}) => {
             <input type="hidden" name="itemId" value={itemId} />
             <input type="hidden" name="stockId" value={Id} />
             <input type="hidden" name="inputChanged" value={inputChanged} />
-
-          </div>
-
-          {/* Modal Actions (Buttons) */}
-          <div className="modal-actions-1">
-            <button type="submit" className="save-button-1">
-              SAVE
-            </button>
-
-         
-          
-            <button type="button" onClick={onClose} className="cancel-button-1">
-              CANCEL
-            </button>
           </div>
         </form>
-        <button className="save-button-1"   onClick={() => openFixOptionFunc(data)}>
-              Options
-            </button>
+        
+        <div className="modal-actions-shm">
+          <button type="button" onClick={openFixOptionFunc} className="options-button-shm">
+            Options
+          </button>
+          <button type="button" onClick={handleSubmit} className="save-button-shm">
+            Save Changes
+          </button>
+          <button type="button" onClick={onClose} className="cancel-button-shm">
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
