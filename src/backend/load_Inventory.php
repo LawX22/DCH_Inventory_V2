@@ -58,7 +58,7 @@ $types = '';
 
 if ($location !== '' && $location !== 'All') {
     if ($location === 'Warehouse') {
-        $params[] = 'AREA A';
+        $params[] = 'WAREHOUSE';
         $types .= 's';
     } else {
         $params[] = $location;

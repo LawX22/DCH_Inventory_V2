@@ -73,7 +73,7 @@ const SignUp = () => {
     
     try {
       // Replace with your actual signup endpoint
-      const response = await axios.post("http://localhost/DCH_Inventory_V2/src/backend/register.php", formData);
+      const response = await axios.post("https://slategrey-stingray-471759.hostingersite.com/api/backend/register.php", formData);
       
       if (response.data.success) {
         setSuccess("Account created successfully!");

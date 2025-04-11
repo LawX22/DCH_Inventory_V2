@@ -2,7 +2,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "dch_test_export";
+$database = "dch_partial_fix";
 
 $conn = new mysqli($host, $username, $password, $database);
 

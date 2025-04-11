@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 
 try {
     // Establish the database connection
-    $pdo = new PDO("mysql:host=localhost;dbname=dch_test_export", "root", "");
+    $pdo = new PDO("mysql:host=localhost;dbname=dch_partial_fix", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Check if the connection is successful
@@ -33,7 +33,7 @@ try {
 
     // Prepare and execute the SQL query with INNER JOIN and username filtering
     $stmt = $pdo->prepare("
-        SELECT sg.username, sg.inventory_Id, inv.itemDesc_1, inv.units, inv.brand
+        SELECT sg.username, sg.inventory_Id,sg.stock_group_id,inv.itemDesc_1, inv.units, inv.brand
         FROM stock_group sg
         JOIN inventory_merge inv ON sg.inventory_Id = inv.inventory_Id
         WHERE sg.username = :username

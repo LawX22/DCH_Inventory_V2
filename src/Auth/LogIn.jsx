@@ -19,7 +19,7 @@ const LogIn = () => {
     setError("");
     
     try {
-      const response = await axios.post("http://localhost/DCH_Inventory_V2/src/backend/login.php", credentials);
+      const response = await axios.post("https://slategrey-stingray-471759.hostingersite.com/api/backend/login.php", credentials);
       
       if (response.data.success) {
         localStorage.setItem("username", response.data.username);

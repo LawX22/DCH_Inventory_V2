@@ -17,6 +17,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
   const [requisitionDate, setRequisitionDate] = useState("");
   const [unitsAdded, setUnitsAdded] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [stockId, setStockId] = useState(null);
   
   const username = localStorage.getItem("username") || "";
 
@@ -34,6 +35,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
       setLocation(data.location || "");
       setStorageArea(data.storage_area || "");
       setImagePreview(data.image || "");
+      setStockId(data.new_stock_id || "");
     }
   }, [data]);
 
@@ -80,10 +82,11 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
     formDataToSend.append("requisitionDate", requisitionDate);
     formDataToSend.append("unitsAdded", unitsAdded);
     formDataToSend.append("username", username);
+    formDataToSend.append("stockId", stockId);
   
     try {
       const response = await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/stockIn_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockIn_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -190,6 +193,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
           {/* Hidden Fields */}
           <input type="hidden" name="username" value={username} />
           <input type="hidden" name="itemId" value={itemId} />
+          <input  type="hidden" name="stockId" value={stockId} />
 
           {/* Modal Actions (Buttons) */}
           <div className="modal-actions-1">

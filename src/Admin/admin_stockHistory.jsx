@@ -74,30 +74,39 @@ function AdminStockHistory() {
 
   // Fetch filter options
   useEffect(() => {
-    // Using Promise.all to fetch all data in parallel
-    const fetchFilters = async () => {
-      try {
-        const [categoryData, brandData, areaData] = await Promise.all([
-          axios.get(
-            "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
-          ),
-          axios.get(
-            "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
-          ),
-          axios.get(
-            "http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php"
-          ),
-        ]);
+    axios
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
+      )
+      .then((response) => {
+        setCategoryList(response.data); // Store fetched brands in state
+      })
+      .catch((error) => {
+        console.error("Error fetching brands:", error);
+      });
+  }, []);
 
-        setCategoryList(categoryData.data);
-        setBrandList(brandData.data);
-        setAreaList(areaData.data);
-      } catch (error) {
-        console.error("Error fetching filter data:", error);
-      }
-    };
-
-    fetchFilters();
+  useEffect(() => {
+    axios
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
+      )
+      .then((response) => {
+        setBrandList(response.data); // Store fetched brands in state
+      })
+      .catch((error) => {
+        console.error("Error fetching brands:", error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
+      .then((response) => {
+        setAreaList(response.data); // Store fetched brands in state
+      })
+      .catch((error) => {
+        console.error("Error fetching brands:", error);
+      });
   }, []);
 
   // Update localStorage when filters change
@@ -112,29 +121,24 @@ function AdminStockHistory() {
 
   // Fetch inventory data when filters change
   useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
-          {
-            params: {
-              location: selectedLocation,
-              search: searchQuery,
-              category: category,
-              brand: brand,
-              area: area,
-              date: date,
-              activity: activity,
-            },
-          }
-        );
-        setInventory(response.data);
-      } catch (error) {
-        console.error("Error fetching inventory:", error);
-      }
-    };
-
-    fetchInventory();
+    axios
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_stockHistory.php",
+        {
+          params: {
+            location: selectedLocation,
+            search: searchQuery,
+            category: category,
+            brand: brand,
+            area: area,
+            date: date,
+            activity: activity,
+          },
+        }
+      )
+      .then((response) => setInventory(response.data))
+      .catch((error) => console.error("Error fetching inventory:", error));
+    console.log(activity);
   }, [selectedLocation, activity, category, brand, area, date, searchQuery]);
 
   // Open fix modal with selected data

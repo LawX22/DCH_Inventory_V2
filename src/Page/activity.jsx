@@ -4,16 +4,14 @@ import { IoArrowBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
 
 
-  const [time, setTime] = useState(
-    localStorage.getItem("timeAH") || ''
-  );
-
+      const [time, setTime] = useState(
+        localStorage.getItem("timeAH") || ''
+      );
 
        const [activityType, setActivityType] = useState(
          localStorage.getItem("activityTypeAH") || ''
@@ -37,17 +35,14 @@ function ActivityReport() {
              setDate('');
              setUser('');
              setTime('');
-
-         
-           
            }, []);
 
     const [userList, setUserList] = useState([]);
 
-
+    
     useEffect(() => {
       axios
-        .get("http://localhost/DCH_Inventory_V2/src/backend/list_encoders_header.php")
+        .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_encoders_header.php")
         .then((response) => {
           setUserList(response.data); // Store fetched brands in state
         })
@@ -103,7 +98,7 @@ function ActivityReport() {
 
    useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activityReport.php", {
         params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType, time:time},
       })
       .then((response) => {

@@ -65,6 +65,7 @@ function Inventory() {
   }, [selectedLocation, brand, area, category, stock]);
   useEffect(() => {
     axios
+
       .get(
         "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php",
         {
@@ -98,16 +99,16 @@ function Inventory() {
     switch (name) {
       case "category":
         setCategory(value);
-        break;
+      break;
       case "brand":
         setBrand(value);
-        break;
+      break;
       case "stock":
         setStock(value);
         break;
       case "area":
         setArea(value);
-        break;
+      break;
       default:
         console.warn("Unknown filter:", name);
     }
@@ -123,11 +124,11 @@ function Inventory() {
       "Are you sure you want to delete this item?"
     );
 
-    if (!isConfirmed) return; // Stop if the user cancels
+    if (!isConfirmed) return;
 
     try {
       await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
           username: username,
@@ -160,7 +161,7 @@ function Inventory() {
 
   const handleExport = () => {
     window.open(
-      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
       "_blank"
     );
   };
@@ -180,7 +181,7 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data);
@@ -193,7 +194,7 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data);
@@ -205,7 +206,7 @@ function Inventory() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data);
       })
@@ -449,9 +450,9 @@ function Inventory() {
                     onClick={() => openEditFunc(item)}
                     disabled={
                       (localStorage.getItem("userType") === "Store-Staff" &&
-                        item.location !== "Store") ||
+                        item.location !== "STORE") ||
                       (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                        item.location === "Store")
+                        item.location === "STORE")
                     }
                     title="Edit"
                   >
@@ -466,9 +467,9 @@ function Inventory() {
                     onClick={() => deleteFunc(item.inventory_Id, user)}
                     disabled={
                       (localStorage.getItem("userType") === "Store-Staff" &&
-                        item.location !== "Store") ||
+                        item.location !== "STORE") ||
                       (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                        item.location === "Store")
+                        item.location === "STORE")
                     }
                     title="Delete"
                   >

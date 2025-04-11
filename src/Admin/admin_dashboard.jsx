@@ -36,7 +36,7 @@ const Dashboard = () => {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_encoders_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_encoders_header.php"
       )
       .then((response) => {
         setUserList(response.data); // Store fetched brands in state
@@ -57,7 +57,7 @@ const Dashboard = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php",
+          "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activity_table.php",
           {
             params: { encoder: selectedEncoder },
           }
@@ -83,7 +83,7 @@ const Dashboard = () => {
       const { start, end } = getWeekRange(selectedWeek);
 
       const response = await axios.get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activity_table.php",
         {
           params: {
             encoder: selectedEncoder,
@@ -219,7 +219,7 @@ const Dashboard = () => {
     const fetchItem = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/DCH_Inventory_V2/src/backend/load_activity_table.php",
+          "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activity_table.php",
           {
             params: {
               encoder: selectedEncoder,
@@ -249,7 +249,7 @@ const Dashboard = () => {
   useEffect(() => {
     const { start, end } = getWeekRange(selectedWeek);
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/dashboard_data.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/dashboard_data.php", {
         params: {
           encoder: selectedEncoder,
           startOfWeek: start,

@@ -60,7 +60,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_brands.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands.php")
       .then((response) => {
         setBrands(response.data); // Store fetched brands in state
       })
@@ -72,7 +72,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_category.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category.php")
       .then((response) => {
         setCategory(response.data); // Store fetched brands in state
       })
@@ -173,7 +173,7 @@ const EditModal = ({ isOpen, onClose, data }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/edit_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/edit_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
