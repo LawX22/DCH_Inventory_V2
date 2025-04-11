@@ -41,13 +41,15 @@
 .logo-container {
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 40px; /* Increased from 20px */
   position: relative;
+  min-width: 150px; /* Added to ensure minimum width */
+  padding-right: 15px; /* Added some padding */
 }
 
 .DCH {
-  width: 100px;
-  height: 60px;
+  width: 120px; /* Increased from 100px */
+  height: 65px; /* Increased from 60px */
   object-fit: cover;
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
   transition: transform 0.3s ease;
@@ -57,6 +59,7 @@
   transform: scale(1.05);
 }
 
+/* Update for user-role-badge to handle longer text */
 .user-role-badge {
   position: absolute;
   bottom: 5px;
@@ -69,6 +72,24 @@
   border-radius: 10px;
   border: 1px solid #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  min-width: max-content;
+  cursor: pointer;
+}
+
+/* Add responsive adjustments for mobile */
+@media (max-width: 480px) {
+  .user-role-badge {
+    font-size: 8px;
+    padding: 1px 5px;
+    max-width: 90px;
+    bottom: 2px;
+    right: -2px;
+  }
 }
 
 /* Navigation */
@@ -451,6 +472,11 @@ a {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+  .logo-container {
+    margin-right: 30px;
+    min-width: 130px;
+  }
+  
   .nav-item {
     padding: 0 10px;
     font-size: 14px;
@@ -466,6 +492,16 @@ a {
 }
 
 @media (max-width: 992px) {
+  .logo-container {
+    margin-right: 25px;
+    min-width: 120px;
+  }
+  
+  .DCH {
+    width: 110px;
+    height: 60px;
+  }
+  
   .nav-item span {
     display: none;
   }
@@ -481,6 +517,16 @@ a {
 }
 
 @media (max-width: 768px) {
+  .logo-container {
+    margin-right: 15px;
+    min-width: 100px;
+  }
+  
+  .DCH {
+    width: 100px;
+    height: 60px;
+  }
+  
   .menu-icon {
     display: block;
   }
@@ -565,9 +611,14 @@ a {
     padding: 0 10px;
   }
   
+  .logo-container {
+    margin-right: 10px;
+    min-width: 90px;
+  }
+  
   .DCH {
-    width: 80px;
-    height: 50px;
+    width: 85px; /* Slightly increased from 80px */
+    height: 55px; /* Slightly increased from 50px */
   }
   
   .header-utilities {

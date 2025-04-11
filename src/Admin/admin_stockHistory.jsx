@@ -61,7 +61,7 @@ function StockHistory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
@@ -74,7 +74,7 @@ function StockHistory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
@@ -85,7 +85,7 @@ function StockHistory() {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data); // Store fetched brands in state
       })
@@ -109,7 +109,7 @@ function StockHistory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_stockHistory.php",
         {
           params: {
             location: selectedLocation,
@@ -321,6 +321,8 @@ function StockHistory() {
                   <span>Undo</span>
                 </button>
               </div>
+
+              
             </div>
           ))}
         </div>

@@ -10,7 +10,7 @@ if (!$data) {
     echo json_encode(["status" => "error", "message" => "Invalid request"]);
     exit;
 }
-
+$stockId = $data['stockId'] ?? null;
 $inventory_Id = $data['itemId'] ?? null;
 $unitsAdded = $data['unitsAdded'] ?? null;
 $reqNumber = $data['requisitionNum'] ?? null;
@@ -23,9 +23,9 @@ if (!$inventory_Id) {
 
 // ✅ **Step 1: Fetch existing inventory data**
 $fetchQuery = "SELECT units, itemCode, brand, category, itemDesc_1, itemDesc_2, location, storage_area 
-               FROM inventory_merge WHERE inventory_Id = ?";
+               FROM inventory_merge WHERE new_stock_id = ?";
 $stmt = mysqli_prepare($conn, $fetchQuery);
-mysqli_stmt_bind_param($stmt, "i", $inventory_Id);
+mysqli_stmt_bind_param($stmt, "i", $stockId);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $inventoryData = mysqli_fetch_assoc($result);
@@ -52,7 +52,7 @@ $activity_performed = 'Added ' . $unitsAdded . ' units to item ' . $itemDesc_1 .
 // ✅ **Step 2: Update inventory units**
 $updateQuery = "UPDATE inventory_merge SET units = units + ? WHERE inventory_Id = ?";
 $stmt = mysqli_prepare($conn, $updateQuery);
-mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $inventory_Id);
+mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $stockId);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
@@ -65,7 +65,7 @@ $stmt = mysqli_prepare($conn, $insertQuery);
 mysqli_stmt_bind_param(
     $stmt,
     "issssssissii",
-    $inventory_Id,
+    $stockId,
     $itemCode,
     $brand,
     $category,
@@ -85,7 +85,7 @@ mysqli_stmt_close($stmt);
 $activity_sql = "INSERT INTO activity_report (activity_type, date_performed, activity_performed, encoder, inventory_Id, location, time) 
                  VALUES ('Stock In', NOW(), ?, ?, ?, ?, NOW())";
 $stmt = mysqli_prepare($conn, $activity_sql);
-mysqli_stmt_bind_param($stmt, "ssss", $activity_performed, $username, $inventory_Id, $location);
+mysqli_stmt_bind_param($stmt, "ssss", $activity_performed, $username, $stockId, $location);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 

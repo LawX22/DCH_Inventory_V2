@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Database connection
-    $conn = new mysqli('localhost', 'root', '', 'dch_test_export');
+    $conn = new mysqli('localhost', 'root', '', 'dch_partial_fix');
 
     if ($conn->connect_error) {
         echo json_encode(['exists' => false]);

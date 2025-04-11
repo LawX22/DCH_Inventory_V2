@@ -486,22 +486,42 @@ body {
   }
 }
 
-.adm-action-button {
+/* Admin Action Cell Container */
+.adm-actions-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  width: 80px;
-  height: 30px;
-  flex-shrink: 0;
-  text-align: center;
+  padding: 10px;
+  border-left: 2px solid rgb(215, 207, 207);
+  flex: 1;
+  min-width: 130px;
+  gap: 6px;
 }
 
+/* Base Admin Button Styles */
+.adm-action-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  min-width: 36px;
+  max-width: 36px;
+  justify-content: center;
+}
+
+/* Button types */
 .adm-view-button {
   background-color: #eef5ff;
   color: #3a6ea7;
@@ -512,10 +532,140 @@ body {
   color: #a73a3a;
 }
 
-.adm-action-icon {
+.adm-fix-button {
+  background-color: #f0ffe0;
+  color: #5a9a00;
+}
+
+/* Icon styling */
+.adm-action-button svg {
   display: flex;
   align-items: center;
-  margin-right: 5px;
+  justify-content: center;
+  position: absolute;
+  left: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Text styling */
+.adm-action-button span {
+  opacity: 0;
+  max-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s ease, max-width 0.3s ease;
+  margin-left: 26px; /* Space for icon */
+}
+
+/* Show text on hover and expand button */
+.adm-action-button:hover:not(:disabled) {
+  min-width: 80px;
+  max-width: 100px;
+  width: auto;
+  z-index: 2;
+  justify-content: flex-start;
+}
+
+/* When any button is hovered, shrink other buttons */
+.adm-actions-cell:hover .adm-action-button:not(:hover) {
+  width: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  opacity: 0.7;
+}
+
+/* Show text when button is hovered */
+.adm-action-button:hover:not(:disabled) span {
+  opacity: 1;
+  max-width: 70px;
+  display: block;
+}
+
+/* Improve hover effects */
+.adm-view-button:hover:not(:disabled) {
+  background-color: #dceafd;
+  box-shadow: 0 2px 4px rgba(58, 110, 167, 0.1);
+}
+
+.adm-delete-button:hover:not(:disabled) {
+  background-color: #fde2e2;
+  box-shadow: 0 2px 4px rgba(167, 58, 58, 0.1);
+}
+
+.adm-fix-button:hover:not(:disabled) {
+  background-color: #e4ffc7;
+  box-shadow: 0 2px 4px rgba(90, 154, 0, 0.1);
+}
+
+/* Disabled State */
+.adm-action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .adm-actions-cell {
+    padding: 6px;
+    min-width: 110px;
+    gap: 4px;
+  }
+  
+  .adm-action-button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    max-width: 32px;
+  }
+  
+  .adm-action-button:hover:not(:disabled) {
+    min-width: 75px;
+    max-width: 95px;
+  }
+  
+  .adm-action-button:hover:not(:disabled) span {
+    max-width: 65px;
+  }
+  
+  .adm-actions-cell:hover .adm-action-button:not(:hover) {
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+  }
+}
+
+/* Focus styles for accessibility */
+.adm-action-button:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+/* Fix for touch devices */
+@media (hover: none) {
+  .adm-action-button {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+  }
+  
+  .adm-action-button span {
+    opacity: 1;
+    max-width: 70px;
+    display: block;
+    margin-left: 5px;
+  }
+  
+  .adm-action-button svg {
+    position: static;
+  }
+  
+  .adm-actions-cell:hover .adm-action-button:not(:hover) {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    opacity: 1;
+  }
 }
 
 /* Space at the bottom */

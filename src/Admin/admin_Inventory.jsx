@@ -82,7 +82,7 @@ function Inventory() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
         params: {
           location: selectedLocation,
           search: searchQuery,
@@ -140,7 +140,7 @@ function Inventory() {
 
     try {
       await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
           username: username, // Add username here
@@ -173,7 +173,7 @@ function Inventory() {
 
   const handleExport = () => {
     window.open(
-      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
       "_blank"
     );
   };
@@ -187,7 +187,7 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
@@ -200,7 +200,7 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
@@ -211,7 +211,7 @@ function Inventory() {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data); // Store fetched brands in state
       })
@@ -372,27 +372,27 @@ function Inventory() {
               <div className="adm-inventory-cell">
                 <div className="adm-item">
                   <div>Stock - {item.units}</div>
-                  <div>TSV - ₱ {item.totalstockValue}</div>
+                  <div>TSV - ₱ {item.new_stock_id}</div>
                 </div>
               </div>
               <div className="adm-actions-cell">
-                <button
-                  className="adm-action-button adm-view-button"
-                  onClick={() => openEditFunc(item)}
-                >
-                  <AiOutlineEye size={18} />
-                  <span>Edit</span>
-                </button>
+  <button
+    className="adm-action-button adm-view-button"
+    onClick={() => openEditFunc(item)}
+  >
+    <AiOutlineEye size={18} />
+    <span>Edit</span>
+  </button>
 
-                <button
-                  className="adm-action-button adm-delete-button"
-                  onClick={() => openModal(item.inventory_Id)}
-                 
-                >
-                  <AiOutlineDelete size={18} />
-                  <span>History</span>
-                </button>
-              </div>
+  <button
+    className="adm-action-button adm-delete-button"
+    onClick={() => openModal(item.new_stock_id)}
+  >
+    <AiOutlineDelete size={18} />
+    <span>History</span>
+  </button>
+</div>
+              
             </div>
           ))}
         </div>

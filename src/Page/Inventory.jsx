@@ -65,7 +65,7 @@ function Inventory() {
   }, [selectedLocation, brand, area, category, stock]);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
         params: {
           location: selectedLocation,
           search: searchQuery,
@@ -81,12 +81,6 @@ function Inventory() {
       .catch((error) => console.error("Error fetching inventory:", error));
   }, [selectedLocation, searchQuery, inventory, brand, category, area, stock]);
 
-  // Update localStorage when the location changes
-
-  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
-
-  // Re-run when searchQuery changes
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -101,21 +95,16 @@ function Inventory() {
     switch (name) {
       case "category":
         setCategory(value);
-
-        break;
+      break;
       case "brand":
         setBrand(value);
-
-        break;
-
+      break;
       case "stock":
         setStock(value);
-
         break;
       case "area":
         setArea(value);
-
-        break;
+      break;
       default:
         console.warn("Unknown filter:", name);
     }
@@ -131,14 +120,14 @@ function Inventory() {
       "Are you sure you want to delete this item?"
     );
 
-    if (!isConfirmed) return; // Stop if the user cancels
+    if (!isConfirmed) return;
 
     try {
       await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
-          username: username, // Add username here
+          username: username,
         })
       );
 
@@ -168,15 +157,15 @@ function Inventory() {
 
   const handleExport = () => {
     window.open(
-      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
       "_blank"
     );
   };
 
   useEffect(() => {
-    localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
-    localStorage.setItem("area", ""); // Set area to empty string
-    localStorage.setItem("category", ""); // Set category to empty string
+    localStorage.setItem("brand", "");
+    localStorage.setItem("area", "");
+    localStorage.setItem("category", "");
     localStorage.setItem("stock", "");
 
     setCategory("");
@@ -188,36 +177,37 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
-        setCategoryList(response.data); // Store fetched brands in state
+        setCategoryList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching categories:", error);
       });
   }, []);
 
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
-        setBrandList(response.data); // Store fetched brands in state
+        setBrandList(response.data);
       })
       .catch((error) => {
         console.error("Error fetching brands:", error);
       });
   }, []);
+  
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
-        setAreaList(response.data); // Store fetched brands in state
+        setAreaList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching areas:", error);
       });
   }, []);
 
@@ -284,7 +274,7 @@ function Inventory() {
             window.open("/List_Restock", "_blank", "noopener,noreferrer")
           }
         >
-         <FiList size={18} />
+          <FiList size={18} />
           <span>List Stocks</span>
         </button>
 
@@ -321,9 +311,10 @@ function Inventory() {
             <div className="select-container">
               <select
                 name="category"
+                value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option value="">Select Category</option>
+                <option value="">Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}
@@ -333,9 +324,15 @@ function Inventory() {
               <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="header-cell">
+            <span>Description 1 & 2</span>
+          </div>
+          <div className="header-cell">
+            <span>Description 3 & 4</span>
+          </div>
+          <div className="header-cell">
             <div className="select-container">
-              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+              <select name="brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
                 <option value="">Brand</option>
                 {brandList.map((option) => (
                   <option key={option.inventory_Id} value={option.brand}>
@@ -343,12 +340,12 @@ function Inventory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="header-cell">
             <div className="select-container">
-              <select name="area" onChange={(e) => setArea(e.target.value)}>
+              <select name="area" value={area} onChange={(e) => setArea(e.target.value)}>
                 <option value="">Area</option>
                 {areaList.map((option) => (
                   <option key={option.inventory_Id} value={option.storage_area}>
@@ -356,13 +353,13 @@ function Inventory() {
                   </option>
                 ))}
               </select>
-              <FaChevronDown className="select-icon" />{" "}
+              <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell with-arrow">
+          <div className="header-cell">
             <span>Price</span>
           </div>
-          <div className="header-cell with-arrow" onClick={handleEdit}>
+          <div className="header-cell" onClick={handleEdit}>
             {isEditing ? (
               <input
                 type="text"
@@ -376,11 +373,11 @@ function Inventory() {
               <span>{inventoryNumber || "Inventory"}</span>
             )}
           </div>
-          <div className="header-cell">Actions</div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>Actions</div>
         </div>
 
         <div className="table-body">
-          {filteredInventory.map((item, key) => (
+          {filteredInventory.map((item) => (
             <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
@@ -391,11 +388,20 @@ function Inventory() {
                   />
                 </div>
                 <div className="item-details">
-                  <div className="item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
-                  </div>
                   <div className="item-category">{item.category}</div>
                   <div className="item-id">{item.itemCode}</div>
+                </div>
+              </div>
+              <div className="brand-cell">
+                <div className="item">
+                  <div>{item.itemDesc_1 || "-"}</div>
+                  <div>{item.itemDesc_2 || "-"}</div>
+                </div>
+              </div>
+              <div className="brand-cell">
+                <div className="item">
+                  <div>{item.itemDesc_1 || "-"}</div>
+                  <div>{item.itemDesc_2 || "-"}</div>
                 </div>
               </div>
               <div className="brand-cell">
@@ -420,33 +426,41 @@ function Inventory() {
                 </div>
               </div>
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openEditFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <AiOutlineEye size={18} />
-                  <span>Edit</span>
-                </button>
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openEditFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "STORE") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "STORE")
+                    }
+                    title="Edit"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineEye size={16} />
+                    </span>
+                    <span className="action-text">Edit</span>
+                  </button>
 
-                <button
-                  className="action-button delete-button"
-                  onClick={() => deleteFunc(item.inventory_Id, user)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <AiOutlineDelete size={18} />
-                  <span>Delete</span>
-                </button>
+                  <button
+                    className="action-button delete-button"
+                    onClick={() => deleteFunc(item.inventory_Id, user)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "STORE") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "STORE")
+                    }
+                    title="Delete"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineDelete size={16} />
+                    </span>
+                    <span className="action-text">Delete</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

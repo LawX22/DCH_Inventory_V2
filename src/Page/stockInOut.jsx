@@ -5,14 +5,14 @@ import {
   AiOutlineInbox,
   AiOutlineExport,
   AiOutlinePlus,
-  AiOutlineTeam
+  AiOutlineTeam,
 } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import Header from "./Header";
 import axios from "axios";
 import StockInModal from "../modals/stockIn_modal";
 import StockOutModal from "../modals/stockOut_modal";
-import GroupModal from "../modals/GroupModal"; // Import the new GroupModal component
+import GroupModal from "../modals/GroupModal"; 
 
 function StockInOut() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,7 +34,7 @@ function StockInOut() {
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
-  const [groupData, setGroupData] = useState([]); // State to store group data
+  const [groupData, setGroupData] = useState([]); 
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -59,7 +59,7 @@ function StockInOut() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
         params: {
           location: selectedLocation,
           search: searchQuery,
@@ -73,7 +73,9 @@ function StockInOut() {
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area]); // Removed inventory dependency to prevent infinite loop
+  }, [selectedLocation, searchQuery, category, brand, area]); 
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,13 +95,14 @@ function StockInOut() {
     setStockOutModalOpen(true);
   }
 
+
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
-        setCategoryList(response.data); // Store fetched categories in state
+        setCategoryList(response.data); 
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -109,7 +112,7 @@ function StockInOut() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
@@ -121,7 +124,8 @@ function StockInOut() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
+      )
       .then((response) => {
         setAreaList(response.data); // Store fetched areas in state
       })
@@ -136,7 +140,7 @@ function StockInOut() {
 
     try {
       const response = await fetch(
-        "http://localhost/DCH_Inventory_V2/src/backend/selected_stock_group.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/selected_stock_group.php",
         {
           method: "POST",
           headers: {
@@ -164,7 +168,7 @@ function StockInOut() {
     const username = localStorage.getItem("username");
     try {
       const response = await fetch(
-        "http://localhost/DCH_Inventory_V2/src/backend/getStockGroup.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/getStockGroup.php",
         {
           method: "POST",
           headers: {
@@ -257,7 +261,7 @@ function StockInOut() {
       />
 
       {/* New Group Modal */}
-      <GroupModal 
+      <GroupModal
         isOpen={groupModalOpen}
         onClose={closeGroupModal}
         groupData={groupData}
@@ -285,8 +289,8 @@ function StockInOut() {
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="brand" 
+              <select
+                name="brand"
                 onChange={(e) => setBrand(e.target.value)}
                 value={brand}
               >
@@ -302,8 +306,8 @@ function StockInOut() {
           </div>
           <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="area" 
+              <select
+                name="area"
                 onChange={(e) => setArea(e.target.value)}
                 value={area}
               >
@@ -363,59 +367,65 @@ function StockInOut() {
               <div className="inventory-cell">
                 <div className="item">
                   <div>Stock - {item.units}</div>
-                  <div>TSV - ₱ {item.totalstockValue}</div>
+                  <div>TSV - ₱ {item.new_stock_id}</div>
                 </div>
               </div>
 
               <div className="actions-cell">
-                <button
-                  className="action-button view-button"
-                  onClick={() => openStockinFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlineInbox size={16} />
-                  </span>
-                  <span>Stock In</span>
-                </button>
+                <div className="action-buttons-container">
+                  <button
+                    className="action-button view-button"
+                    onClick={() => openStockinFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "STORE") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "STORE")
+                    }
+                    title="Stock In"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineInbox size={16} />
+                    </span>
+                    <span className="action-text">Stock In</span>
+                  </button>
 
-                <button
-                  className="action-button delete-button"
-                  onClick={() => openStockoutFunc(item)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlineExport size={16} />
-                  </span>
-                  <span>Stock Out</span>
-                </button>
+                  <button
+                    className="action-button delete-button"
+                    onClick={() => openStockoutFunc(item)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "STORE") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "STORE")
+                    }
+                    title="Stock Out"
+                  >
+                    <span className="action-icon">
+                      <AiOutlineExport size={16} />
+                    </span>
+                    <span className="action-text">Stock Out</span>
+                  </button>
 
-                <button
-                  className="action-button add-button"
-                  onClick={() => addToGroup(item.inventory_Id)}
-                  disabled={
-                    (localStorage.getItem("userType") === "Store-Staff" &&
-                      item.location !== "Store") ||
-                    (localStorage.getItem("userType") === "Warehouse-Staff" &&
-                      item.location === "Store")
-                  }
-                >
-                  <span className="action-icon">
-                    <AiOutlinePlus size={16} />
-                  </span>
-                  <span>Add Group</span>
-                </button>
+                  <button
+                    className="action-button add-button"
+                    onClick={() => addToGroup(item.inventory_Id)}
+                    disabled={
+                      (localStorage.getItem("userType") === "Store-Staff" &&
+                        item.location !== "Store") ||
+                      (localStorage.getItem("userType") === "Warehouse-Staff" &&
+                        item.location === "Store")
+                    }
+                    title="Add Group"
+                  >
+                    <span className="action-icon">
+                      <AiOutlinePlus size={16} />
+                    </span>
+                    <span className="action-text">Add Group</span>
+                  </button>
+                </div>
               </div>
+              
             </div>
           ))}
         </div>

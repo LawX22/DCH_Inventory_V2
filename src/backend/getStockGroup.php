@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 
 try {
     // Establish the database connection
-    $pdo = new PDO("mysql:host=localhost;dbname=dch_test_export", "root", "");
+    $pdo = new PDO("mysql:host=localhost;dbname=dch_partial_fix", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Check if the connection is successful
