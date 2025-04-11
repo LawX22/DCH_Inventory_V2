@@ -274,7 +274,7 @@ function StockInOut() {
                 value={category}
                 className="enhanced-select"
               >
-                <option value="">Category & Item Code</option>
+                <option value="">Select Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}

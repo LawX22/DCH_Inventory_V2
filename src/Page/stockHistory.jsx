@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineSearch, AiOutlineUndo } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineUndo, AiOutlinePlus } from "react-icons/ai";
 import { FiDownload, FiActivity } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
 import Header from "./Header";
@@ -14,12 +14,18 @@ function StockHistory() {
   const [historyFixIsOpen, setHistoryFixIsOpen] = useState(false);
 
   // Filter states - initialize from localStorage
-  const [category, setCategory] = useState(localStorage.getItem("categorySH") || "");
+  const [category, setCategory] = useState(
+    localStorage.getItem("categorySH") || ""
+  );
   const [brand, setBrand] = useState(localStorage.getItem("brandSH") || "");
   const [area, setArea] = useState(localStorage.getItem("areaSH") || "");
   const [date, setDate] = useState(localStorage.getItem("dateSH") || "");
-  const [activity, setActivity] = useState(localStorage.getItem("activitySH") || "");
-  const [selectedLocation, setSelectedLocation] = useState(localStorage.getItem("selectedLocation") || "All");
+  const [activity, setActivity] = useState(
+    localStorage.getItem("activitySH") || ""
+  );
+  const [selectedLocation, setSelectedLocation] = useState(
+    localStorage.getItem("selectedLocation") || "All"
+  );
 
   // Option lists for filters
   const [categoryList, setCategoryList] = useState([]);
@@ -72,11 +78,17 @@ function StockHistory() {
     const fetchFilters = async () => {
       try {
         const [categoryData, brandData, areaData] = await Promise.all([
-          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"),
-          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"),
-          axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+          axios.get(
+            "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+          ),
+          axios.get(
+            "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+          ),
+          axios.get(
+            "http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php"
+          ),
         ]);
-        
+
         setCategoryList(categoryData.data);
         setBrandList(brandData.data);
         setAreaList(areaData.data);
@@ -190,7 +202,9 @@ function StockHistory() {
         {/* Activity Button */}
         <button
           className="activity-button"
-          onClick={() => window.open("/activity", "_blank", "noopener,noreferrer")}
+          onClick={() =>
+            window.open("/activity", "_blank", "noopener,noreferrer")
+          }
         >
           <FiActivity size={18} />
           <span>Activity</span>
@@ -206,8 +220,9 @@ function StockHistory() {
                 name="category"
                 value={category}
                 onChange={handleFilterChange}
+                className="enhanced-select"
               >
-                <option value="">Select Category</option>
+                <option value="">Select Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}
@@ -224,16 +239,17 @@ function StockHistory() {
                 name="date"
                 value={date}
                 onChange={handleFilterChange}
-                className="styled-date-input"
+                className="styled-date-input enhanced-select"
               />
             </div>
           </div>
-          <div className="header-cell brand-cell">
+          <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="brand" 
+              <select
+                name="brand"
                 value={brand}
                 onChange={handleFilterChange}
+                className="enhanced-select"
               >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
@@ -245,12 +261,13 @@ function StockHistory() {
               <FaChevronDown className="select-icon" />
             </div>
           </div>
-          <div className="header-cell location-cell">
+          <div className="header-cell with-arrow">
             <div className="select-container">
-              <select 
-                name="area" 
+              <select
+                name="area"
                 value={area}
                 onChange={handleFilterChange}
+                className="enhanced-select"
               >
                 <option value="">Area</option>
                 {areaList.map((option) => (
@@ -264,12 +281,13 @@ function StockHistory() {
           </div>
 
           {/* Activity Dropdown */}
-          <div className="header-cell activity-cell">
+          <div className="header-cell with-arrow">
             <div className="select-container">
               <select
                 name="activity"
                 value={activity}
                 onChange={handleFilterChange}
+                className="enhanced-select"
               >
                 <option value="">Activity</option>
                 <option value="Stock In">Stock In</option>
@@ -279,19 +297,21 @@ function StockHistory() {
             </div>
           </div>
 
-          <div className="header-cell amount-cell">
+          <div className="header-cell">
             <span>Amount</span>
           </div>
 
-          <div className="header-cell units-cell">
+          <div className="header-cell">
             <span>Units</span>
           </div>
 
-          <div className="header-cell requisition-cell">
+          <div className="header-cell">
             <span>Requisition #</span>
           </div>
 
-          <div className="header-cell">Actions</div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>
+            Actions
+          </div>
         </div>
 
         <div className="table-body">
@@ -314,37 +334,46 @@ function StockHistory() {
                 </div>
 
                 <div className="date-cell">
-                  <div className="date-display">{formatDate(item.transaction_date)}</div>
+                  <div className="item">
+                    <div>{formatDate(item.transaction_date)}</div>
+                  </div>
                 </div>
 
                 <div className="brand-cell">
-                  <div>{item.brand}</div>
+                  <div className="item">{item.brand}</div>
                 </div>
-                
+
                 <div className="location-cell">
-                  <div>{item.location}</div>
+                  <div className="item">
+                    <div>{item.location}</div>
+                    <div>{item.storage_area}</div>
+                  </div>
                 </div>
-                
+
                 <div className="activity-cell">
-                  <div className={`activity-tag ${getActivityClass(item.transaction_type)}`}>
+                  <div
+                    className={`activity-tag ${getActivityClass(item.transaction_type)}`}
+                  >
                     {item.transaction_type}
                   </div>
                 </div>
 
-                <div className="amount-cell">
-                  <div className="amount-value">{item.units_added}</div>
+                <div className="price-cell">
+                  <div className="item">
+                    <div>{item.units_added}</div>
+                  </div>
                 </div>
 
-                <div className="units-cell">
-                  <div className="item units-info">
+                <div className="inventory-cell">
+                  <div className="item">
                     <div>Current: {item.current_stock}</div>
                     <div>Previous: {item.previous_units}</div>
                   </div>
                 </div>
-                
+
                 <div className="requisition-cell">
-                  <div className="requisition-number">
-                    Stock - {item.requisition_number}
+                  <div className="item">
+                    <div>Stock - {item.requisition_number}</div>
                   </div>
                 </div>
 
@@ -363,7 +392,7 @@ function StockHistory() {
                   </div>
                 </div>
               </div>
-            ))  
+            ))
           ) : (
             <div className="no-data-message">No stock history found.</div>
           )}

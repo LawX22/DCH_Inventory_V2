@@ -6,14 +6,14 @@ import {
   AiOutlineDelete,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { FiDownload, FiActivity } from "react-icons/fi";
+import { FiDownload, FiActivity, FiList } from "react-icons/fi";
 import Header from "./admin_Header";
 import axios from "axios";
 
 import StockHistoryModal from "../modals/focusedStockHistory_Modal";
 import EditModal from "../modals/edit_InventoryModal";
 
-function Inventory() {
+function AdminInventory() {
   const [editModalOpen, seteditModalOpen] = useState(false);
 
   const [category, setCategory] = useState(
@@ -23,6 +23,8 @@ function Inventory() {
   const [brand, setBrand] = useState(localStorage.getItem("brand") || "");
 
   const [area, setArea] = useState(localStorage.getItem("area") || "");
+  
+  const [stock, setStock] = useState(localStorage.getItem("stock") || "");
 
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
@@ -48,7 +50,6 @@ function Inventory() {
     image: null,
   });
 
-
   const openModal = (inventory_Id) => {
     setSelectedInventoryId(inventory_Id);
     setIsModalOpen(true);
@@ -58,7 +59,6 @@ function Inventory() {
     setIsModalOpen(false);
     setSelectedInventoryId(null);
   };
-
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -76,9 +76,8 @@ function Inventory() {
     localStorage.setItem("brand", brand);
     localStorage.setItem("area", area);
     localStorage.setItem("category", category);
-  }, [selectedLocation, brand, area, category]);
-
-  //FIX THE BUG WHERE IT DOOES NOT LOAD INITIAL
+    localStorage.setItem("stock", stock);
+  }, [selectedLocation, brand, area, category, stock]);
 
   useEffect(() => {
     axios
@@ -89,13 +88,14 @@ function Inventory() {
           category: category,
           brand: brand,
           area: area,
+          stock: stock,
         },
       })
       .then((response) => {
         setInventory(response.data.inventory || response.data);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory]); // Re-run when searchQuery changes
+  }, [selectedLocation, searchQuery, inventory, brand, category, area, stock]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -111,15 +111,15 @@ function Inventory() {
     switch (name) {
       case "category":
         setCategory(value);
-
         break;
       case "brand":
         setBrand(value);
-
+        break;
+      case "stock":
+        setStock(value);
         break;
       case "area":
         setArea(value);
-
         break;
       default:
         console.warn("Unknown filter:", name);
@@ -143,7 +143,7 @@ function Inventory() {
         "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
-          username: username, // Add username here
+          username: username,
         })
       );
 
@@ -179,9 +179,15 @@ function Inventory() {
   };
 
   useEffect(() => {
-    localStorage.setItem("brand", ""); // Set brand to empty string (or any value you want)
-    localStorage.setItem("area", ""); // Set area to empty string
-    localStorage.setItem("category", ""); // Set category to empty string
+    localStorage.setItem("brand", "");
+    localStorage.setItem("area", "");
+    localStorage.setItem("category", "");
+    localStorage.setItem("stock", "");
+    
+    setCategory("");
+    setBrand("");
+    setArea("");
+    setStock("");
   }, []);
 
   useEffect(() => {
@@ -190,10 +196,10 @@ function Inventory() {
         "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
       )
       .then((response) => {
-        setCategoryList(response.data); // Store fetched brands in state
+        setCategoryList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching categories:", error);
       });
   }, []);
 
@@ -203,29 +209,54 @@ function Inventory() {
         "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
       )
       .then((response) => {
-        setBrandList(response.data); // Store fetched brands in state
+        setBrandList(response.data);
       })
       .catch((error) => {
         console.error("Error fetching brands:", error);
       });
   }, []);
+  
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
       .then((response) => {
-        setAreaList(response.data); // Store fetched brands in state
+        setAreaList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching areas:", error);
       });
   }, []);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [inventoryNumber, setInventoryNumber] = useState("");
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleStockChange = (e) => {
+    // Ensure only numbers are allowed
+    const value = e.target.value.replace(/\D/, "");
+    setInventoryNumber(value);
+    setStock(value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="adm-inventory-container">
       <Header />
 
       <div className="adm-action-panel">
-        <button className="adm-add-button" onClick={() => setIsModalOpen(true)}>
+        <button className="add-button" onClick={() => setIsModalOpen(true)}>
           <AiOutlinePlus size={18} />
           <span>Add New Item</span>
         </button>
@@ -252,6 +283,16 @@ function Inventory() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+
+        <button
+          className="adm-list-button"
+          onClick={() =>
+            window.open("/List_Restock", "_blank", "noopener,noreferrer")
+          }
+        >
+          <FiList size={18} />
+          <span>List Stocks</span>
+        </button>
 
         <button className="adm-export-button" onClick={handleExport}>
           <FiDownload size={18} />
@@ -285,12 +326,13 @@ function Inventory() {
         <div className="adm-table-header">
           <div className="adm-header-cell">
             <div className="adm-select-container">
-
               <select
                 name="category"
+                value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                className="adm-enhanced-select"
               >
-                <option value="">Select Category</option>
+                <option value="">Select Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}
@@ -300,9 +342,20 @@ function Inventory() {
               <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="adm-header-cell adm-with-arrow">
+          <div className="adm-header-cell">
+            <span>Description 1 & 2</span>
+          </div>
+          <div className="adm-header-cell">
+            <span>Description 3 & 4</span>
+          </div>
+          <div className="adm-header-cell">
             <div className="adm-select-container">
-              <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+              <select
+                name="brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                className="adm-enhanced-select"
+              >
                 <option value="">Brand</option>
                 {brandList.map((option) => (
                   <option key={option.inventory_Id} value={option.brand}>
@@ -313,9 +366,14 @@ function Inventory() {
               <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="adm-header-cell adm-with-arrow">
+          <div className="adm-header-cell">
             <div className="adm-select-container">
-              <select name="area" onChange={(e) => setArea(e.target.value)}>
+              <select
+                name="area"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                className="adm-enhanced-select"
+              >
                 <option value="">Area</option>
                 {areaList.map((option) => (
                   <option key={option.inventory_Id} value={option.storage_area}>
@@ -326,17 +384,31 @@ function Inventory() {
               <FaChevronDown className="adm-select-icon" />
             </div>
           </div>
-          <div className="adm-header-cell adm-with-arrow">
+          <div className="adm-header-cell">
             <span>Price</span>
           </div>
-          <div className="adm-header-cell adm-with-arrow">
-            <span>Inventory</span>
+          <div className="adm-header-cell" onClick={handleEdit}>
+            {isEditing ? (
+              <input
+                type="text"
+                value={inventoryNumber}
+                onChange={handleStockChange}
+                onBlur={handleBlur}
+                onKeyDown={handleKeyPress}
+                autoFocus
+                className="adm-inventory-input"
+              />
+            ) : (
+              <span>{inventoryNumber || "Inventory"}</span>
+            )}
           </div>
-          <div className="adm-header-cell">Actions</div>
+          <div className="adm-header-cell" style={{ justifyContent: "center" }}>
+            Actions
+          </div>
         </div>
 
         <div className="adm-table-body">
-          {filteredInventory.map((item, key) => (
+          {filteredInventory.map((item) => (
             <div className="adm-table-row" key={item.inventory_id}>
               <div className="adm-item-cell">
                 <div className="adm-item-image-container">
@@ -347,11 +419,20 @@ function Inventory() {
                   />
                 </div>
                 <div className="adm-item-details">
-                  <div className="adm-item-name">
-                    {item.itemDesc_1 + " " + item.itemDesc_2}
-                  </div>
                   <div className="adm-item-category">{item.category}</div>
                   <div className="adm-item-id">{item.itemCode}</div>
+                </div>
+              </div>
+              <div className="adm-brand-cell">
+                <div className="adm-item">
+                  <div>{item.itemDesc_1 || "-"}</div>
+                  <div>{item.itemDesc_2 || "-"}</div>
+                </div>
+              </div>
+              <div className="adm-brand-cell">
+                <div className="adm-item">
+                  <div>{item.itemDesc_1 || "-"}</div>
+                  <div>{item.itemDesc_2 || "-"}</div>
                 </div>
               </div>
               <div className="adm-brand-cell">
@@ -376,23 +457,30 @@ function Inventory() {
                 </div>
               </div>
               <div className="adm-actions-cell">
-  <button
-    className="adm-action-button adm-view-button"
-    onClick={() => openEditFunc(item)}
-  >
-    <AiOutlineEye size={18} />
-    <span>Edit</span>
-  </button>
+                <div className="adm-action-buttons-container">
+                  <button
+                    className="adm-action-button adm-view-button"
+                    onClick={() => openEditFunc(item)}
+                    title="Edit"
+                  >
+                    <span className="adm-action-icon">
+                      <AiOutlineEye size={16} />
+                    </span>
+                    <span className="adm-action-text">Edit</span>
+                  </button>
 
-  <button
-    className="adm-action-button adm-delete-button"
-    onClick={() => openModal(item.inventory_Id)}
-  >
-    <AiOutlineDelete size={18} />
-    <span>History</span>
-  </button>
-</div>
-              
+                  <button
+                    className="adm-action-button adm-delete-button"
+                    onClick={() => openModal(item.inventory_Id)}
+                    title="History"
+                  >
+                    <span className="adm-action-icon">
+                      <AiOutlineDelete size={16} />
+                    </span>
+                    <span className="adm-action-text">History</span>
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -401,4 +489,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default AdminInventory;  

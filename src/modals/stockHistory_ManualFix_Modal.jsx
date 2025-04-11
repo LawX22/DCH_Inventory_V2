@@ -1,26 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ManualFixModal = ({ isOpen, onClose, data}) => {
-  const [formData, setFormData] = useState({
-    itemCode: "",
-    itemBrand: "",
-    itemCategory: "",
-    description1: "",
-    description2: "",
-    units: "",
-    fixedPrice: "",
-    retailPrice: "",
-    location: "",
-    storageArea: "",
-    username: localStorage.getItem("username") || "", 
-    image: null,
-    itemId: ""
-  });
-
+const ManualFixModal = ({ isOpen, onClose, data }) => {
   const [itemId, setItemId] = useState('');
   const [Id, setId] = useState('');
-
   const [itemCode, setItemCode] = useState('');
   const [itemBrand, setItemBrand] = useState('');
   const [itemCategory, setItemCategory] = useState('');
@@ -31,33 +14,30 @@ const ManualFixModal = ({ isOpen, onClose, data}) => {
   const [retailPrice, setRetailPrice] = useState('');
   const [location, setLocation] = useState('');
   const [storageArea, setStorageArea] = useState('');
-  const user = localStorage.getItem("username");
-  const [username, setusername] = useState(user);
-
   const [imagePreview, setImagePreview] = useState(null);
-  const [requisitionNum, setrequisitionNum] = useState([]);
-  const [requisitionDate, setrequisitionDate] = useState([]); 
-  const [unitsAdded, setunitsAdded] = useState([]);
+  const [requisitionNum, setRequisitionNum] = useState('');
+  const [requisitionDate, setRequisitionDate] = useState('');
+  const [unitsAdded, setUnitsAdded] = useState('');
   const [brands, setBrands] = useState([]);
   const [category, setCategory] = useState([]);
-
   const [transactionDate, setTransactionDate] = useState('');
   const [unitsInputted, setUnitsInputted] = useState('');
   const [reqNum, setReqNum] = useState('');
   const [stockType, setStockType] = useState('');
   const [prevUnits, setPrevUnits] = useState('');
-  const [latestUnits, setLatestUnits] = useState('');  
-  const [oldCurrentUnits, setOldCurrentUnits] = useState('');  
-  const [stock_name, setStockName] = useState('');  
-  const [inputChanged, setInputChanged] = useState(false);  
+  const [latestUnits, setLatestUnits] = useState('');
+  const [oldCurrentUnits, setOldCurrentUnits] = useState('');
+  const [stock_name, setStockName] = useState('');
+  const [inputChanged, setInputChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const username = localStorage.getItem("username") || "";
 
-
-
-  // Fetch brand data from backend when component mounts
+  // Populate form data when component receives data
   useEffect(() => {
     if (data) {
       setItemId(data.inventory_Id || '');
-      setId(data.stock_history_id  || '');
+      setId(data.stock_history_id || '');
       setItemCode(data.itemCode || '');
       setItemBrand(data.brand || '');
       setItemCategory(data.category || '');
@@ -76,133 +56,110 @@ const ManualFixModal = ({ isOpen, onClose, data}) => {
       setPrevUnits(data.previous_units || '');
       setOldCurrentUnits(data.current_stock || '');
       setStockName(data.stock_name || '');
-
-      
-
     }
-  }, [data]); // Add dependency to ensure it runs when `data` changes
+  }, [data]);
   
-
+  // Fetch latest units
   useEffect(() => {
-    axios
+    if (itemId) {
+      axios
         .get("http://localhost/DCH_Inventory_V2/src/backend/get_latest_units.php", {
-            params: { latest_unit_id: itemId },
+          params: { latest_unit_id: itemId },
         })
         .then((response) => {
-            if (response.data.length > 0) {
-                setLatestUnits(response.data[0].units);
-                setImagePreview(response.data[0].image)
-            } else {
-                setLatestUnits(null);  // or any default value you want
-            }
+          if (response.data.length > 0) {
+            setLatestUnits(response.data[0].units);
+            setImagePreview(response.data[0].image);
+          } else {
+            setLatestUnits(null);
+          }
         })
         .catch((error) => console.error("Error fetching inventory:", error));
-}, [itemId]);
+    }
+  }, [itemId]);
 
-
-
-
+  // Fetch brands
   useEffect(() => {
     axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_brands.php")
       .then(response => {
-        setBrands(response.data); // Store fetched brands in state
+        setBrands(response.data);
       })
       .catch(error => {
         console.error("Error fetching brands:", error);
       });
   }, []);
 
-
-  // Fetch brand data from backend when component mounts
+  // Fetch categories
   useEffect(() => {
     axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_category.php")
       .then(response => {
-        setCategory(response.data); // Store fetched brands in state
+        setCategory(response.data);
       })
       .catch(error => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching categories:", error);
       });
   }, []);
 
+  // Clean up image preview URLs
   useEffect(() => {
-
-   
     return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
+      if (imagePreview && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
     };
   }, [imagePreview]);
-
-  const storedValue = localStorage.getItem("username");
- 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   
     switch (name) {
-      case "itemId":
-        setItemId(value);
-        break;
-      case "stockId":
-        setId(value);
-        break;
       case "requisitionNum":
-        setrequisitionNum(value);  // ✅ FIXED
+        setRequisitionNum(value);
         break;
       case "requisitionDate":
-        setrequisitionDate(value);
+        setRequisitionDate(value);
         break;
       case "stockInputed":
-        setunitsAdded(value);
+        setUnitsAdded(value);
         setInputChanged(true);
-
         break;
       case "stockType":
         setStockType(value);
         setInputChanged(true);
-
         break;
       default:
         break;
     }
   };
   
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setImagePreview(objectUrl);
-      setFormData((prevData) => ({
-        ...prevData,
-        image: file,
-      }));
     }
   };
 
   const handleSubmit = async (e) => {
-    if(unitsAdded > units){
+    e.preventDefault();
+    
+    if (unitsAdded > units) {
       alert("Units added cannot be greater than the available units.");
       return;
     }
-    else{
-
-
-      e.preventDefault();
-  
-    console.log("Date before sending:", requisitionDate); // Debugging
-  
+    
+    setIsLoading(true);
+    
     const formDataToSend = new FormData();
     formDataToSend.append("itemId", itemId);
     formDataToSend.append("Id", Id);
-    formDataToSend.append("requisitionNum", requisitionNum);
-    formDataToSend.append("requisitionDate", requisitionDate);
-    formDataToSend.append("unitsAdded", unitsAdded);
+    formDataToSend.append("requisitionNum", requisitionNum || reqNum);
+    formDataToSend.append("requisitionDate", requisitionDate || transactionDate);
+    formDataToSend.append("unitsAdded", unitsAdded || unitsInputted);
     formDataToSend.append("username", username);
     formDataToSend.append("inputChanged", inputChanged);
     formDataToSend.append("stockType", stockType);
 
-
-  
     try {
       const response = await axios.post(
         "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
@@ -211,163 +168,155 @@ const ManualFixModal = ({ isOpen, onClose, data}) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-  
-      console.log("API Response:", response.data);
+
       alert(response.data.message);
       onClose();
     } catch (error) {
       console.error("Error updating item:", error.response?.data || error);
+      alert("Failed to update item. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    }
-    
   };
-
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-1">
-      <div className="modal-container-1">
-        <h2 className="modal-title-2">MANUAL FIX</h2>
-        <form onSubmit={handleSubmit} className="modal-form-1">
-          {/* Image Upload Section */}
-          <div className="image-upload-container-1">
-            {imagePreview ? (
-              <img
-                src={`/src/backend/${imagePreview}`}
-                alt="Preview"
-                className="image-preview-1"
-              />
-            ) : (
-              <div className="upload-placeholder-1">
-                <label htmlFor="imageUpload" className="upload-button-1">
-                  Click to upload image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="file-input-1"
-                  id="imageUpload"
-                />
+    <div className="mfm-modal-overlay">
+      <div className="mfm-modal-container">
+        <h2 className="mfm-modal-title">Manual Fix</h2>
+        
+        <form onSubmit={handleSubmit} className="mfm-modal-form">
+          <div className="mfm-content-container">
+            {/* Left column */}
+            <div className="mfm-left-column">
+              <div className="mfm-image-upload-container">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview.startsWith('blob:') ? imagePreview : `/src/backend/${imagePreview}`}
+                    alt="Item Preview"
+                    className="mfm-image-preview"
+                  />
+                ) : (
+                  <div className="mfm-upload-placeholder">
+                    <p className="mfm-upload-text">Upload item image</p>
+                    <label htmlFor="imageUpload" className="mfm-upload-button">
+                      Browse
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="mfm-file-input"
+                      id="imageUpload"
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-
-          {/* Form Fields Section */}
-          <div className="form-fields-container-1">
-            {/* Item Details */}
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Item Description</label>
-              <p className="item-desc-1">{stock_name}</p>
-            </div>
-
-            
-        
-
-            <div className="form-group-1">
-              <label className="form-label-1">Brand</label>
-              <p className="item-brand-1">{itemBrand}</p>
-
               
+              <div className="mfm-item-info">
+                <div className="mfm-info-group">
+                  <h3 className="mfm-info-title">Item Information</h3>
+                  <div className="mfm-info-row">
+                    <span className="mfm-info-label">Description:</span>
+                    <span className="mfm-info-value">{stock_name}</span>
+                  </div>
+                  <div className="mfm-info-row">
+                    <span className="mfm-info-label">Brand:</span>
+                    <span className="mfm-info-value">{itemBrand}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-
-
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Current Units</label>
-              <p className="item-desc-1">{latestUnits}</p>
+            
+            {/* Right column */}
+            <div className="mfm-right-column">
+              <div className="mfm-stock-info">
+                <h3 className="mfm-section-title">Stock Information</h3>
+                <div className="mfm-stock-detail">
+                  <div className="mfm-stock-card">
+                    <span className="mfm-stock-label">Current Units</span>
+                    <span className="mfm-stock-value">{latestUnits}</span>
+                  </div>
+                  <div className="mfm-stock-card">
+                    <span className="mfm-stock-label">Units Before Change</span>
+                    <span className="mfm-stock-value">{prevUnits}</span>
+                  </div>
+                  <div className="mfm-stock-card">
+                    <span className="mfm-stock-label">Units After Change</span>
+                    <span className="mfm-stock-value">{oldCurrentUnits}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mfm-form-fields-container">
+                <div className="mfm-form-group">
+                  <label className="mfm-form-label">Date</label>
+                  <input
+                    type="date"
+                    name="requisitionDate"
+                    onChange={handleInputChange}
+                    value={requisitionDate || transactionDate}
+                    className="mfm-form-input"
+                  />
+                </div>
+                
+                <div className="mfm-form-group">
+                  <label className="mfm-form-label">Requisition #</label>
+                  <input
+                    type="number"
+                    name="requisitionNum"
+                    value={requisitionNum || reqNum}
+                    onChange={handleInputChange}
+                    className="mfm-form-input"
+                    placeholder="Enter requisition number"
+                  />
+                </div>
+                
+                <div className="mfm-form-group">
+                  <label className="mfm-form-label">Stock Inputed</label>
+                  <input
+                    type="number"
+                    name="stockInputed"
+                    value={unitsAdded || unitsInputted}
+                    onChange={handleInputChange}
+                    className="mfm-form-input"
+                    placeholder="Enter stock quantity"
+                  />
+                </div>
+                
+                <div className="mfm-form-group">
+                  <label className="mfm-form-label">Stock Type</label>
+                  <select
+                    name="stockType"
+                    value={stockType}
+                    onChange={handleInputChange}
+                    className="mfm-form-input"
+                  >
+                    <option value="Stock Out">Stock Out</option>
+                    <option value="Stock In">Stock In</option>
+                  </select>
+                </div>
+              </div>
             </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units Before Change</label>
-              <p className="item-desc-1">{prevUnits}</p>
-            </div>
-
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">Units After Change</label>
-              <p className="item-desc-1">{oldCurrentUnits}</p>
-            </div>
-
-
-            {/* Units Added */}
-           
-
-            {/* Date Input */}
-            <div className="form-group-1">
-              <label className="form-label-1">Date</label>
-              <input
-                type="date"
-                name="requisitionDate"
-                onChange={handleInputChange}
-                value={transactionDate}
-                className="form-input-1"
-              />
-            </div>
-
-            {/* Requisition Number */}
-            <div className="form-group-1">
-              <label className="form-label-1">Requisition #</label>
-              <input
-                type="number"
-                name="requisitionNum"
-                value={reqNum}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                    {/* Requisition Number */}
-                    <div className="form-group-1">
-              <label className="form-label-1">Stock Inputed</label>
-              <input
-                type="number"
-                name="stockInputed"
-                value={unitsInputted}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                {/* Stock Type */}
-                <div className="form-group-1">
-              <label className="form-label-1">Stock Type</label>
-              <select  type="text"
-                name="stockType"
-                value={stockType}
-                onChange={handleInputChange}
-                className="form-input-1">
-
-<option value="Stock Out">Stock Out</option>
-<option value="Stock In">Stock In</option>
-
-                </select>
-             
-
-        
-               
-            </div>
-
-            {/* Hidden Fields */}
-            <input type="hidden" name="username" value={storedValue} />
-            <input type="hidden" name="itemId" value={itemId} />
-            <input type="hidden" name="stockId" value={Id} />
-            <input type="hidden" name="inputChanged" value={inputChanged} />
-
-
           </div>
 
-          {/* Modal Actions (Buttons) */}
-          <div className="modal-actions-1">
-            <button type="submit" className="save-button-1">
-              SAVE
+          {/* Hidden Fields */}
+          <input type="hidden" name="username" value={username} />
+          <input type="hidden" name="itemId" value={itemId} />
+          <input type="hidden" name="stockId" value={Id} />
+          <input type="hidden" name="inputChanged" value={inputChanged} />
+
+          {/* Modal Actions */}
+          <div className="mfm-modal-actions">
+            <button type="button" onClick={onClose} className="mfm-cancel-button">
+              Cancel
             </button>
-            <button type="button" onClick={onClose} className="cancel-button-1">
-              CANCEL
+            <button type="submit" className="mfm-save-button" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
-
-        
       </div>
     </div>
   );

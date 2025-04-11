@@ -53,18 +53,12 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
   const [stock_name, setStockName] = useState('');  
   const [inputChanged, setInputChanged] = useState(false);  
   const [manualFixModalOpen, setManualFixModalOpen] = useState(false);  
-    const [selectedData, setSelectedData] = useState([]);  
+  const [selectedData, setSelectedData] = useState([]);  
  
-
-
-
   function openManualFixFunc(data){
     setSelectedData(data);
     setManualFixModalOpen(true);
-
   }
-
-
 
   // Fetch brand data from backend when component mounts
   useEffect(() => {
@@ -89,13 +83,8 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
       setPrevUnits(data.previous_units || '');
       setOldCurrentUnits(data.current_stock || '');
       setStockName(data.stock_name || '');
-
     }
   }, [data]); // Add dependency to ensure it runs when `data` changes
-
-
-
-  
 
   useEffect(() => {
     axios
@@ -111,10 +100,7 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
             }
         })
         .catch((error) => console.error("Error fetching inventory:", error));
-}, [itemId]);
-
-
-
+  }, [itemId]);
 
   useEffect(() => {
     axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_brands.php")
@@ -125,7 +111,6 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
         console.error("Error fetching brands:", error);
       });
   }, []);
-
 
   // Fetch brand data from backend when component mounts
   useEffect(() => {
@@ -139,8 +124,6 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
   }, []);
 
   useEffect(() => {
-
-   
     return () => {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
     };
@@ -148,7 +131,6 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
 
   const storedValue = localStorage.getItem("username");
  
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   
@@ -168,19 +150,16 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
       case "stockInputed":
         setunitsAdded(value);
         setInputChanged(true);
-
         break;
       case "stockType":
         setStockType(value);
         setInputChanged(true);
-
         break;
       default:
         break;
     }
   };
   
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -199,138 +178,155 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
       return;
     }
     else{
-
-
       e.preventDefault();
   
-    console.log("Date before sending:", requisitionDate); // Debugging
-  
-    const formDataToSend = new FormData();
-    formDataToSend.append("itemId", itemId);
-    formDataToSend.append("Id", Id);
-    formDataToSend.append("requisitionNum", requisitionNum);
-    formDataToSend.append("requisitionDate", requisitionDate);
-    formDataToSend.append("unitsAdded", unitsAdded);
-    formDataToSend.append("username", username);
-    formDataToSend.append("inputChanged", inputChanged);
-    formDataToSend.append("stockType", stockType);
-
-
-  
-    try {
-      const response = await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
-        formDataToSend,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-  
-      console.log("API Response:", response.data);
-      alert(response.data.message);
-      onClose();
-    } catch (error) {
-      console.error("Error updating item:", error.response?.data || error);
-    }
-
-    }
+      console.log("Date before sending:", requisitionDate); // Debugging
     
+      const formDataToSend = new FormData();
+      formDataToSend.append("itemId", itemId);
+      formDataToSend.append("Id", Id);
+      formDataToSend.append("requisitionNum", requisitionNum);
+      formDataToSend.append("requisitionDate", requisitionDate);
+      formDataToSend.append("unitsAdded", unitsAdded);
+      formDataToSend.append("username", username);
+      formDataToSend.append("inputChanged", inputChanged);
+      formDataToSend.append("stockType", stockType);
+  
+      try {
+        const response = await axios.post(
+          "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+    
+        console.log("API Response:", response.data);
+        alert(response.data.message);
+        onClose();
+      } catch (error) {
+        console.error("Error updating item:", error.response?.data || error);
+      }
+    }
   };
-
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-1">
-      <div className="modal-container-1">
+    <div className="modal-overlay-sop">
+      <div className="modal-container-sop">
         <ManualFixModal
                 isOpen={manualFixModalOpen}
                 onClose={() => setManualFixModalOpen(false)}
                 data={selectedData}
               />
-        <h2 className="modal-title-2">ALERT!</h2>
-        <form onSubmit={handleSubmit} className="modal-form-1">
+        <div className="modal-title-sop">
+          <h2>ALERT!</h2>
+        </div>
+        <form onSubmit={handleSubmit} className="modal-form-sop">
           {/* Image Upload Section */}
-          <div className="image-upload-container-1">
-            {imagePreview ? (
-              <img
-                src={`/src/backend/${imagePreview}`}
-                alt="Preview"
-                className="image-preview-1"
-              />
-            ) : (
-              <div className="upload-placeholder-1">
-                <label htmlFor="imageUpload" className="upload-button-1">
-                  Click to upload image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="file-input-1"
-                  id="imageUpload"
+          <div className="sidebar-section-sop">
+            <div className="image-upload-container-sop">
+              {imagePreview ? (
+                <img
+                  src={`/src/backend/${imagePreview}`}
+                  alt="Preview"
+                  className="image-preview-sop"
                 />
+              ) : (
+                <div className="upload-placeholder-sop">
+                  <div className="upload-icon-sop">📁</div>
+                  <div className="upload-text-sop">Click to upload image</div>
+                  <label htmlFor="imageUpload" className="upload-button-sop">
+                    Select File
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="file-input-sop"
+                    id="imageUpload"
+                  />
+                </div>
+              )}
+            </div>
+            
+            {/* Item Summary Container */}
+            <div className="item-summary-container-sop">
+              <div className="item-summary-header-sop">
+                <h3>Item Summary</h3>
               </div>
-            )}
+              <div className="item-summary-content-sop">
+                <div className="summary-row-sop">
+                  <div className="summary-label-sop">Item:</div>
+                  <div className="summary-value-sop">{stock_name}</div>
+                </div>
+                <div className="summary-row-sop">
+                  <div className="summary-label-sop">Units:</div>
+                  <div className="summary-value-sop">{units}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Form Fields Section */}
-          <div className="form-fields-container-1">
-            {/* Item Details */}
-            <div className="form-group-1 full-width-1">
-              <label className="form-label-1">You have changed the stock value or transaction type of this entry. Do you want to change the unit value of</label>
-              <p className="item-desc-1">{stock_name}?</p>
+          <div className="form-fields-container-sop">
+            {/* Alert Message */}
+            <div className="form-section-sop">
+              <div className="section-title-sop">Alert</div>
+              <div className="form-group-sop">
+                <p>You have changed the stock value or transaction type of this entry. Do you want to change the unit value of {stock_name}?</p>
+              </div>
             </div>
-
-    
-
-            {/* Units Added */}
-           
-
-            {/* Date Input */}
-            <div className="form-group-1">
-              <input
-                type="date"
-                name="requisitionDate"
-                onChange={handleInputChange}
-                value={transactionDate}
-                className="form-input-1"
-              />
-            </div>
-
-            {/* Requisition Number */}
-            <div className="form-group-1">
-              <input
-                type="text"
-                name="requisitionNum"
-                value={reqNum}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                    {/* Requisition Number */}
-                    <div className="form-group-1">
-              <input
-                type="text"
-                name="stockInputed"
-                value={unitsInputted}
-                onChange={handleInputChange}
-                className="form-input-1"
-              />
-            </div>
-                {/* Stock Type */}
-                <div className="form-group-1">
-              <input  type="text"
-                name="stockType"
-                value={stockType}
-                onChange={handleInputChange}
-                className="form-input-1"/>
-
-
-             
-
-        
-               
+            
+            {/* Transaction Details */}
+            <div className="form-section-sop">
+              <div className="section-title-sop">Transaction Details</div>
+              <div className="transaction-grid-sop">
+                <div className="form-group-sop">
+                  <label className="form-label-sop">Transaction Date</label>
+                  <input
+                    type="date"
+                    name="requisitionDate"
+                    onChange={handleInputChange}
+                    value={transactionDate}
+                    className="form-input-sop"
+                  />
+                </div>
+                
+                <div className="form-group-sop">
+                  <label className="form-label-sop">Requisition Number</label>
+                  <input
+                    type="text"
+                    name="requisitionNum"
+                    value={reqNum}
+                    onChange={handleInputChange}
+                    className="form-input-sop"
+                  />
+                </div>
+                
+                <div className="form-group-sop">
+                  <label className="form-label-sop">Units</label>
+                  <input
+                    type="text"
+                    name="stockInputed"
+                    value={unitsInputted}
+                    onChange={handleInputChange}
+                    className="form-input-sop"
+                  />
+                </div>
+                
+                <div className="form-group-sop">
+                  <label className="form-label-sop">Transaction Type</label>
+                  <input  
+                    type="text"
+                    name="stockType"
+                    value={stockType}
+                    onChange={handleInputChange}
+                    className="form-input-sop"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Hidden Fields */}
@@ -338,28 +334,24 @@ const SelectFixOpModal = ({ isOpen, onClose, data}) => {
             <input type="hidden" name="itemId" value={itemId} />
             <input type="hidden" name="stockId" value={Id} />
             <input type="hidden" name="inputChanged" value={inputChanged} />
-
-
-          </div>
-
-          {/* Modal Actions (Buttons) */}
-          <div className="modal-actions-1">
-            <button type="submit" className="save-button-1">
-              DO NOT  CHANGE
-            </button>
-            <button type="button" onClick={onClose} className="cancel-button-1">
-              CANCEL
-            </button>
           </div>
         </form>
 
-            <button type="button" onClick={onClose} className="cancel-button-1">
+        {/* Modal Actions (Buttons) */}
+        <div className="modal-actions-sop">
+          <button type="submit" className="save-button-sop" onClick={handleSubmit}>
+            DO NOT CHANGE
+          </button>
+          <button type="button" onClick={onClose} className="options-button-sop">
             AUTO FIX
-            </button>
-
-            <button type="button" onClick={() => openManualFixFunc(data)} className="cancel-button-1">
-              MANUALLY FIX
-            </button>
+          </button>
+          <button type="button" onClick={() => openManualFixFunc(data)} className="cancel-button-sop">
+            MANUALLY FIX
+          </button>
+          <button type="button" onClick={onClose} className="cancel-button-sop">
+            CANCEL
+          </button>
+        </div>
       </div>
     </div>
   );

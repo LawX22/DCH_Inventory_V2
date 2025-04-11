@@ -65,16 +65,19 @@ function Inventory() {
   }, [selectedLocation, brand, area, category, stock]);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
-        params: {
-          location: selectedLocation,
-          search: searchQuery,
-          category: category,
-          brand: brand,
-          area: area,
-          stock: stock,
-        },
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php",
+        {
+          params: {
+            location: selectedLocation,
+            search: searchQuery,
+            category: category,
+            brand: brand,
+            area: area,
+            stock: stock,
+          },
+        }
+      )
       .then((response) => {
         setInventory(response.data.inventory || response.data);
       })
@@ -199,7 +202,7 @@ function Inventory() {
         console.error("Error fetching brands:", error);
       });
   }, []);
-  
+
   useEffect(() => {
     axios
       .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
@@ -315,7 +318,7 @@ function Inventory() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="enhanced-select"
               >
-                <option value="">Category & Item Code</option>
+                <option value="">Select Category & Item Code</option>
                 {categoryList.map((option) => (
                   <option key={option.category} value={option.category}>
                     {option.category}
@@ -333,9 +336,9 @@ function Inventory() {
           </div>
           <div className="header-cell">
             <div className="select-container">
-              <select 
-                name="brand" 
-                value={brand} 
+              <select
+                name="brand"
+                value={brand}
                 onChange={(e) => setBrand(e.target.value)}
                 className="enhanced-select"
               >
@@ -351,9 +354,9 @@ function Inventory() {
           </div>
           <div className="header-cell">
             <div className="select-container">
-              <select 
-                name="area" 
-                value={area} 
+              <select
+                name="area"
+                value={area}
                 onChange={(e) => setArea(e.target.value)}
                 className="enhanced-select"
               >
@@ -385,7 +388,9 @@ function Inventory() {
               <span>{inventoryNumber || "Inventory"}</span>
             )}
           </div>
-          <div className="header-cell" style={{ justifyContent: "center" }}>Actions</div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>
+            Actions
+          </div>
         </div>
 
         <div className="table-body">

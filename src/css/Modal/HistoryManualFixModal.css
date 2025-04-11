@@ -1,0 +1,373 @@
+/* Manual Fix Modal - Improved Styles */
+.mfm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 10px;
+    backdrop-filter: blur(2px);
+  }
+  
+  /* Modal Container */
+  .mfm-modal-container {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1000px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Modal Title */
+  .mfm-modal-title {
+    background-color: #bdeac1;
+    color: #25632b;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(37, 99, 43, 0.2);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  /* Modal Form Layout */
+  .mfm-modal-form {
+    display: flex;
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+    flex-direction: column;
+  }
+  
+  /* Content Container */
+  .mfm-content-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+  
+  /* Left Column */
+  .mfm-left-column {
+    width: 35%;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Right Column */
+  .mfm-right-column {
+    width: 65%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Image Upload Section */
+  .mfm-image-upload-container {
+    width: 100%;
+    height: 220px;
+    border: 2px dashed #b8d6eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background-color: #f5f9fc;
+  }
+  
+  .mfm-image-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .mfm-upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .mfm-upload-icon {
+    font-size: 32px;
+    color: #b8d6eb;
+    margin-bottom: 12px;
+  }
+  
+  .mfm-upload-text {
+    margin-bottom: 16px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .mfm-file-input {
+    display: none;
+  }
+  
+  .mfm-upload-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e7ecf0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .mfm-upload-button:hover {
+    background-color: #b8d6eb;
+    transform: translateY(-2px);
+  }
+  
+  /* Item Info Section */
+  .mfm-item-info {
+    background-color: #f5f9fc;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #b8d6eb;
+  }
+  
+  .mfm-info-title {
+    color: #25632b;
+    font-size: 16px;
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(184, 214, 235, 0.5);
+  }
+  
+  .mfm-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .mfm-info-label {
+    font-weight: 500;
+    color: #444;
+  }
+  
+  .mfm-info-value {
+    color: #333;
+  }
+  
+  /* Stock Information Section */
+  .mfm-section-title {
+    color: #25632b;
+    font-size: 16px;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #bdeac1;
+  }
+  
+  .mfm-stock-info {
+    background-color: #f7fdf7;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #bdeac1;
+  }
+  
+  .mfm-stock-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .mfm-stock-card {
+    flex: 1;
+    background-color: white;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #bdeac1;
+    transition: all 0.2s ease;
+  }
+  
+  .mfm-stock-card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+  
+  .mfm-stock-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  
+  .mfm-stock-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #25632b;
+  }
+  
+  /* Form Fields Container */
+  .mfm-form-fields-container {
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  /* Form Groups */
+  .mfm-form-group {
+    flex: 1 0 calc(50% - 8px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .mfm-full-width {
+    flex: 1 0 100%;
+  }
+  
+  /* Form Labels */
+  .mfm-form-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+  }
+  
+  /* Form Inputs and Selects */
+  .mfm-form-input {
+    padding: 10px 12px;
+    border: 1px solid #b8d6eb;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 100%;
+    background-color: white;
+  }
+  
+  .mfm-form-input:focus {
+    border-color: #7a9fb8;
+    box-shadow: 0 0 0 3px rgba(184, 214, 235, 0.3);
+  }
+  
+  .mfm-form-input::placeholder {
+    color: #aaa;
+  }
+  
+  /* Action Buttons */
+  .mfm-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 20px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .mfm-save-button,
+  .mfm-cancel-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+  }
+  
+  .mfm-save-button {
+    background-color: #bdeac1;
+    color: #25632b;
+  }
+  
+  .mfm-save-button:hover {
+    background-color: #a5e0aa;
+    transform: translateY(-2px);
+  }
+  
+  .mfm-save-button:disabled {
+    background-color: #e0e0e0;
+    color: #888;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .mfm-cancel-button {
+    background-color: #ffc2c2;
+    color: #7a3434;
+  }
+  
+  .mfm-cancel-button:hover {
+    background-color: #ffaaaa;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
+    .mfm-content-container {
+      flex-direction: column;
+    }
+    
+    .mfm-left-column,
+    .mfm-right-column {
+      width: 100%;
+      border-right: none;
+    }
+    
+    .mfm-left-column {
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .mfm-modal-container {
+      width: 95%;
+      max-height: 85vh;
+    }
+  
+    .mfm-modal-title {
+      padding: 12px 16px;
+      font-size: 18px;
+    }
+  
+    .mfm-stock-detail {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .mfm-form-group {
+      flex: 1 0 100%;
+    }
+  
+    .mfm-modal-actions {
+      padding: 12px;
+      flex-direction: column-reverse;
+    }
+  
+    .mfm-save-button,
+    .mfm-cancel-button {
+      width: 100%;
+    }
+  }
