@@ -1,10 +1,17 @@
 <?php
+
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 include 'db_connection.php';
 $data = $_POST;
+
 
 if (!$data) {
     echo json_encode(["status" => "error", "message" => "Invalid request"]);
@@ -47,16 +54,14 @@ $storage_area = $inventoryData['storage_area'];
 $prevUnits = $inventoryData['units'];
 $currUnits = $prevUnits - $unitsAdded; 
 
-
-
-$activity_performed = 'Added ' . $unitsAdded . ' units to item ' . $itemDesc_1 . ' ' . $itemDesc_2;
+$activity_performed = 'Removed ' . $unitsAdded . ' units to item ' . $itemDesc_1 . ' ' . $itemDesc_2;
 
 // ✅ **Step 2: Update inventory units**
-// $updateQuery = "UPDATE inventory_merge SET units = units - ? WHERE inventory_Id = ?";
-// $stmt = mysqli_prepare($conn, $updateQuery);
-// mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $inventory_Id);
-// mysqli_stmt_execute($stmt);
-// mysqli_stmt_close($stmt);
+$updateQuery = "UPDATE inventory_merge SET units = units - ? WHERE new_stock_id = ?";
+$stmt = mysqli_prepare($conn, $updateQuery);
+mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $stockId);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_close($stmt);
 
 // ✅ **Step 3: Insert into stock_history**
 $insertQuery = "INSERT INTO stock_history 

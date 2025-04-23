@@ -20,7 +20,6 @@ if (!$inventory_Id) {
     echo json_encode(["status" => "error", "message" => "Missing required fields"]);
     exit;
 }
-
 // ✅ **Step 1: Fetch existing inventory data**
 $fetchQuery = "SELECT units, itemCode, brand, category, itemDesc_1, itemDesc_2, location, storage_area 
                FROM inventory_merge WHERE new_stock_id = ?";
@@ -50,7 +49,7 @@ $currUnits = $prevUnits + $unitsAdded;
 $activity_performed = 'Added ' . $unitsAdded . ' units to item ' . $itemDesc_1 . ' ' . $itemDesc_2;
 
 // ✅ **Step 2: Update inventory units**
-$updateQuery = "UPDATE inventory_merge SET units = units + ? WHERE inventory_Id = ?";
+$updateQuery = "UPDATE inventory_merge SET units = units + ? WHERE new_stock_id = ?";
 $stmt = mysqli_prepare($conn, $updateQuery);
 mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $stockId);
 mysqli_stmt_execute($stmt);
