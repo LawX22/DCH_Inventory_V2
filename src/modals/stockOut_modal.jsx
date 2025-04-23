@@ -17,7 +17,6 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
   const [requisitionDate, setRequisitionDate] = useState("");
   const [unitsAdded, setUnitsAdded] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
-
   const [stockId, setStockId] = useState(null);
   
   const username = localStorage.getItem("username") || "";
@@ -75,11 +74,13 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
   };
 
   const handleSubmit = async (e) => {
-    // if(unitsAdded > units){
-    //   alert("Units added cannot be greater than the available units.");
-    //   return;
-    // }
-    // else{
+    e.preventDefault();
+    
+    // Validate that units being removed don't exceed available units
+    if (Number(unitsAdded) > Number(units)) {
+      alert("Units removed cannot be greater than the available units.");
+      return;
+    }
   
     const formDataToSend = new FormData();
     formDataToSend.append("itemId", itemId);
@@ -108,7 +109,12 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-1">
+    <div className="modal-overlay-1" onClick={(e) => {
+      // Close the modal when clicking outside the content area
+      if (e.target.className === "modal-overlay-1") {
+        onClose();
+      }
+    }}>
       <div className="modal-container-1">
         <h2 className="modal-title-2">Stock Out Item</h2>
         <form onSubmit={handleSubmit} className="modal-form-1">
@@ -183,6 +189,8 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
                   onChange={handleInputChange}
                   className="form-input-1"
                   required
+                  autoComplete="off"
+                  style={{ position: "relative", zIndex: 1 }}
                 />
               </div>
 
@@ -211,7 +219,11 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
             <button type="submit" className="save-button-1">
               SAVE
             </button>
-            <button type="button" onClick={onClose} className="cancel-button-1">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="cancel-button-1"
+            >
               CANCEL
             </button>
           </div>

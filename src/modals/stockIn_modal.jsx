@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
+const StockInModal = ({ isOpen, onClose, data }) => {
   const [itemId, setItemId] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [itemBrand, setItemBrand] = useState("");
@@ -100,10 +100,16 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
     }
   };
 
+  // If the modal is not open, don't render anything
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-1">
+    <div className="modal-overlay-1" onClick={(e) => {
+      // Close the modal when clicking outside the content area
+      if (e.target.className === "modal-overlay-1") {
+        onClose();
+      }
+    }}>
       <div className="modal-container-1">
         <h2 className="modal-title-1">Stock In Item</h2>
         <form onSubmit={handleSubmit} className="modal-form-1">
@@ -162,7 +168,7 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
                 />
               </div>
 
-              {/* Date Input */}
+              {/* Date Input - Added autoComplete="off" to help prevent browser date picker issues */}
               <div className="form-group-1">
                 <label className="form-label-1">Date</label>
                 <input
@@ -172,6 +178,8 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
                   onChange={handleInputChange}
                   className="form-input-1"
                   required
+                  autoComplete="off"
+                  style={{ position: "relative", zIndex: 1 }}
                 />
               </div>
 
@@ -193,14 +201,18 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
           {/* Hidden Fields */}
           <input type="hidden" name="username" value={username} />
           <input type="hidden" name="itemId" value={itemId} />
-          <input  type="hidden" name="stockId" value={stockId} />
+          <input type="hidden" name="stockId" value={stockId} />
 
           {/* Modal Actions (Buttons) */}
           <div className="modal-actions-1">
             <button type="submit" className="save-button-1">
               SAVE
             </button>
-            <button type="button" onClick={onClose} className="cancel-button-1">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="cancel-button-1"
+            >
               CANCEL
             </button>
           </div>
@@ -210,4 +222,4 @@ const StockHistoryFixModal = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default StockHistoryFixModal;
+export default StockInModal;
