@@ -91,7 +91,7 @@ const StockOutModal = ({ isOpen, onClose, data }) => {
   
     try {
       const response = await axios.post(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockOut_inventory.php",
+        "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },

@@ -21,7 +21,12 @@
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-}
+  
+    /* 💡 FIXES HERE */
+    overscroll-behavior: contain;
+    touch-action: manipulation;
+  }
+  
 
 /* Modal Title */
 .modal-title-1,

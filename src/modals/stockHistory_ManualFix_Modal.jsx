@@ -63,7 +63,7 @@ const ManualFixModal = ({ isOpen, onClose, data }) => {
   useEffect(() => {
     if (itemId) {
       axios
-        .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/get_latest_units.php", {
+        .get("http://localhost/DCH_Inventory_V2/src/backend/get_latest_units.php", {
           params: { latest_unit_id: itemId },
         })
         .then((response) => {
@@ -80,7 +80,7 @@ const ManualFixModal = ({ isOpen, onClose, data }) => {
 
   // Fetch brands
   useEffect(() => {
-    axios.get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands.php")
+    axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_brands.php")
       .then(response => {
         setBrands(response.data);
       })
@@ -91,7 +91,7 @@ const ManualFixModal = ({ isOpen, onClose, data }) => {
 
   // Fetch categories
   useEffect(() => {
-    axios.get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category.php")
+    axios.get("http://localhost/DCH_Inventory_V2/src/backend/list_category.php")
       .then(response => {
         setCategory(response.data);
       })
@@ -162,7 +162,7 @@ const ManualFixModal = ({ isOpen, onClose, data }) => {
 
     try {
       const response = await axios.post(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockOut_inventory.php",
+        "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },

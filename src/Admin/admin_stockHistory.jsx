@@ -76,7 +76,7 @@ function AdminStockHistory() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
+        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
@@ -89,7 +89,7 @@ function AdminStockHistory() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
+        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
@@ -100,7 +100,7 @@ function AdminStockHistory() {
   }, []);
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
+      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data); // Store fetched brands in state
       })
@@ -123,7 +123,7 @@ function AdminStockHistory() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_stockHistory.php",
+        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
         {
           params: {
             location: selectedLocation,

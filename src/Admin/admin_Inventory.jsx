@@ -81,7 +81,7 @@ function AdminInventory() {
 
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
         params: {
           location: selectedLocation,
           search: searchQuery,
@@ -140,7 +140,7 @@ function AdminInventory() {
 
     try {
       await axios.post(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/delete_inventory.php",
+        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
           username: username,
@@ -173,7 +173,7 @@ function AdminInventory() {
 
   const handleExport = () => {
     window.open(
-      "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
+      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
       "_blank"
     );
   };
@@ -189,11 +189,11 @@ function AdminInventory() {
     setArea("");
     setStock("");
   }, []);
-
+  
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
+        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data);
@@ -206,7 +206,7 @@ function AdminInventory() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
+        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data);
@@ -218,7 +218,7 @@ function AdminInventory() {
   
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
+      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data);
       })

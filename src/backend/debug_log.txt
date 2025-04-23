@@ -1659,3 +1659,11 @@ Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
 Encoder: dhaniel, Start: , End: 
 Encoder: dhaniel, Start: 2025-04-07, End: 2025-04-12
 >>>>>>> 4f0ccb015bd966f2a73afb32b09c30a0d95f1f9a
+Encoder: All, Start: , End: 
+21, End: 2025-04-26
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-21, End: 2025-04-26
+Encoder: All, Start: 2025-04-21, End: 2025-04-26
+Encoder: All, Start: , End: 
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-21, End: 2025-04-26
