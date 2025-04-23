@@ -34,7 +34,7 @@ const FocusedStockHistoryModal = ({ isOpen, onClose, inventory_Id }) => {
   const fetchStockHistory = () => {
     setIsLoading(true);
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_focusedStockHistory.php", {
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_focusedStockHistory.php", {
         params: { 
           inventory_Id, 
           filterDate, 

@@ -42,7 +42,7 @@ function ActivityReport() {
     
     useEffect(() => {
       axios
-        .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_encoders_header.php")
+        .get("http://localhost/DCH_Inventory_V2/src/backend/list_encoders_header.php")
         .then((response) => {
           setUserList(response.data); // Store fetched brands in state
         })
@@ -98,7 +98,7 @@ function ActivityReport() {
 
    useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activityReport.php", {
+      .get("http://localhost/DCH_Inventory_V2/src/backend/load_activityReport.php", {
         params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType, time:time},
       })
       .then((response) => {
