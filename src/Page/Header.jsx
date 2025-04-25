@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DCHLogo from '../assets/DCH.png';
 import {
   FaBars,
   FaTimes,
@@ -135,7 +136,7 @@ function Header() {
       <div className="header-overlay"></div>
 
       <div className="logo-container">
-        <img src="/src/assets/DCH.png" alt="DCH" className="DCH" />
+        <img src={DCHLogo} alt="DCH" className="DCH" />
         {userType && (
           <div className="user-role-badge">{userType.toUpperCase()}</div>
         )}
