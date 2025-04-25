@@ -80,31 +80,36 @@ function StockHistory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
+        , {
+          params: { brand , selectedLocation}
+        }
       )
       .then((response) => {
-        setCategoryList(response.data); // Store fetched brands in state
+        setCategoryList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching categories:", error);
       });
-  }, []);
+  }, [brand, selectedLocation]);
 
   useEffect(() => {
+  // skip if no category selected yet
+  
     axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
-      )
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php", {
+        params: { category , selectedLocation}
+      })
       .then((response) => {
-        setBrandList(response.data); // Store fetched brands in state
+        setBrandList(response.data);
       })
       .catch((error) => {
         console.error("Error fetching brands:", error);
       });
-  }, []);
+  }, [category, selectedLocation]);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data); // Store fetched brands in state
       })
@@ -129,7 +134,7 @@ function StockHistory() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/load_stockHistory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_stockHistory.php",
         {
           params: {
             location: selectedLocation,

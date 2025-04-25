@@ -59,7 +59,7 @@ function StockInOut() {
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
         params: {
           location: selectedLocation,
           search: searchQuery,
@@ -73,7 +73,7 @@ function StockInOut() {
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, category, brand, area]); 
+  }, [selectedLocation, searchQuery, inventory, brand, category, area]); 
 
 
 
@@ -95,36 +95,40 @@ function StockInOut() {
     setStockOutModalOpen(true);
   }
 
-
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
+        , {
+          params: { brand , selectedLocation}
+        }
       )
       .then((response) => {
-        setCategoryList(response.data); 
+        setCategoryList(response.data);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-  }, []);
+  }, [brand, selectedLocation]);
 
   useEffect(() => {
+  // skip if no category selected yet
+  
     axios
-      .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
-      )
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php", {
+        params: { category , selectedLocation}
+      })
       .then((response) => {
-        setBrandList(response.data); // Store fetched brands in state
+        setBrandList(response.data);
       })
       .catch((error) => {
         console.error("Error fetching brands:", error);
       });
-  }, []);
+  }, [category, selectedLocation]);
 
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php"
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
       )
       .then((response) => {
         setAreaList(response.data); // Store fetched areas in state
@@ -140,7 +144,7 @@ function StockInOut() {
 
     try {
       const response = await fetch(
-        "http://localhost/DCH_Inventory_V2/src/backend/selected_stock_group.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/selected_stock_group.php",
         {
           method: "POST",
           headers: {
@@ -168,7 +172,7 @@ function StockInOut() {
     const username = localStorage.getItem("username");
     try {
       const response = await fetch(
-        "http://localhost/DCH_Inventory_V2/src/backend/getStockGroup.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/getStockGroup.php",
         {
           method: "POST",
           headers: {

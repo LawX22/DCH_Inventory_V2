@@ -26,7 +26,7 @@ function GroupModal({ isOpen, onClose, groupData }) {
   };
 
   const handleRemoveItem = (stock_group_id) => {
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/deleteGroup.php", {
+    fetch("https://slategrey-stingray-471759.hostingersite.com/api/backend/deleteGroup.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ function GroupModal({ isOpen, onClose, groupData }) {
     console.log("Data to submit:", dataToSend); // Log the data to check if it's structured as expected
     
     // Send data to PHP backend using fetch
-    fetch("http://localhost/DCH_Inventory_V2/src/backend/groupStock.php", {
+    fetch("https://slategrey-stingray-471759.hostingersite.com/api/backend/groupStock.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Ensure this header is set to indicate JSON

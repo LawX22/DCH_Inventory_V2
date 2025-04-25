@@ -86,7 +86,7 @@ const StockInModal = ({ isOpen, onClose, data }) => {
   
     try {
       const response = await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/stockIn_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockIn_inventory.php",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -192,7 +192,7 @@ const StockInModal = ({ isOpen, onClose, data }) => {
                   value={requisitionNum}
                   onChange={handleInputChange}
                   className="form-input-1"
-                  required
+                  
                 />
               </div>
             </div>

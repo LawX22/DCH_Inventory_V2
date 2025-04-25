@@ -34,7 +34,7 @@ const FocusedStockHistoryModal = ({ isOpen, onClose, inventory_Id }) => {
   const fetchStockHistory = () => {
     setIsLoading(true);
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/load_focusedStockHistory.php", {
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_focusedStockHistory.php", {
         params: { 
           inventory_Id, 
           filterDate, 
@@ -79,6 +79,19 @@ const FocusedStockHistoryModal = ({ isOpen, onClose, inventory_Id }) => {
             th { background-color: #e7ecf0 !important; -webkit-print-color-adjust: exact; }
             .stock-in { background-color: rgba(189, 234, 193, 0.2) !important; -webkit-print-color-adjust: exact; }
             .stock-out { background-color: rgba(255, 194, 194, 0.2) !important; -webkit-print-color-adjust: exact; }
+            .no-print { display: none; }
+          }
+          .close-button { 
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          .close-button:hover {
+            background: #365b8c;
           }
         </style>
       </head>
@@ -89,12 +102,22 @@ const FocusedStockHistoryModal = ({ isOpen, onClose, inventory_Id }) => {
           ${filterDate ? `<p>Filter: Date ${filterDate}${transactionType ? ` | Type: ${transactionType}` : ''}</p>` : ''}
         </div>
         ${printContent}
+        <div class="no-print" style="text-align: center;">
+          <button class="close-button" onclick="window.print();">Print</button>
+          <button class="close-button" onclick="window.close();">Close</button>
+        </div>
+        <script>
+          // Automatically trigger print when content is loaded
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 500);
+          }
+        </script>
       </body>
       </html>
     `);
     printWindow.document.close();
-    printWindow.print();
-    printWindow.close();
   };
 
   const handleExportToExcel = () => {

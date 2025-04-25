@@ -28,7 +28,7 @@ function List_Restock() {
   const toggleSelection = (itemId, isSelected) => {
     const updatedSelection = !isSelected; // Toggle true/false
     axios
-      .post("http://localhost/DCH_Inventory_V2/src/backend/update_selection.php", {
+      .post("https://slategrey-stingray-471759.hostingersite.com/api/backend/update_selection.php", {
         itemId,
         isSelected: updatedSelection ? 1 : 0, // Send as 1 or 0
       })
@@ -89,7 +89,7 @@ function List_Restock() {
 
 useEffect(() => {
   axios
-    .get("http://localhost/DCH_Inventory_V2/src/backend/load_Inventory.php", {
+    .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
       params: {
         location: selectedLocation,
         search: searchQuery,
@@ -148,7 +148,7 @@ useEffect(() => {
 
     try {
       await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/delete_inventory.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/delete_inventory.php",
         new URLSearchParams({
           id: id,
           username: username, // Add username here
@@ -181,7 +181,7 @@ useEffect(() => {
 
   const handleExport = () => {
     window.open(
-      "http://localhost/DCH_Inventory_V2/src/backend/export_inventory.php",
+      "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
       "_blank"
     );
   };
@@ -201,7 +201,7 @@ useEffect(() => {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_category_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
       )
       .then((response) => {
         setCategoryList(response.data); // Store fetched brands in state
@@ -214,7 +214,7 @@ useEffect(() => {
   useEffect(() => {
     axios
       .get(
-        "http://localhost/DCH_Inventory_V2/src/backend/list_brands_header.php"
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php"
       )
       .then((response) => {
         setBrandList(response.data); // Store fetched brands in state
@@ -225,7 +225,7 @@ useEffect(() => {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost/DCH_Inventory_V2/src/backend/list_area_header.php")
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
       .then((response) => {
         setAreaList(response.data); // Store fetched brands in state
       })
@@ -291,7 +291,7 @@ useEffect(() => {
   className="activity-button"
   onClick={async () => {
     try {
-      const response = await fetch("http://localhost/DCH_Inventory_V2/src/backend/clear_selection.php", {
+      const response = await fetch("https://slategrey-stingray-471759.hostingersite.com/api/backend/clear_selection.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
