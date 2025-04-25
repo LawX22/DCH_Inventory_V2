@@ -92,7 +92,7 @@
     
       try {
         const response = await axios.post(
-          "http://localhost/DCH_Inventory_V2/src/backend/stockOut_inventory.php",
+          "https://slategrey-stingray-471759.hostingersite.com/api/backend/stockOut_inventory.php",
           formDataToSend,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -202,7 +202,7 @@
                     value={requisitionNum}
                     onChange={handleInputChange}
                     className="form-input-1"
-                    required
+                    
                   />
                 </div>
               </div>
