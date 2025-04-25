@@ -27,7 +27,7 @@ const SelectedItemsModal = ({
       setIsLoading(true);
       // Send the update request to change isSelected to 0
       await axios.post(
-        "http://localhost/DCH_Inventory_V2/src/backend/deselect_item.php",
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/deselect_item.php",
         {
           inventory_Id: inventory_Id,
           isSelected: 0,
