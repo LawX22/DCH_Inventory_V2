@@ -1,154 +1,246 @@
-import React, { useState, useEffect } from "react";
-import { AiOutlineSearch, AiOutlineEye, AiOutlineDown } from "react-icons/ai";
+import React, { useState, useEffect, useRef } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
 import { IoArrowBack } from "react-icons/io5";
+import { FaChevronDown, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import DCHLogo from '../assets/DCH.png';
 import axios from "axios";
 
 function ActivityReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
-
-
-      const [time, setTime] = useState(
-        localStorage.getItem("timeAH") || ''
-      );
-
-       const [activityType, setActivityType] = useState(
-         localStorage.getItem("activityTypeAH") || ''
-       );
-     
-       const [date, setDate] = useState(
-         localStorage.getItem("dateAH") || ''
-       );
-     
-       const [user, setUser] = useState(
-         localStorage.getItem("userAH") || ''
-       );
-
-          useEffect(() => {
-             localStorage.setItem("activityTypeAH", ""); // Set brand to empty string (or any value you want)
-             localStorage.setItem("dateAH", ""); // Set area to empty string
-             localStorage.setItem("userAH", ""); // Set category to empty string
-             localStorage.setItem("timeAH", "");
-         
-             setActivityType('');
-             setDate('');
-             setUser('');
-             setTime('');
-           }, []);
-
-    const [userList, setUserList] = useState([]);
-
-    
-    useEffect(() => {
-      axios
-        .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_encoders_header.php")
-        .then((response) => {
-          setUserList(response.data); // Store fetched brands in state
-        })
-        .catch((error) => {
-          console.error("Error fetching brands:", error);
-        });
-    }, []);
-
-
-    const handleFilterChange = (e) => {
-      const { name, value } = e.target;
-    
-      switch (name) {
-        case "users":
-          setUser(value);
-    
-          break;
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   
-          case "date":
-            setDate(value);
-      
-            break;
+  // Keep track of which input is open
+  const [dateInputOpen, setDateInputOpen] = useState(false);
+  const [timeInputOpen, setTimeInputOpen] = useState(false);
+  
+  const dateInputRef = useRef(null);
+  const timeInputRef = useRef(null);
 
-            case "time":
-              setTime(value);
-        
-              break;
-            
-            case "activity":
-            setActivityType(value);
-    
-          break;
-        default:
-          console.warn("Unknown filter:", name);
-      }
-    };
+  const [time, setTime] = useState(
+    localStorage.getItem("timeAH") || ''
+  );
 
+  const [activityType, setActivityType] = useState(
+    localStorage.getItem("activityTypeAH") || ''
+  );
+  
+  const [date, setDate] = useState(
+    localStorage.getItem("dateAH") || ''
+  );
+  
+  const [user, setUser] = useState(
+    localStorage.getItem("userAH") || ''
+  );
 
-     const [selectedLocation, setSelectedLocation] = useState(
-       localStorage.getItem("selectedLocation") || "All"
-     );
-   
-     useEffect(() => {
-       localStorage.setItem("selectedLocation", selectedLocation);
-       localStorage.setItem("activityTypeAH", activityType);
-       localStorage.setItem("dateAH", date);
-       localStorage.setItem("userAH", user);
-       localStorage.setItem("timeAH", time);
-
-     }, [selectedLocation,date,user,activityType,time]);
+  const [userList, setUserList] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(
+    localStorage.getItem("selectedLocation") || "All"
+  );
   
   const navigate = useNavigate();
 
-   useEffect(() => {
-    axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activityReport.php", {
-        params: { location: selectedLocation, search: searchQuery, user:user, date:date, activityType:activityType, time:time},
-      })
-      .then((response) => {
-        console.log(response.data); // Inspect what the API returns
-        setInventory(response.data.inventory || response.data);
-      })
-      .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory, date, activityType, user, time]); // Re-run when searchQuery changes
+  // Reset filters on mount
+  useEffect(() => {
+    localStorage.setItem("activityTypeAH", "");
+    localStorage.setItem("dateAH", "");
+    localStorage.setItem("userAH", "");
+    localStorage.setItem("timeAH", "");
+    
+    setActivityType('');
+    setDate('');
+    setUser('');
+    setTime('');
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+      
+      // Close date picker if clicking outside
+      if (dateInputRef.current && !dateInputRef.current.contains(event.target)) {
+        setDateInputOpen(false);
+      }
+      
+      // Close time picker if clicking outside
+      if (timeInputRef.current && !timeInputRef.current.contains(event.target)) {
+        setTimeInputOpen(false);
+      }
+    }
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Custom handlers for date/time inputs
+  const handleDateClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Toggle date input open state
+    setDateInputOpen(!dateInputOpen);
+    // Close time input if open
+    setTimeInputOpen(false);
+    
+    // Focus the input if opening
+    if (!dateInputOpen) {
+      setTimeout(() => {
+        if (dateInputRef.current) {
+          dateInputRef.current.showPicker();
+        }
+      }, 10);
+    }
+  };
+  
+  const handleTimeClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Toggle time input open state
+    setTimeInputOpen(!timeInputOpen);
+    // Close date input if open
+    setDateInputOpen(false);
+    
+    // Focus the input if opening
+    if (!timeInputOpen) {
+      setTimeout(() => {
+        if (timeInputRef.current) {
+          timeInputRef.current.showPicker();
+        }
+      }, 10);
+    }
   };
 
+  // Fetch user list
+  useEffect(() => {
+    axios
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_encoders_header.php")
+      .then((response) => {
+        setUserList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
+
+  // Update localStorage when filter values change
+  useEffect(() => {
+    localStorage.setItem("selectedLocation", selectedLocation);
+    localStorage.setItem("activityTypeAH", activityType);
+    localStorage.setItem("dateAH", date);
+    localStorage.setItem("userAH", user);
+    localStorage.setItem("timeAH", time);
+  }, [selectedLocation, date, user, activityType, time]);
+
+  // Fetch activity data
+  useEffect(() => {
+    axios
+      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_activityReport.php", {
+        params: { 
+          location: selectedLocation, 
+          search: searchQuery, 
+          user: user, 
+          date: date, 
+          activityType: activityType, 
+          time: time
+        },
+      })
+      .then((response) => {
+        setInventory(response.data.inventory || response.data);
+      })
+      .catch((error) => console.error("Error fetching activity data:", error));
+  }, [selectedLocation, searchQuery, date, activityType, user, time]);
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    
+    switch (name) {
+      case "users":
+        setUser(value);
+        break;
+      case "date":
+        setDate(value);
+        setDateInputOpen(false); // Close the datepicker after selection
+        break;
+      case "time":
+        setTime(value);
+        setTimeInputOpen(false); // Close the timepicker after selection
+        break;
+      case "activity":
+        setActivityType(value);
+        break;
+      default:
+        console.warn("Unknown filter:", name);
+    }
+  };
+
+  // Clear filter functions
+  const clearDateFilter = (e) => {
+    e.stopPropagation();
+    setDate('');
+  };
+  
+  const clearTimeFilter = (e) => {
+    e.stopPropagation();
+    setTime('');
+  };
+
+  // Filter the data based on search query
+  const filteredActivity = inventory.filter(
+    (item) =>
+      (item.activity_performed && 
+        item.activity_performed.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.activity_type && 
+        item.activity_type.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.encoder && 
+        item.encoder.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
-    <div className="activity-container">
-      {/* Header Section - Matches Inventory */}
+    <div className="inventory-container">
+      {/* Header Section */}
       <header className="header-1">
-        {/* Back Button on the Left */}
         <div
           className="close-btn"
           onClick={() => {
-            navigate("/inventory"); // Navigate to Inventory
+            navigate("/inventory");
             setTimeout(() => window.close());
           }}
         >
           <IoArrowBack size={20} /> Close
         </div>
 
-        {/* Logo in the Center */}
         <div className="logo-container-1">
-          <img src="/src/assets/DCH.png" alt="DCH" className="DCH-1" />
+          <img src={DCHLogo} alt="DCH" className="DCH-1" />
         </div>
       </header>
 
       {/* Action Panel */}
       <div className="action-panel">
-
-        <div className="warehouse-dropdown-1">
-          <select className="dropdown-select-1" value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
+        <div className="warehouse-dropdown" ref={dropdownRef}>
+          <select
+            className="dropdown-select"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDropdownOpen(!dropdownOpen);
+            }}
+          >
             <option value="All">All</option>
             <option value="Warehouse">Warehouse</option>
             <option value="Store">Store</option>
           </select>
         </div>
 
-        <div className="ac-search-container">
+        <div className="search-container">
           <AiOutlineSearch size={18} className="search-icon" />
           <input
             type="text"
@@ -160,74 +252,144 @@ function ActivityReport() {
         </div>
       </div>
 
-      {/* Inventory Table */}
-      <div className="inventory-table-1">
-        <div className="table-header-1">
-          <div className="header-cell-1 with-arrow">
+      {/* Activity Table */}
+      <div className="inventory-table">
+        <div className="table-header" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr' }}>
+          <div className="header-cell">
             <span>Activity</span>
-            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }} />
           </div>
-          <div className="header-cell-1 with-arrow">
-          <select name="activity" onChange={(e) =>setActivityType(e.target.value)}>    
-            <option value="">Activity</option>
-            <option value="INSERT">INSERT</option>
-            <option value="UPDATE">UPDATE</option>
-            <option value="DELETE">DELETE</option>
-            <option value="STOCK OUT">STOCK OUT</option>
-            <option value="STOCK IN">STOCK IN</option>
-
-         
-            </select>
-            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
+          <div className="header-cell">
+            <div className="select-container">
+              <select
+                name="activity"
+                value={activityType}
+                onChange={handleFilterChange}
+                className="enhanced-select"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <option value="">Activity Type</option>
+                <option value="INSERT">INSERT</option>
+                <option value="UPDATE">UPDATE</option>
+                <option value="DELETE">DELETE</option>
+                <option value="STOCK OUT">STOCK OUT</option>
+                <option value="STOCK IN">STOCK IN</option>
+              </select>
+              <FaChevronDown className="select-icon" />
+            </div>
           </div>
-          <div className="header-cell-1 with-arrow">
-          <select name="user" onChange={(e) =>setUser(e.target.value)}>    
-
-            <option value="">Encoder</option>
-            {userList.map((option) => (
-            <option key={option.inventory_Id} value={option.encoder}>
-            {option.encoder}
-            </option>
-            ))}
-            </select>
-            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
+          <div className="header-cell">
+            <div className="select-container">
+              <select
+                name="users"
+                value={user}
+                onChange={handleFilterChange}
+                className="enhanced-select"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <option value="">Encoder</option>
+                {userList.map((option) => (
+                  <option key={option.inventory_Id || option.id} value={option.encoder}>
+                    {option.encoder}
+                  </option>
+                ))}
+              </select>
+              <FaChevronDown className="select-icon" />
+            </div>
           </div>
-
-
-          <div className="header-cell-1 with-arrow">
-          <span>Time<input type="time" name="time"  onChange={(e) =>setTime(e.target.value)}/></span>
-            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
-          </div>
-
-          
-          <div className="header-cell-1 with-arrow">
-          <span>Date <input type="date" name="date"  onChange={(e) =>setDate(e.target.value)}/></span>
-            <AiOutlineDown size={10} style={{ marginLeft: "15" , marginTop: "2" }}  />
-          </div>
-          <div className="header-cell-1">Location</div>
-        </div>
-
-        <div className="table-body-1">
-          {inventory.map((item) => (
-            <div className="table-row-1" key={item.report_id}>
-              <div className="activity-cell-1">{item.activity_performed}</div>
-              <div className="type-cell-1">{item.activity_type}</div>
-              <div className="user-cell-1">{item.encoder}</div>
-              <div className="time-cell-1">{item.time}</div>
-              <div className="date-cell-1">
-                {new Date(item.date_performed).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
-              <div className="actions-cell-1">
-                <button className="action-button-1 view-button-1">
-                 {item.location}
-                </button>
+          <div className="header-cell">
+            <div className="time-filter" ref={timeInputRef}>
+              <input 
+                type="time" 
+                name="time" 
+                value={time}
+                onChange={handleFilterChange}
+                className="time-input"
+                style={{ display: timeInputOpen ? 'block' : 'none' }}
+              />
+              <div 
+                className={`custom-time-display ${time ? 'active' : ''}`}
+                onClick={handleTimeClick}
+                style={{ display: timeInputOpen ? 'none' : 'flex' }}
+                data-placeholder="Time Filter"
+              >
+                {time || ""}
+                {time && (
+                  <span className="clear-filter" onClick={clearTimeFilter}>
+                    <FaTimes size={12} />
+                  </span>
+                )}
               </div>
             </div>
-          ))}
+          </div>
+          <div className="header-cell">
+            <div className="date-filter" ref={dateInputRef}>
+              <input 
+                type="date" 
+                name="date" 
+                value={date}
+                onChange={handleFilterChange}
+                className="date-input"
+                style={{ display: dateInputOpen ? 'block' : 'none' }}
+              />
+              <div 
+                className={`custom-date-display ${date ? 'active' : ''}`}
+                onClick={handleDateClick}
+                style={{ display: dateInputOpen ? 'none' : 'flex' }}
+                data-placeholder="Date Filter"
+              >
+                {date || ""}
+                {date && (
+                  <span className="clear-filter" onClick={clearDateFilter}>
+                    <FaTimes size={12} />
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>
+            Location
+          </div>
+        </div>
+
+        <div className="table-body">
+          {filteredActivity.length > 0 ? (
+            filteredActivity.map((item) => (
+              <div className="table-row" key={item.report_id} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr' }}>
+                <div className="item-cell">
+                  <div className="item-details">
+                    <div className="item-category">{item.activity_performed}</div>
+                  </div>
+                </div>
+                <div className="brand-cell">
+                  <div className="item">{item.activity_type}</div>
+                </div>
+                <div className="brand-cell">
+                  <div className="item">{item.encoder}</div>
+                </div>
+                <div className="brand-cell">
+                  <div className="item">{item.time}</div>
+                </div>
+                <div className="location-cell">
+                  <div className="item">
+                    {new Date(item.date_performed).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </div>
+                </div>
+                <div className="actions-cell" style={{ justifyContent: "center" }}>
+                  <div className="action-buttons-container">
+                    <div className="location-display">
+                      {item.location || "N/A"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-data-message">No activity records found</div>
+          )}
         </div>
       </div>
     </div>
