@@ -26,7 +26,9 @@ const InventoryModal = ({ isOpen, onClose }) => {
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands.php")
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands.php"
+      )
       .then((response) => {
         setBrands(response.data); // Store fetched brands in state
       })
@@ -38,7 +40,9 @@ const InventoryModal = ({ isOpen, onClose }) => {
   // Fetch brand data from backend when component mounts
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category.php")
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category.php"
+      )
       .then((response) => {
         setCategory(response.data); // Store fetched brands in state
       })
@@ -149,7 +153,7 @@ const InventoryModal = ({ isOpen, onClose }) => {
           </div>
           <div className="imd-form-fields-container">
             <div className="imd-form-group imd-full-width">
-              <label className="imd-form-label">ITEM CODE</label>
+              <label className="imd-form-label">ITEM ID *( FLP113000 )</label>
               <input
                 type="text"
                 name="itemCode"
@@ -190,7 +194,9 @@ const InventoryModal = ({ isOpen, onClose }) => {
             </div>
             <div className="imd-descriptions-container imd-flex imd-flex-row imd-w-full imd-space-x-4">
               <div className="imd-form-group imd-w-1/2">
-                <label className="imd-form-label">DESCRIPTION 1</label>
+                <label className="imd-form-label">
+                  DESCRIPTION 1 *( Category )
+                </label>
                 <input
                   type="text"
                   name="description1"
@@ -200,7 +206,9 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div className="imd-form-group imd-w-1/2">
-                <label className="imd-form-label">DESCRIPTION 3</label>
+                <label className="imd-form-label">
+                  DESCRIPTION 3 *( Item Codes )
+                </label>
                 <input
                   type="text"
                   name="description3"
@@ -210,9 +218,12 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 />
               </div>
             </div>
-            <div className="imd-descriptions-container imd-flex imd-flex-row imd-w-full imd-space-x-4">
+
+            <div className="imd-descriptions-container imd-flex imd-flex-row imd-w-full imd-space-x-4 mt-4">
               <div className="imd-form-group imd-w-1/2">
-                <label className="imd-form-label">DESCRIPTION 2</label>
+                <label className="imd-form-label">
+                  DESCRIPTION 2 *( Measurements )
+                </label>
                 <input
                   type="text"
                   name="description2"
@@ -222,7 +233,9 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 />
               </div>
               <div className="imd-form-group imd-w-1/2">
-                <label className="imd-form-label">DESCRIPTION 4</label>
+                <label className="imd-form-label">
+                  DESCRIPTION 4 *( Type of Car )
+                </label>
                 <input
                   type="text"
                   name="description4"
