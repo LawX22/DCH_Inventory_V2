@@ -8,6 +8,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
     itemCategory: "",
     description1: "",
     description2: "",
+    description3: "",
+    description4: "",
     units: "",
     fixedPrice: "",
     retailPrice: "",
@@ -25,6 +27,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
   const [itemCategory, setItemCategory] = useState("");
   const [itemDesc1, setItemDesc1] = useState("");
   const [itemDesc2, setItemDesc2] = useState("");
+  const [itemDesc3, setItemDesc3] = useState("");
+  const [itemDesc4, setItemDesc4] = useState("");
   const [units, setUnits] = useState("");
   const [fixedPrice, setFixedPrice] = useState("");
   const [retailPrice, setRetailPrice] = useState("");
@@ -48,6 +52,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
       setItemCategory(data.category || "");
       setItemDesc1(data.itemDesc_1 || "");
       setItemDesc2(data.itemDesc_2 || "");
+      setItemDesc3(data.itemDesc_3 || "");
+      setItemDesc4(data.itemDesc_4 || "");
       setUnits(data.units || "");
       setFixedPrice(data.price || "");
       setRetailPrice(data.retail_price || "");
@@ -108,6 +114,12 @@ const EditModal = ({ isOpen, onClose, data }) => {
       case "description2":
         setItemDesc2(value);
         break;
+      case "description3":
+        setItemDesc3(value);
+        break;
+      case "description4":
+        setItemDesc4(value);
+        break;
       case "units":
         setUnits(value);
         break;
@@ -158,6 +170,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
     formDataToSend.append("itemCategory", itemCategory);
     formDataToSend.append("description1", itemDesc1);
     formDataToSend.append("description2", itemDesc2);
+    formDataToSend.append("description3", itemDesc3);
+    formDataToSend.append("description4", itemDesc4);
     formDataToSend.append("units", units);
     formDataToSend.append("fixedPrice", fixedPrice);
     formDataToSend.append("retailPrice", retailPrice);
@@ -289,25 +303,49 @@ const EditModal = ({ isOpen, onClose, data }) => {
                 ))}
               </datalist>
             </div>
-            <div className="edm-form-group edm-full-width">
-              <label className="edm-form-label">DESCRIPTION 1</label>
-              <input
-                type="text"
-                name="description1"
-                value={itemDesc1}
-                onChange={handleInputChange}
-                className="edm-form-input"
-              />
+            <div className="edm-description-row">
+              <div className="edm-form-group edm-half-width">
+                <label className="edm-form-label">DESCRIPTION 1</label>
+                <input
+                  type="text"
+                  name="description1"
+                  value={itemDesc1}
+                  onChange={handleInputChange}
+                  className="edm-form-input"
+                />
+              </div>
+              <div className="edm-form-group edm-half-width">
+                <label className="edm-form-label">DESCRIPTION 3</label>
+                <input
+                  type="text"
+                  name="description3"
+                  value={itemDesc3}
+                  onChange={handleInputChange}
+                  className="edm-form-input"
+                />
+              </div>
             </div>
-            <div className="edm-form-group edm-full-width">
-              <label className="edm-form-label">DESCRIPTION 2</label>
-              <input
-                type="text"
-                name="description2"
-                value={itemDesc2}
-                onChange={handleInputChange}
-                className="edm-form-input"
-              />
+            <div className="edm-description-row">
+              <div className="edm-form-group edm-half-width">
+                <label className="edm-form-label">DESCRIPTION 2</label>
+                <input
+                  type="text"
+                  name="description2"
+                  value={itemDesc2}
+                  onChange={handleInputChange}
+                  className="edm-form-input"
+                />
+              </div>
+              <div className="edm-form-group edm-half-width">
+                <label className="edm-form-label">DESCRIPTION 4</label>
+                <input
+                  type="text"
+                  name="description4"
+                  value={itemDesc4}
+                  onChange={handleInputChange}
+                  className="edm-form-input"
+                />
+              </div>
             </div>
             <div className="edm-price-units-container">
               <div className="edm-form-group">
