@@ -14,6 +14,7 @@ import Admin_stockHistory from "./Admin/admin_stockHistory";
 import NotFoundPage from "./404/MaintenancePage";
 import List_Restock from "./Page/List_Restock";
 import SalesmanPriceList from "./Salesman/Salesman_PriceList";
+import AdminStockInOut from "./Admin/admin_stockInOut";
 
 function StaffRoute() {
   return (
@@ -35,6 +36,8 @@ function StaffRoute() {
         <Route path="/admin_dashboard" element={<ProtectedRoute><Admin_dashboard /></ProtectedRoute>} />
         <Route path="/admin_Inventory" element={<ProtectedRoute><Admin_Inventory /></ProtectedRoute>} />
         <Route path="/admin_stockHistory" element={<ProtectedRoute><Admin_stockHistory /></ProtectedRoute>} />
+        <Route path="/admin_stockInOut" element={<ProtectedRoute><AdminStockInOut /></ProtectedRoute>} />
+
 
         <Route path="/Salesman_PriceList" element={<ProtectedRoute><SalesmanPriceList /></ProtectedRoute>} />
 

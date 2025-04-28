@@ -57,7 +57,8 @@ const EditModal = ({ isOpen, onClose, data }) => {
       setImageChange(false);
     }
   }, [data]); // Add dependency to ensure it runs when `data` changes
-
+  // https://slategrey-stingray-471759.hostingersite.com/api/backend/
+  // https://slategrey-stingray-471759.hostingersite.com/api/backend/
   useEffect(() => {
     axios
       .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands.php")

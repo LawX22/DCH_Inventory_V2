@@ -145,6 +145,8 @@ function AdminHeader() {
           <FaChartBar className="nav-icon" />
           <span>Dashboard</span>
         </div>
+
+        
         <div
           className={`nav-item ${isActive("/Admin_Inventory")}`}
           onClick={() => {
@@ -155,6 +157,26 @@ function AdminHeader() {
           <FaBoxes className="nav-icon" />
           <span>Inventory</span>
         </div>
+
+
+
+
+
+        <div
+          className={`nav-item ${isActive("/admin_stockInOut")}`}
+          onClick={() => {
+            clearHeaderFilter();
+            navigate("/admin_stockInOut");
+          }}
+        >
+          <FaChartBar className="nav-icon" />
+          <span>Stock In/Out</span>
+        </div>
+
+
+
+
+
         <div
           className={`nav-item ${isActive("/Admin_stockHistory")}`}
           onClick={() => {
