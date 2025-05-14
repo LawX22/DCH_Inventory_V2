@@ -49,9 +49,9 @@ $currUnits = $prevUnits + $unitsAdded;
 $activity_performed = 'Added ' . $unitsAdded . ' units to item ' . $itemDesc_1 . ' ' . $itemDesc_2;
 
 // ✅ **Step 2: Update inventory units**
-$updateQuery = "UPDATE inventory_merge SET units = units + ? WHERE new_stock_id = ?";
+$updateQuery = "UPDATE inventory_merge SET units = units + ? WHERE inventory_Id = ?";
 $stmt = mysqli_prepare($conn, $updateQuery);
-mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $stockId);
+mysqli_stmt_bind_param($stmt, "ii", $unitsAdded, $inventory_Id);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
