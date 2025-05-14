@@ -38,7 +38,7 @@
 /* Table Header */
 .table-header {
   font-weight: 600;
-  background: linear-gradient(135deg, #d0e3fc, #c2dcf8);
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
   position: sticky;
   top: 0;
   border-top-left-radius: 15px;
@@ -131,7 +131,7 @@
   justify-content: flex-start;
   font-weight: 600;
   font-size: 14px;
-  color: #1e40af;
+  color: #ffffff;
   letter-spacing: 0.2px;
   height: 100%; /* Full height */
   box-sizing: border-box;

@@ -8,6 +8,8 @@ const InventoryModal = ({ isOpen, onClose }) => {
     itemCategory: "",
     description1: "",
     description2: "",
+    description3: "", // Added description3
+    description4: "", // Added description4
     units: "",
     fixedPrice: "",
     retailPrice: "",
@@ -186,25 +188,49 @@ const InventoryModal = ({ isOpen, onClose }) => {
                 ))}
               </datalist>
             </div>
-            <div className="imd-form-group imd-full-width">
-              <label className="imd-form-label">DESCRIPTION 1</label>
-              <input
-                type="text"
-                name="description1"
-                value={formData.description1}
-                onChange={handleInputChange}
-                className="imd-form-input"
-              />
+            <div className="imd-descriptions-container imd-flex imd-flex-row imd-w-full imd-space-x-4">
+              <div className="imd-form-group imd-w-1/2">
+                <label className="imd-form-label">DESCRIPTION 1</label>
+                <input
+                  type="text"
+                  name="description1"
+                  value={formData.description1}
+                  onChange={handleInputChange}
+                  className="imd-form-input"
+                />
+              </div>
+              <div className="imd-form-group imd-w-1/2">
+                <label className="imd-form-label">DESCRIPTION 3</label>
+                <input
+                  type="text"
+                  name="description3"
+                  value={formData.description3}
+                  onChange={handleInputChange}
+                  className="imd-form-input"
+                />
+              </div>
             </div>
-            <div className="imd-form-group imd-full-width">
-              <label className="imd-form-label">DESCRIPTION 2</label>
-              <input
-                type="text"
-                name="description2"
-                value={formData.description2}
-                onChange={handleInputChange}
-                className="imd-form-input"
-              />
+            <div className="imd-descriptions-container imd-flex imd-flex-row imd-w-full imd-space-x-4">
+              <div className="imd-form-group imd-w-1/2">
+                <label className="imd-form-label">DESCRIPTION 2</label>
+                <input
+                  type="text"
+                  name="description2"
+                  value={formData.description2}
+                  onChange={handleInputChange}
+                  className="imd-form-input"
+                />
+              </div>
+              <div className="imd-form-group imd-w-1/2">
+                <label className="imd-form-label">DESCRIPTION 4</label>
+                <input
+                  type="text"
+                  name="description4"
+                  value={formData.description4}
+                  onChange={handleInputChange}
+                  className="imd-form-input"
+                />
+              </div>
             </div>
             <div className="imd-price-units-container">
               <div className="imd-form-group">

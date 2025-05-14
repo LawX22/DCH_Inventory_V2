@@ -3,7 +3,7 @@ import { FaChevronDown } from "react-icons/fa";
 import {
   AiOutlineSearch,
   AiOutlineEye,
-  AiOutlineDelete,
+  AiOutlineHistory,
   AiOutlinePlus,
 } from "react-icons/ai";
 import { FiDownload, FiActivity, FiList } from "react-icons/fi";
@@ -481,7 +481,7 @@ function AdminInventory() {
                     title="History"
                   >
                     <span className="adm-action-icon">
-                      <AiOutlineDelete size={16} />
+                      <AiOutlineHistory size={16} />
                     </span>
                     <span className="adm-action-text">History</span>
                   </button>

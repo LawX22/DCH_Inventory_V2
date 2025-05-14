@@ -18,6 +18,7 @@
     const [unitsAdded, setUnitsAdded] = useState("");
     const [imagePreview, setImagePreview] = useState(null);
     const [stockId, setStockId] = useState(null);
+    const [connector_id, setConnector] = useState(null);
     
     const username = localStorage.getItem("username") || "";
 
@@ -36,6 +37,7 @@
         setStorageArea(data.storage_area || "");
         setImagePreview(data.image || "");
         setStockId(data.new_stock_id || "");
+        setConnector(data.connector_id || "");
       }
     }, [data]);
 
@@ -89,6 +91,7 @@
       formDataToSend.append("unitsAdded", unitsAdded);
       formDataToSend.append("username", username);
       formDataToSend.append("stockId", stockId);
+      formDataToSend.append("connector_id", connector_id);
     
       try {
         const response = await axios.post(
@@ -174,7 +177,6 @@
                     onChange={handleInputChange}
                     className="form-input-1"
                     required
-                    
                   />
                 </div>
 
@@ -212,6 +214,7 @@
             <input type="hidden" name="username" value={username} />
             <input type="hidden" name="itemId" value={itemId} />
             <input type="hidden" name="stockId" value={stockId} />
+            <input  name="connector_id" value={connector_id}/>
 
             {/* Modal Actions (Buttons) */}
             <div className="modal-actions-1">

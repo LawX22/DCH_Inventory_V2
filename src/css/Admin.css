@@ -58,17 +58,17 @@ body {
 
 /* Add Button */
 .adm-add-button {
-  background-color: #bdeac1;
-  color: #25632b;
+  background-color: #8ccf80; /* Darker green */
+  color: #1d4f1b; /* Darker green for text */
 }
 
 .adm-add-button:hover {
-  background-color: #a3d7a7;
+  background-color: #76c16e; /* Slightly darker hover effect */
 }
 
 /* Enhanced Warehouse Dropdown */
 .adm-warehouse-dropdown {
-  background-color: #f0f7ff;
+  background-color: #d1e5fc; /* Light blue (darkened) */
   border-radius: 6px;
   position: relative;
   max-width: 200px;
@@ -80,12 +80,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #d1e0f6;
+  border: 1px solid #a9c6f1; /* Darker border color */
 }
 
 .adm-warehouse-dropdown:hover {
-  background-color: #e1eeff;
-  border-color: #a4c2f4;
+  background-color: #c0d9ff; /* Darker hover effect */
+  border-color: #8faee3; /* Darker border on hover */
 }
 
 .adm-dropdown-select {
@@ -94,7 +94,7 @@ body {
   border: none;
   background-color: transparent;
   font-weight: 500;
-  color: #2563eb;
+  color: #1e3a8a; /* Darker blue for text */
   appearance: none;
   font-size: 14px;
   padding: 0 30px 0 12px;
@@ -111,7 +111,7 @@ body {
 .adm-warehouse-dropdown::after {
   content: "▼";
   font-size: 10px;
-  color: #2563eb;
+  color: #1e3a8a; /* Darker blue arrow */
   position: absolute;
   right: 12px;
   top: 50%;
@@ -136,7 +136,7 @@ body {
 }
 
 .adm-search-icon {
-  color: #888;
+  color: #555; /* Darker icon color */
   margin-right: 8px;
 }
 
@@ -150,39 +150,39 @@ body {
 
 /* Export & Activity Buttons */
 .adm-export-button {
-  background-color: #ffc2c2;
-  color: #7a3434;
+  background-color: #f8a1a1; /* Darker red */
+  color: #5c1d1d; /* Darker text */
 }
 
 .adm-export-button:hover {
-  background-color: #f5a7a7;
+  background-color: #e48f8f; /* Darker hover effect */
 }
 
 .adm-activity-button {
-  background-color: #ffefc2;
-  color: #7a6034;
+  background-color: #f9db7a; /* Darker yellow */
+  color: #6a4e1f; /* Darker brown text */
 }
 
 .adm-activity-button:hover {
-  background-color: #f3db9e;
+  background-color: #f2d27d; /* Darker hover effect */
 }
 
 .adm-list-button {
-  background-color: #f8e7b1;
-  color: #95750a;
+  background-color: #f6a944dc; /* Darker gold */
+  color: #7c601c; /* Darker gold text */
 }
 
 .adm-list-button:hover {
-  background-color: #f5d97b;
+  background-color: #e0bb72; /* Darker hover effect */
 }
 
 .adm-showGroupModal-button {
-  background-color: #bdeac1;
-  color: #25632b;
+  background-color: #8ccf80; /* Darker green */
+  color: #1d4f1b; /* Darker green for text */
 }
 
 .adm-showGroupModal-button:hover {
-  background-color: #80da88;
+  background-color: #6fb66a; /* Darker hover effect */
 }
 
 /* Enhanced Select Container Styling */

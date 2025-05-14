@@ -1778,3 +1778,66 @@ Encoder: All, Start: 2025-04-28, End: 2025-05-03
 Encoder: All, Start: 2025-04-28, End: 2025-05-03
 Encoder: All, Start: , End: 
 Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: All, Start: 2025-05-12, End: 2025-05-17
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-05-12, End: 2025-05-17
+Encoder: All, Start: 2025-05-12, End: 2025-05-17
+Encoder: All, Start: , End: 
+Encoder: All, Start: 2025-05-12, End: 2025-05-17
+Encoder: All, Start: 2025-05-05, End: 2025-05-10
+Encoder: All, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: , End: 
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: banskie, Start: 2025-04-28, End: 2025-05-03
+Encoder: banskie, Start: , End: 
+Encoder: donald, Start: , End: 
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: bandong, Start: , End: 
+Encoder: bandong, Start: 2025-04-28, End: 2025-05-03
+Encoder: banskie, Start: , End: 
+Encoder: banskie, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: , End: 
+Encoder: bandong, Start: , End: 
+28, End: 2025-05-03
+Encoder: donald, Start: , End: 
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: bandong, Start: , End: 
+28, End: 2025-05-03
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: , End: 
+Encoder: banskie, Start: , End: 
+28, End: 2025-05-03
+Encoder: bandong, Start: , End: 
+Encoder: bandong, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: , End: 
+Encoder: donald, Start: 2025-04-28, End: 2025-05-03
+Encoder: donald, Start: 2025-05-05, End: 2025-05-10
+Encoder: , Start: , End: 
+Encoder: , Start: , End: 
+Encoder: , Start: , End: 
+Encoder: , Start: , End: 

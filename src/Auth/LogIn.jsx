@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from '../assets/Logo.png';
 import axios from "axios";
 
 const LogIn = () => {
@@ -135,7 +136,7 @@ const LogIn = () => {
       {/* Right Side - Branding Image */}
       <div className="login-banner">
         <div className="banner-content">
-          <img src="/src/assets/Logo.png" alt="DCH Logo" className="banner-logo" />
+          <img src={Logo}  alt="DCH Logo" className="banner-logo" />
           <div className="banner-text">
             <h2>Streamline Your Inventory Management</h2>
             <p>Access real-time data and manage your inventory efficiently with our comprehensive system</p>

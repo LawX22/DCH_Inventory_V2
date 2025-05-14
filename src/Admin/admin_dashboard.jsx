@@ -11,7 +11,9 @@ import {
   ShoppingCartIcon,
   FileTextIcon,
   TruckIcon,
-} from "lucide-react";
+} 
+
+from "lucide-react";
 
 const Dashboard = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -399,8 +401,9 @@ const Dashboard = () => {
                     onChange={(e) => setSelectedEncoder(e.target.value)}
                   >
                     <option value="All">All</option>
-                    <option value="dhaniel">dhaniel</option>
-                    <option value="jeff">jeff</option>
+                    <option value="donald">donald</option>
+                    <option value="banskie">banskie</option>
+                    <option value="bandong">bandong</option>
                   </select>
                 </div>
                 <FaChevronDown className="select-icon-1" />

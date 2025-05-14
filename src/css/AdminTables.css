@@ -38,7 +38,7 @@
   /* Table Header */
   .adm-table-header {
     font-weight: 600;
-    background: linear-gradient(135deg, #d0e3fc, #c2dcf8);
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     position: sticky;
     top: 0;
     border-top-left-radius: 15px;
@@ -131,7 +131,7 @@
     justify-content: flex-start;
     font-weight: 600;
     font-size: 14px;
-    color: #1e40af;
+    color: #ffffff;
     letter-spacing: 0.2px;
     height: 100%; /* Full height */
     box-sizing: border-box;
@@ -771,9 +771,9 @@
   }
   
   .adm-delete-button {
-    background-color: #fef2f2;
-    color: #b91c1c;
-    border: 1px solid #fee2e2;
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
   }
   
   .adm-action-button.adm-add-button {
@@ -847,9 +847,9 @@
   }
   
   .adm-delete-button:hover:not(:disabled) {
-    background-color: #fee2e2;
-    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.15);
-    border-color: #fecaca;
+    background-color: #d1fae5;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
+    border-color: #a7f3d0;
     transform: translateY(-2px) scale(1.05);
   }
   
