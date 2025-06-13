@@ -12,9 +12,15 @@ import AdminHeader from "./admin_Header";
 import axios from "axios";
 import StockInModal from "../modals/stockIn_modal";
 import StockOutModal from "../modals/stockOut_modal";
-import GroupModal from "../modals/GroupModal"; 
+import GroupModal from "../modals/GroupModal";
 
 function AdminStockInOut() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [inventory, setInventory] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
@@ -34,7 +40,7 @@ function AdminStockInOut() {
   const [categoryList, setCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
   const [areaList, setAreaList] = useState([]);
-  const [groupData, setGroupData] = useState([]); 
+  const [groupData, setGroupData] = useState([]);
 
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
@@ -59,23 +65,24 @@ function AdminStockInOut() {
 
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
-        params: {
-          location: selectedLocation,
-          search: searchQuery,
-          category: category,
-          brand: brand,
-          area: area,
-        },
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php",
+        {
+          params: {
+            location: selectedLocation,
+            search: searchQuery,
+            category: category,
+            brand: brand,
+            area: area,
+          },
+        }
+      )
       .then((response) => {
         setInventory(response.data.inventory || response.data);
         console.log(area);
       })
       .catch((error) => console.error("Error fetching inventory:", error));
-  }, [selectedLocation, searchQuery, inventory, brand, category, area]); 
-
-
+  }, [selectedLocation, searchQuery, inventory, brand, category, area]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -98,9 +105,9 @@ function AdminStockInOut() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
-        , {
-          params: { brand , selectedLocation}
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php",
+        {
+          params: { brand, selectedLocation },
         }
       )
       .then((response) => {
@@ -112,12 +119,15 @@ function AdminStockInOut() {
   }, [brand, selectedLocation]);
 
   useEffect(() => {
-  // skip if no category selected yet
-  
+    // skip if no category selected yet
+
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php", {
-        params: { category , selectedLocation}
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php",
+        {
+          params: { category, selectedLocation },
+        }
+      )
       .then((response) => {
         setBrandList(response.data);
       })
@@ -128,7 +138,8 @@ function AdminStockInOut() {
 
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
       )
       .then((response) => {
         setAreaList(response.data); // Store fetched areas in state
@@ -196,6 +207,10 @@ function AdminStockInOut() {
   const closeGroupModal = () => {
     setGroupModalOpen(false);
   };
+
+  const currentItems = inventory.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(inventory.length / itemsPerPage);
 
   return (
     <div className="inventory-container">
@@ -340,11 +355,13 @@ function AdminStockInOut() {
           <div className="header-cell with-arrow">
             <span>Inventory</span>
           </div>
-          <div className="header-cell" style={{ justifyContent: "center" }}>Actions</div>
+          <div className="header-cell" style={{ justifyContent: "center" }}>
+            Actions
+          </div>
         </div>
 
         <div className="table-body">
-          {inventory.map((item) => (
+          {currentItems.map((item) => (
             <div className="table-row" key={item.inventory_Id}>
               <div className="item-cell">
                 <div className="item-image-container">
@@ -447,9 +464,46 @@ function AdminStockInOut() {
                   </button>
                 </div>
               </div>
-              
             </div>
           ))}
+
+          <div className="pagination-controls">
+            <button
+              className="pagination-button"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+
+            <label htmlFor="pageSelect">Page:</label>
+            <select
+              id="pageSelect"
+              value={currentPage}
+              onChange={(e) => setCurrentPage(Number(e.target.value))}
+              className="page-select"
+            >
+              {Array.from({ length: totalPages }, (_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  Page {i + 1}
+                </option>
+              ))}
+            </select>
+
+            <button
+              className="pagination-button"
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+
+            <span>
+              Showing page {currentPage} of {totalPages}
+            </span>
+          </div>
         </div>
       </div>
     </div>

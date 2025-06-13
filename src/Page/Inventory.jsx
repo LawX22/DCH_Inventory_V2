@@ -14,6 +14,9 @@ import InventoryModal from "../modals/InventoryModal";
 import EditModal from "../modals/edit_InventoryModal";
 
 function Inventory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const [editModalOpen, seteditModalOpen] = useState(false);
 
   const [category, setCategory] = useState(
@@ -56,6 +59,7 @@ function Inventory() {
   const [selectedLocation, setSelectedLocation] = useState(
     localStorage.getItem("selectedLocation") || "All"
   );
+
   useEffect(() => {
     localStorage.setItem("selectedLocation", selectedLocation);
     localStorage.setItem("brand", brand);
@@ -99,16 +103,16 @@ function Inventory() {
     switch (name) {
       case "category":
         setCategory(value);
-      break;
+        break;
       case "brand":
         setBrand(value);
-      break;
+        break;
       case "stock":
         setStock(value);
         break;
       case "area":
         setArea(value);
-      break;
+        break;
       default:
         console.warn("Unknown filter:", name);
     }
@@ -159,6 +163,14 @@ function Inventory() {
         item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredInventory.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredInventory.length / itemsPerPage);
+
   const handleExport = () => {
     window.open(
       "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
@@ -181,9 +193,9 @@ function Inventory() {
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
-        , {
-          params: { brand , selectedLocation}
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php",
+        {
+          params: { brand, selectedLocation },
         }
       )
       .then((response) => {
@@ -195,12 +207,15 @@ function Inventory() {
   }, [brand, selectedLocation]);
 
   useEffect(() => {
-  // skip if no category selected yet
-  
+    // skip if no category selected yet
+
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php", {
-        params: { category , selectedLocation}
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php",
+        {
+          params: { category, selectedLocation },
+        }
+      )
       .then((response) => {
         setBrandList(response.data);
       })
@@ -208,11 +223,12 @@ function Inventory() {
         console.error("Error fetching brands:", error);
       });
   }, [category, selectedLocation]);
-  
 
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
+      )
       .then((response) => {
         setAreaList(response.data);
       })
@@ -401,7 +417,7 @@ function Inventory() {
         </div>
 
         <div className="table-body">
-          {filteredInventory.map((item) => (
+          {currentItems.map((item) => (
             <div className="table-row" key={item.inventory_id}>
               <div className="item-cell">
                 <div className="item-image-container">
@@ -488,6 +504,40 @@ function Inventory() {
               </div>
             </div>
           ))}
+
+          <div className="pagination-controls">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="pagination-button"
+            >
+              Prev
+            </button>
+
+            <select
+              value={currentPage}
+              onChange={(e) => setCurrentPage(Number(e.target.value))}
+              className="pagination-dropdown"
+            >
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <option key={page} value={page}>
+                    Page {page}
+                  </option>
+                )
+              )}
+            </select>
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="pagination-button"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

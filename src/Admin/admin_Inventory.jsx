@@ -14,6 +14,11 @@ import StockHistoryModal from "../modals/focusedStockHistory_Modal";
 import EditModal from "../modals/edit_InventoryModal";
 
 function AdminInventory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Calculate total pages based on filtered inventory
+
   const [editModalOpen, seteditModalOpen] = useState(false);
 
   const [category, setCategory] = useState(
@@ -23,7 +28,7 @@ function AdminInventory() {
   const [brand, setBrand] = useState(localStorage.getItem("brand") || "");
 
   const [area, setArea] = useState(localStorage.getItem("area") || "");
-  
+
   const [stock, setStock] = useState(localStorage.getItem("stock") || "");
 
   const [categoryList, setCategoryList] = useState([]);
@@ -81,16 +86,19 @@ function AdminInventory() {
 
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php", {
-        params: {
-          location: selectedLocation,
-          search: searchQuery,
-          category: category,
-          brand: brand,
-          area: area,
-          stock: stock,
-        },
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/load_Inventory.php",
+        {
+          params: {
+            location: selectedLocation,
+            search: searchQuery,
+            category: category,
+            brand: brand,
+            area: area,
+            stock: stock,
+          },
+        }
+      )
       .then((response) => {
         setInventory(response.data.inventory || response.data);
       })
@@ -171,6 +179,14 @@ function AdminInventory() {
         item.itemDesc_2.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  const totalPages = Math.ceil(filteredInventory.length / itemsPerPage);
+
+  // Get items for the current page
+  const paginatedItems = filteredInventory.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const handleExport = () => {
     window.open(
       "https://slategrey-stingray-471759.hostingersite.com/api/backend/export_inventory.php",
@@ -183,19 +199,19 @@ function AdminInventory() {
     localStorage.setItem("area", "");
     localStorage.setItem("category", "");
     localStorage.setItem("stock", "");
-    
+
     setCategory("");
     setBrand("");
     setArea("");
     setStock("");
   }, []);
-  
+
   useEffect(() => {
     axios
       .get(
-        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php"
-        , {
-          params: { brand , selectedLocation}
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_category_header.php",
+        {
+          params: { brand, selectedLocation },
         }
       )
       .then((response) => {
@@ -207,12 +223,15 @@ function AdminInventory() {
   }, [brand, selectedLocation]);
 
   useEffect(() => {
-  // skip if no category selected yet
-  
+    // skip if no category selected yet
+
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php", {
-        params: { category , selectedLocation}
-      })
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_brands_header.php",
+        {
+          params: { category, selectedLocation },
+        }
+      )
       .then((response) => {
         setBrandList(response.data);
       })
@@ -220,11 +239,12 @@ function AdminInventory() {
         console.error("Error fetching brands:", error);
       });
   }, [category, selectedLocation]);
-  
-  
+
   useEffect(() => {
     axios
-      .get("https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php")
+      .get(
+        "https://slategrey-stingray-471759.hostingersite.com/api/backend/list_area_header.php"
+      )
       .then((response) => {
         setAreaList(response.data);
       })
@@ -414,7 +434,7 @@ function AdminInventory() {
         </div>
 
         <div className="adm-table-body">
-          {filteredInventory.map((item) => (
+          {paginatedItems.map((item) => (
             <div className="adm-table-row" key={item.inventory_id}>
               <div className="adm-item-cell">
                 <div className="adm-item-image-container">
@@ -489,10 +509,44 @@ function AdminInventory() {
               </div>
             </div>
           ))}
+
+          <div className="adm-pagination-controls">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="adm-pagination-button"
+            >
+              Prev
+            </button>
+
+            <select
+              value={currentPage}
+              onChange={(e) => setCurrentPage(Number(e.target.value))}
+              className="adm-pagination-dropdown"
+            >
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <option key={page} value={page}>
+                    Page {page}
+                  </option>
+                )
+              )}
+            </select>
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="adm-pagination-button"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default AdminInventory;  
+export default AdminInventory;
